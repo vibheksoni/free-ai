@@ -1,0 +1,327 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { siteConfig } from '../config/site';
+import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
+
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
+
+const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "glm/glm-5.1",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Write a Python hello world"
+      }
+    ]
+  }'`;
+
+const pythonSnippet = `from openai import OpenAI
+
+client = OpenAI(
+    api_key="YOUR_API_KEY",
+    base_url="https://api.freetheai.xyz/v1",
+)
+
+completion = client.chat.completions.create(
+    model="glm/glm-5.1",
+    messages=[
+        {"role": "user", "content": "Explain recursion in one paragraph."}
+    ],
+)
+
+print(completion.choices[0].message.content)`;
+
+const jsSnippet = `import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: "YOUR_API_KEY",
+  baseURL: "https://api.freetheai.xyz/v1"
+});
+
+const completion = await client.chat.completions.create({
+  model: "glm/glm-5.1",
+  messages: [
+    { role: "user", content: "Say hello in one sentence." }
+  ]
+});
+
+console.log(completion.choices[0].message.content);`;
+
+const modelFamilies = [
+	{
+		label: 'GLM',
+		slug: 'glm/*',
+		items: ['glm-5.1', 'glm-5', 'glm-4.7', 'glm-4.6', 'glm-4.5', 'glm-4.5-air'],
+	},
+	{
+		label: 'KAI',
+		slug: 'kai/*',
+		items: ['kilo-auto/free', 'kilo/auto-free', 'ling-2.6-flash:free', 'lyria-3-pro-preview'],
+	},
+	{
+		label: 'OPC',
+		slug: 'opc/*',
+		items: ['big-pickle', 'gpt-5-nano', 'minimax-m2.5-free', 'trinity-large-preview-free'],
+	},
+	{
+		label: 'OR',
+		slug: 'or/*',
+		items: ['gpt-oss-20b:free', 'openrouter/free', 'gemma-4-31b-it:free', 'qwen3-coder:free'],
+	},
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="FreeTheAi - Making AI free and accessible"
+			description="FreeTheAi gives builders free AI access with Discord key signup, live models, no daily limit, and no prompt storage."
+			jsonLd={jsonLd}
+		/>
+	</head>
+	<body>
+		<div class="page-shell">
+			<header class="site-header">
+				<nav class="nav">
+					<a class="brand" href="/">[FreeTheAi]</a>
+					<div class="nav-links">
+						<a href="#how">How</a>
+						<a href="#usage">Usage</a>
+						<a href="#models">Models</a>
+						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
+					</div>
+					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+						<span class="material-symbols-outlined">forum</span>
+						<span>Discord</span>
+					</a>
+				</nav>
+			</header>
+
+			<main>
+				<section class="hero">
+					<div class="hero-copy">
+						<div class="eyebrow">FREE AI FOR BUILDERS</div>
+						<h1>Making AI free and accessible.</h1>
+						<p class="hero-text">
+							Get a key in Discord, hit a real API, and build with live models without the usual friction
+							of billing, tiny credits, or daily caps.
+						</p>
+						<div class="hero-actions">
+							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+								<span class="material-symbols-outlined">vpn_key</span>
+								<span>Get API Key</span>
+							</a>
+							<a class="ghost-button" href="#usage">
+								<span class="material-symbols-outlined">menu_book</span>
+								<span>Read Usage</span>
+							</a>
+						</div>
+						<div class="signal-row">
+							<div class="signal-box">
+								<span class="material-symbols-outlined">all_inclusive</span>
+								<div>
+									<strong>No daily limit</strong>
+									<p>Build without caps.</p>
+								</div>
+							</div>
+							<div class="signal-box">
+								<span class="material-symbols-outlined">speed</span>
+								<div>
+									<strong>30 RPM</strong>
+									<p>Fair-use for everyone.</p>
+								</div>
+							</div>
+							<div class="signal-box">
+								<span class="material-symbols-outlined">shield_lock</span>
+								<div>
+									<strong>No prompt storage</strong>
+									<p>Prompt text is not saved.</p>
+								</div>
+							</div>
+							<div class="signal-box">
+								<span class="material-symbols-outlined">integration_instructions</span>
+								<div>
+									<strong>SDK ready</strong>
+									<p>Use normal clients.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="hero-shell">
+						<div class="code-card">
+							<div class="card-head">
+								<div class="dot-row"><span></span><span></span><span></span></div>
+								<div class="card-label">Request</div>
+							</div>
+							<pre><code>{requestSnippet}</code></pre>
+						</div>
+						<div class="stats-card">
+							<div class="stats-top">
+								<div class="stat-number">0$</div>
+								<div class="stat-copy">to start building</div>
+							</div>
+							<div class="stats-grid">
+								<div class="mini-stat">
+									<span class="material-symbols-outlined">public</span>
+									<div>
+										<strong>Base URL</strong>
+										<code>api.freetheai.xyz</code>
+									</div>
+								</div>
+								<div class="mini-stat">
+									<span class="material-symbols-outlined">deployed_code</span>
+									<div>
+										<strong>Families</strong>
+										<code>glm, kai, opc, or</code>
+									</div>
+								</div>
+								<div class="mini-stat">
+									<span class="material-symbols-outlined">chat</span>
+									<div>
+										<strong>Route</strong>
+										<code>/v1/chat/completions</code>
+									</div>
+								</div>
+								<div class="mini-stat">
+									<span class="material-symbols-outlined">description</span>
+									<div>
+										<strong>Docs / Repo</strong>
+										<code>github.com/vibheksoni/free-ai</code>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="section" id="how">
+					<div class="section-head">
+						<div class="eyebrow">HOW IT WORKS</div>
+						<h2>Three steps and you’re building.</h2>
+					</div>
+					<div class="steps-grid">
+						<div class="step-card">
+							<span class="material-symbols-outlined">looks_one</span>
+							<h3>Run `/signup`</h3>
+							<p>Generate your API key directly in Discord.</p>
+						</div>
+						<div class="step-card">
+							<span class="material-symbols-outlined">looks_two</span>
+							<h3>Copy it immediately</h3>
+							<p>The original message is only shown once.</p>
+						</div>
+						<div class="step-card">
+							<span class="material-symbols-outlined">looks_3</span>
+							<h3>Use `/resetkey` if needed</h3>
+							<p>Rotate your key later without touching your stats.</p>
+						</div>
+					</div>
+				</section>
+
+				<section class="section" id="usage">
+					<div class="section-head">
+						<div class="eyebrow">USAGE</div>
+						<h2>Clean routes. Familiar clients.</h2>
+					</div>
+					<div class="usage-grid">
+						<div class="panel">
+							<h3>Base URL</h3>
+							<pre><code>https://api.freetheai.xyz</code></pre>
+							<h3>Routes</h3>
+							<ul class="route-list">
+								<li><span class="material-symbols-outlined">favorite</span><code>GET /v1/health</code></li>
+								<li><span class="material-symbols-outlined">view_list</span><code>GET /v1/models</code></li>
+								<li><span class="material-symbols-outlined">chat</span><code>POST /v1/chat/completions</code></li>
+							</ul>
+							<h3>Auth</h3>
+							<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
+						</div>
+						<div class="panel">
+							<h3>Python</h3>
+							<pre><code>{pythonSnippet}</code></pre>
+						</div>
+					</div>
+					<div class="panel wide-panel">
+						<h3>JavaScript</h3>
+						<pre><code>{jsSnippet}</code></pre>
+					</div>
+				</section>
+
+				<section class="section" id="models">
+					<div class="section-head">
+						<div class="eyebrow">MODELS</div>
+						<h2>Live model families available now.</h2>
+						<p>The source of truth is always <code>GET /v1/models</code>.</p>
+					</div>
+					<div class="family-grid">
+						{modelFamilies.map((family) => (
+							<div class="family-card">
+								<div class="family-top">
+									<div class="family-title">
+										<span class="material-symbols-outlined">apps</span>
+										<strong>{family.label}</strong>
+									</div>
+									<code>{family.slug}</code>
+								</div>
+								<ul>
+									{family.items.map((item) => (
+										<li><code>{item}</code></li>
+									))}
+								</ul>
+							</div>
+						))}
+					</div>
+				</section>
+
+				<section class="section two-panel">
+					<div class="panel">
+						<div class="eyebrow">PRIVACY</div>
+						<h2>Prompts are not stored.</h2>
+						<ul class="privacy-list">
+							<li><span class="material-symbols-outlined">check_circle</span> model id</li>
+							<li><span class="material-symbols-outlined">check_circle</span> input token count</li>
+							<li><span class="material-symbols-outlined">check_circle</span> output token count</li>
+							<li><span class="material-symbols-outlined">check_circle</span> timestamp</li>
+							<li><span class="material-symbols-outlined">block</span> prompt text</li>
+							<li><span class="material-symbols-outlined">block</span> completion text</li>
+						</ul>
+					</div>
+					<div class="panel">
+						<div class="eyebrow">DOCS / REPO</div>
+						<h2>Public docs. Private backend.</h2>
+						<p>
+							The public repo and site show how to use the API.
+							The private backend implementation is not exposed here.
+						</p>
+						<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
+							<span class="material-symbols-outlined">open_in_new</span>
+							<span>github.com/vibheksoni/free-ai</span>
+						</a>
+					</div>
+				</section>
+
+				<section class="cta-banner">
+					<div>
+						<div class="eyebrow">START NOW</div>
+						<h2>Get your key and build something.</h2>
+					</div>
+					<div class="cta-actions">
+						<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+							<span class="material-symbols-outlined">forum</span>
+							<span>Open Discord</span>
+						</a>
+						<a class="ghost-button" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
+							<span class="material-symbols-outlined">description</span>
+							<span>Repo / Docs</span>
+						</a>
+					</div>
+				</section>
+			</main>
+		</div>
+	</body>
+</html>

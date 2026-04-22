@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#07111f"/>
+      <stop offset="45%" stop-color="#0b1f39"/>
+      <stop offset="100%" stop-color="#0a63ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="75%" cy="20%" r="70%">
+      <stop offset="0%" stop-color="#6ee7ff" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#6ee7ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <g opacity="0.15" stroke="#ffffff">
+    <path d="M0 120h1200M0 240h1200M0 360h1200M0 480h1200"/>
+    <path d="M180 0v630M360 0v630M540 0v630M720 0v630M900 0v630M1080 0v630"/>
+  </g>
+  <text x="96" y="210" fill="#8dd6ff" font-family="Space Grotesk, Arial, sans-serif" font-size="34" font-weight="700">Free OpenAI-compatible AI API</text>
+  <text x="96" y="315" fill="#ffffff" font-family="Space Grotesk, Arial, sans-serif" font-size="92" font-weight="700">FreeTheAi</text>
+  <text x="96" y="395" fill="#d7ecff" font-family="IBM Plex Sans, Arial, sans-serif" font-size="34">Making AI free and accessible for everyone.</text>
+  <text x="96" y="470" fill="#d7ecff" font-family="IBM Plex Mono, monospace" font-size="28">api.freetheai.xyz</text>
+  <text x="96" y="520" fill="#d7ecff" font-family="IBM Plex Mono, monospace" font-size="24">/signup  •  /resetkey  •  30 RPM  •  No daily limit</text>
+</svg>

@@ -1,0 +1,57 @@
+---
+import '../styles/global.css';
+import { siteConfig } from '../config/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	jsonLd?: Record<string, unknown>[];
+}
+
+const {
+	title = siteConfig.title,
+	description = siteConfig.description,
+	image = siteConfig.defaults.ogImage,
+	jsonLd = [],
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const pageTitle = title === siteConfig.title ? title : `${title} | ${siteConfig.title}`;
+const ogImage = new URL(image, Astro.site).toString();
+---
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content="#0b62ff" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap" rel="stylesheet" />
+
+<title>{pageTitle}</title>
+<meta name="title" content={pageTitle} />
+<meta name="description" content={description} />
+<meta name="keywords" content={siteConfig.defaults.keywords.join(', ')} />
+
+<link rel="canonical" href={canonical.toString()} />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical.toString()} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content={siteConfig.defaults.locale} />
+<meta property="og:site_name" content={siteConfig.title} />
+
+<meta name="twitter:card" content={siteConfig.defaults.twitterCard} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+{jsonLd.map((block) => (
+	<script type="application/ld+json" set:html={JSON.stringify(block)} />
+))}

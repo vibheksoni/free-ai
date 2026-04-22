@@ -1,0 +1,7 @@
+[preview] The output directory C:\Users\win\Desktop\SecretsToAi\free-ai\site\dist\ does not exist. Did you run `astro build`?
+  [1mLocation:[22m
+    [4mC:\Users\win\Desktop\SecretsToAi\free-ai\site\node_modules\astro\dist\core\preview\index.js:33:13[24m
+  [1mStack trace:[22m
+[2m    at preview (file:///C:/Users/win/Desktop/SecretsToAi/free-ai/site/node_modules/astro/dist/core/preview/index.js:33:13)
+    at async runCommand (file:///C:/Users/win/Desktop/SecretsToAi/free-ai/site/node_modules/astro/dist/cli/index.js:215:22)[22m
+Assertion failed: !(handle->flags & UV_HANDLE_CLOSING), file src\win\async.c, line 76
