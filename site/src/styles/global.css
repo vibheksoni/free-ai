@@ -431,15 +431,16 @@ h3 {
 }
 
 .family-grid {
-	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-template-columns: 1fr;
 }
 
 .family-top {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: space-between;
 	gap: 12px;
 	margin-bottom: 16px;
+	flex-wrap: wrap;
 }
 
 .family-title {
@@ -449,8 +450,58 @@ h3 {
 	font-size: 1.12rem;
 }
 
+.family-meta {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+}
+
+.family-count {
+	display: inline-flex;
+	align-items: center;
+	padding: 4px 10px;
+	border: 1px solid var(--border-strong);
+	background: var(--surface-2);
+	color: var(--dim);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.family-scroll {
+	max-height: 360px;
+	overflow: auto;
+	padding-right: 8px;
+}
+
+.family-scroll::-webkit-scrollbar {
+	width: 8px;
+}
+
+.family-scroll::-webkit-scrollbar-thumb {
+	background: var(--border-strong);
+}
+
+.family-card ul {
+	columns: 3;
+	column-gap: 24px;
+	margin-top: 0;
+}
+
 .family-card li {
 	color: var(--muted);
+	break-inside: avoid;
+	padding-right: 16px;
+	padding-bottom: 8px;
+	min-width: 0;
+}
+
+.family-card li code {
+	white-space: normal;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 .inline-link {
@@ -474,9 +525,12 @@ h3 {
 	.signal-row,
 	.steps-grid,
 	.usage-grid,
-	.family-grid,
 	.two-panel {
 		grid-template-columns: 1fr;
+	}
+
+	.family-card ul {
+		columns: 2;
 	}
 
 	h1 {
@@ -493,9 +547,14 @@ h3 {
 	.nav-links,
 	.hero-actions,
 	.cta-actions,
-	.cta-banner {
+	.cta-banner,
+	.family-top {
 		flex-direction: column;
 		align-items: stretch;
+	}
+
+	.family-card ul {
+		columns: 1;
 	}
 
 	.nav {
