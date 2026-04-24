@@ -449,13 +449,18 @@ const modelCount = modelFamilies.reduce((total, family) => total + family.items.
 										<span class="material-symbols-outlined">apps</span>
 										<strong>{family.label}</strong>
 									</div>
-									<code>{family.slug}</code>
+									<div class="family-meta">
+										<code>{family.slug}</code>
+										<span class="family-count">{family.items.length} models</span>
+									</div>
 								</div>
-								<ul>
-									{family.items.map((item) => (
-										<li><code>{item}</code></li>
-									))}
-								</ul>
+								<div class="family-scroll">
+									<ul>
+										{family.items.map((item) => (
+											<li><code>{item}</code></li>
+										))}
+									</ul>
+								</div>
 							</div>
 						))}
 					</div>
