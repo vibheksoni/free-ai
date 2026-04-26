@@ -556,7 +556,8 @@ h3 {
 }
 
 .catalog-search input,
-.catalog-page-size select {
+.catalog-page-size select,
+.catalog-sort select {
 	width: 100%;
 	border: 0;
 	outline: 0;
@@ -581,9 +582,22 @@ h3 {
 	font-weight: 700;
 }
 
-.catalog-page-size select {
+.catalog-page-size select,
+.catalog-sort select {
 	min-width: 88px;
 	color: var(--text);
+}
+
+.catalog-sort {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	min-height: 54px;
+	padding: 0 16px;
+	border: 1px solid var(--border);
+	background: var(--surface-2);
+	color: var(--muted);
+	font-weight: 700;
 }
 
 .catalog-prefixes {
@@ -675,6 +689,25 @@ h3 {
 	line-height: 1.65;
 	overflow-wrap: anywhere;
 	word-break: break-word;
+}
+
+.model-tier-row {
+	display: flex;
+	align-items: center;
+}
+
+.model-tier {
+	display: inline-flex;
+	align-items: center;
+	min-height: 30px;
+	padding: 0 12px;
+	border: 1px solid #2780f6;
+	background: rgba(0, 112, 243, 0.18);
+	color: white;
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
 }
 
 .catalog-pagination {
