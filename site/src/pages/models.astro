@@ -96,7 +96,7 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				<section class="section">
 					<div class="section-head">
 						<div class="eyebrow">BROWSE</div>
-						<h2>Search, filter, and page the full list.</h2>
+						<h2>Search, filter, sort, and page the full list.</h2>
 						<p>
 							Alias ids are exact. Use the same values your client passes to
 							<code>POST /v1/chat/completions</code>.
@@ -122,9 +122,19 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 									<option value="120">120</option>
 								</select>
 							</label>
+							<label class="catalog-sort">
+								<span>Sort</span>
+								<select id="catalog-sort">
+									<option value="alias-asc" selected>Alias A-Z</option>
+									<option value="alias-desc">Alias Z-A</option>
+									<option value="prefix">Prefix then alias</option>
+									<option value="tier">Tier then alias</option>
+								</select>
+							</label>
 						</div>
 
 						<div id="catalog-prefixes" class="catalog-prefixes"></div>
+						<div id="catalog-tiers" class="catalog-prefixes catalog-tier-filters"></div>
 
 						<div class="catalog-meta">
 							<div id="catalog-status" class="catalog-status">Loading models...</div>
@@ -151,12 +161,17 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				pageSize: 80,
 				prefix: 'all',
 				query: '',
+				sort: 'alias-asc',
+				tier: 'all',
+				tierOrder: [],
 			};
 
 			const elements = {
 				search: document.getElementById('catalog-search'),
 				pageSize: document.getElementById('catalog-page-size'),
+				sort: document.getElementById('catalog-sort'),
 				prefixes: document.getElementById('catalog-prefixes'),
+				tiers: document.getElementById('catalog-tiers'),
 				results: document.getElementById('catalog-results'),
 				status: document.getElementById('catalog-status'),
 				pageLabel: document.getElementById('catalog-page-label'),
@@ -190,6 +205,136 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				});
 			}
 
+			function buildTierCounts(models) {
+				const counts = new Map();
+				for (const model of models) {
+					counts.set(model.tier, (counts.get(model.tier) ?? 0) + 1);
+				}
+
+				const preferredOrder = new Map(state.tierOrder.map((tier, index) => [tier, index]));
+				return [...counts.entries()].sort((left, right) => {
+					const leftIndex = preferredOrder.has(left[0]) ? preferredOrder.get(left[0]) : Number.MAX_SAFE_INTEGER;
+					const rightIndex = preferredOrder.has(right[0]) ? preferredOrder.get(right[0]) : Number.MAX_SAFE_INTEGER;
+					if (leftIndex !== rightIndex) return leftIndex - rightIndex;
+					if (right[1] !== left[1]) return right[1] - left[1];
+					return collator.compare(left[0], right[0]);
+				});
+			}
+
+			function normalizePattern(pattern) {
+				return typeof pattern === 'string' ? pattern.trim() : '';
+			}
+
+			function matchesPolicyPattern(value, pattern) {
+				const normalizedValue = String(value || '').trim();
+				const normalizedPattern = normalizePattern(pattern);
+				if (!normalizedValue || !normalizedPattern) {
+					return false;
+				}
+				if (normalizedPattern.toLowerCase() === normalizedValue.toLowerCase()) {
+					return true;
+				}
+				if (normalizedPattern.startsWith('*') && normalizedPattern.endsWith('*') && normalizedPattern.length > 2) {
+					const inner = normalizedPattern.slice(1, -1).trim().toLowerCase();
+					return inner !== '' && normalizedValue.toLowerCase().includes(inner);
+				}
+				if (normalizedPattern.startsWith('*')) {
+					return normalizedValue.toLowerCase().endsWith(normalizedPattern.slice(1).trim().toLowerCase());
+				}
+				if (normalizedPattern.endsWith('*')) {
+					return normalizedValue.toLowerCase().startsWith(normalizedPattern.slice(0, -1).trim().toLowerCase());
+				}
+				return false;
+			}
+
+			function familyMatches(alias, family) {
+				const models = Array.isArray(family?.models) ? family.models : [];
+				for (const model of models) {
+					if (matchesPolicyPattern(alias, model)) {
+						return true;
+					}
+				}
+
+				const prefixes = Array.isArray(family?.prefixes) ? family.prefixes : [];
+				for (const prefix of prefixes) {
+					if (matchesPolicyPattern(alias, prefix) || String(alias).startsWith(String(prefix).trim())) {
+						return true;
+					}
+				}
+
+				const contains = Array.isArray(family?.contains) ? family.contains : [];
+				for (const token of contains) {
+					if (matchesPolicyPattern(alias, token) || String(alias).toLowerCase().includes(String(token).trim().toLowerCase())) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+
+			function buildPolicyIndex(policy) {
+				const families = Array.isArray(policy?.families) ? policy.families : [];
+				const defaultFamilyName = typeof policy?.default_family === 'string' ? policy.default_family.trim() : '';
+				const defaultFamily =
+					families.find((family) => String(family?.name || '').trim().toLowerCase() === defaultFamilyName.toLowerCase()) ||
+					null;
+
+				return {
+					families,
+					defaultFamily,
+					order: families.map((family) => String(family?.name || '').trim()).filter(Boolean),
+				};
+			}
+
+			function resolveTier(alias, policyIndex) {
+				if (!policyIndex) {
+					return 'Unmapped';
+				}
+				for (const family of policyIndex.families) {
+					if (familyMatches(alias, family)) {
+						return String(family.name || 'Unmapped').trim() || 'Unmapped';
+					}
+				}
+				if (policyIndex.defaultFamily?.name) {
+					return String(policyIndex.defaultFamily.name).trim() || 'Unmapped';
+				}
+				return 'Unmapped';
+			}
+
+			function renderTiers() {
+				const counts = buildTierCounts(state.allModels);
+				const buttons = [
+					`<button class="catalog-chip ${state.tier === 'all' ? 'is-active' : ''}" data-tier="all" type="button">All tiers <span>${state.allModels.length}</span></button>`,
+					...counts.map(
+						([tier, count]) =>
+							`<button class="catalog-chip ${state.tier === tier ? 'is-active' : ''}" data-tier="${tier}" type="button">${tier} <span>${count}</span></button>`,
+					),
+				];
+				elements.tiers.innerHTML = buttons.join('');
+			}
+
+			function sortFilteredModels(models) {
+				switch (state.sort) {
+					case 'alias-desc':
+						return models.sort((left, right) => collator.compare(right.id, left.id));
+					case 'prefix':
+						return models.sort((left, right) => {
+							const prefixCompare = collator.compare(left.prefix, right.prefix);
+							if (prefixCompare !== 0) return prefixCompare;
+							return collator.compare(left.id, right.id);
+						});
+					case 'tier':
+						return models.sort((left, right) => {
+							if (left.tierRank !== right.tierRank) return left.tierRank - right.tierRank;
+							const tierCompare = collator.compare(left.tier, right.tier);
+							if (tierCompare !== 0) return tierCompare;
+							return collator.compare(left.id, right.id);
+						});
+					default:
+						return models.sort((left, right) => collator.compare(left.id, right.id));
+				}
+			}
+
 			function renderPrefixes() {
 				const counts = buildPrefixCounts(state.allModels);
 				elements.prefixCount.textContent = `${counts.length} prefixes`;
@@ -205,15 +350,18 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 
 			function applyFilters() {
 				const query = state.query.trim().toLowerCase();
-				state.filteredModels = state.allModels.filter((model) => {
+				state.filteredModels = sortFilteredModels(state.allModels.filter((model) => {
 					if (state.prefix !== 'all' && model.prefix !== state.prefix) {
+						return false;
+					}
+					if (state.tier !== 'all' && model.tier !== state.tier) {
 						return false;
 					}
 					if (query && !model.id.toLowerCase().includes(query)) {
 						return false;
 					}
 					return true;
-				});
+				}));
 				state.page = 1;
 				render();
 			}
@@ -231,9 +379,9 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				elements.total.textContent = `${state.allModels.length.toLocaleString()} aliases`;
 				elements.status.textContent = `${total.toLocaleString()} matching models`;
 				elements.pageLabel.textContent =
-					state.prefix === 'all'
-						? 'Showing all prefixes'
-						: `Filtering prefix ${state.prefix}/*`;
+					state.prefix === 'all' && state.tier === 'all'
+						? 'Showing all prefixes and tiers'
+						: `Filtering ${state.prefix === 'all' ? 'all prefixes' : `${state.prefix}/*`} · ${state.tier === 'all' ? 'all tiers' : state.tier}`;
 				elements.paginationText.textContent = `Page ${state.page} of ${pageCount}`;
 				elements.prev.disabled = state.page <= 1;
 				elements.next.disabled = state.page >= pageCount;
@@ -251,6 +399,9 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 									<span class="model-prefix">${model.prefix}/*</span>
 									<span class="model-index">#${(startIndex + index + 1).toLocaleString()}</span>
 								</div>
+								<div class="model-tier-row">
+									<span class="model-tier">${model.tier}</span>
+								</div>
 								<code class="model-id">${model.id}</code>
 							</article>
 						`,
@@ -258,28 +409,39 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 					.join('');
 			}
 
+			async function fetchJson(path) {
+				const response = await fetch(path, {
+					headers: {
+						Accept: 'application/json',
+					},
+				});
+				if (!response.ok) {
+					throw new Error(`Request for ${path} failed with status ${response.status}`);
+				}
+				return response.json();
+			}
+
 			async function loadModels() {
 				try {
-					const response = await fetch('/models.json', {
-						headers: {
-							Accept: 'application/json',
-						},
-					});
-					if (!response.ok) {
-						throw new Error(`Model catalog request failed with status ${response.status}`);
-					}
-
-					const payload = await response.json();
+					const [payload, policy] = await Promise.all([
+						fetchJson('/models.json'),
+						fetchJson('/access-policy.json').catch(() => null),
+					]);
 					const items = Array.isArray(payload?.data) ? payload.data : [];
+					const policyIndex = buildPolicyIndex(policy);
+					state.tierOrder = policyIndex.order.length > 0 ? policyIndex.order : ['Unmapped'];
 					state.allModels = sortModels(
 						items
 							.filter((item) => typeof item?.id === 'string' && item.id.trim() !== '')
 							.map((item) => ({
 								id: item.id.trim(),
 								prefix: modelPrefix(item.id.trim()),
+								tier: resolveTier(item.id.trim(), policyIndex),
+								tierRank: Math.max(0, state.tierOrder.indexOf(resolveTier(item.id.trim(), policyIndex))),
 							})),
 					);
 					renderPrefixes();
+					renderTiers();
 					applyFilters();
 				} catch (error) {
 					elements.status.textContent = 'Failed to load the model catalog.';
@@ -300,11 +462,24 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				render();
 			});
 
+			elements.sort?.addEventListener('change', (event) => {
+				state.sort = event.currentTarget.value || 'alias-asc';
+				applyFilters();
+			});
+
 			elements.prefixes?.addEventListener('click', (event) => {
 				const button = event.target.closest('[data-prefix]');
 				if (!button) return;
 				state.prefix = button.dataset.prefix || 'all';
 				renderPrefixes();
+				applyFilters();
+			});
+
+			elements.tiers?.addEventListener('click', (event) => {
+				const button = event.target.closest('[data-tier]');
+				if (!button) return;
+				state.tier = button.dataset.tier || 'all';
+				renderTiers();
 				applyFilters();
 			});
 

@@ -1,0 +1,207 @@
+{
+  "default_family": "Prestige Models",
+  "invite_tiers": [
+    {
+      "level": 1,
+      "minimum_invites": 0,
+      "rate_limit_per_minute": 10,
+      "concurrency_limit": 1
+    },
+    {
+      "level": 2,
+      "minimum_invites": 3,
+      "rate_limit_per_minute": 15,
+      "concurrency_limit": 1
+    },
+    {
+      "level": 3,
+      "minimum_invites": 8,
+      "rate_limit_per_minute": 20,
+      "concurrency_limit": 2
+    },
+    {
+      "level": 4,
+      "minimum_invites": 15,
+      "rate_limit_per_minute": 28,
+      "concurrency_limit": 2
+    },
+    {
+      "level": 5,
+      "minimum_invites": 30,
+      "rate_limit_per_minute": 35,
+      "concurrency_limit": 3
+    }
+  ],
+  "server_goals": [
+    {
+      "level": 0,
+      "minimum_members": 160,
+      "name": "Core Access"
+    },
+    {
+      "level": 1,
+      "minimum_members": 225,
+      "name": "Plus Models"
+    },
+    {
+      "level": 2,
+      "minimum_members": 325,
+      "name": "Pro Models"
+    },
+    {
+      "level": 3,
+      "minimum_members": 450,
+      "name": "Prestige Models"
+    }
+  ],
+  "families": [
+    {
+      "name": "Core Access",
+      "minimum_server_goal_level": 0,
+      "minimum_tier_level": 1,
+      "models": [
+        "fth/*",
+
+        "bbl/claude-4.5-haiku",
+        "bbl/deepseek-r1",
+        "bbl/deepseek-v3",
+        "bbl/gemini-2.5-flash",
+        "bbl/gemini-2.5-flash-lite",
+        "bbl/gpt-4.1",
+        "bbl/gpt-4o",
+        "bbl/gpt-5-mini",
+        "bbl/gpt-5.4-mini",
+        "bbl/grok-4.1-fast-non-reasoning",
+        "bbl/o3-mini",
+
+        "cat/claude-4-5-haiku",
+        "cat/gemini-2-5-flash",
+        "cat/gpt-4.1",
+        "cat/gpt-4.1-mini",
+        "cat/gpt-5-mini",
+        "cat/gpt-5.4-mini",
+
+        "glm/glm-4.5",
+        "glm/glm-4.5-air",
+        "glm/glm-4.6",
+
+        "kai/baidu/qianfan-ocr-fast:free",
+        "kai/inclusionai/ling-2.6-1t:free",
+        "kai/inclusionai/ling-2.6-flash:free",
+        "kai/kilo-auto/free",
+        "kai/kilo/auto-free",
+        "kai/nvidia/nemotron-3-super-120b-a12b:free",
+        "kai/openrouter/free",
+        "kai/stepfun/step-3.5-flash:free",
+        "kai/tencent/hy3-preview:free",
+        "kai/x-ai/grok-code-fast-1:optimized:free",
+
+        "opc/big-pickle",
+        "opc/gpt-5-nano",
+        "opc/hy3-preview-free",
+        "opc/ling-2.6-flash-free",
+        "opc/minimax-m2.5-free",
+        "opc/nemotron-3-super-free",
+        "opc/trinity-large-preview-free",
+
+        "or/baidu/qianfan-ocr-fast:free",
+        "or/cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
+        "or/google/gemma-3-12b-it:free",
+        "or/google/gemma-3-27b-it:free",
+        "or/google/gemma-3-4b-it:free",
+        "or/google/gemma-3n-e2b-it:free",
+        "or/google/gemma-3n-e4b-it:free",
+        "or/google/gemma-4-26b-a4b-it:free",
+        "or/google/gemma-4-31b-it:free",
+        "or/inclusionai/ling-2.6-1t:free",
+        "or/inclusionai/ling-2.6-flash:free",
+        "or/liquid/lfm-2.5-1.2b-instruct:free",
+        "or/liquid/lfm-2.5-1.2b-thinking:free",
+        "or/meta-llama/llama-3.2-3b-instruct:free",
+        "or/meta-llama/llama-3.3-70b-instruct:free",
+        "or/minimax/minimax-m2.5:free",
+        "or/nousresearch/hermes-3-llama-3.1-405b:free",
+        "or/nvidia/nemotron-3-nano-30b-a3b:free",
+        "or/nvidia/nemotron-3-super-120b-a12b:free",
+        "or/nvidia/nemotron-nano-12b-v2-vl:free",
+        "or/nvidia/nemotron-nano-9b-v2:free",
+        "or/openai/gpt-oss-120b:free",
+        "or/openai/gpt-oss-20b:free",
+        "or/openrouter/free",
+        "or/qwen/qwen3-coder:free",
+        "or/qwen/qwen3-next-80b-a3b-instruct:free",
+        "or/tencent/hy3-preview:free",
+        "or/z-ai/glm-4.5-air:free"
+      ]
+    },
+    {
+      "name": "Plus Models",
+      "minimum_server_goal_level": 1,
+      "minimum_tier_level": 1,
+      "models": [
+        "bbl/claude-3.7-sonnet",
+        "bbl/claude-4-sonnet",
+        "bbl/gemini-2.5-pro",
+        "bbl/gemini-3.0-flash",
+        "bbl/gpt-5",
+        "bbl/gpt-5-chat",
+        "bbl/gpt-5.1",
+        "bbl/grok-3",
+
+        "cat/gemini-3-flash",
+        "cat/gpt-5",
+        "cat/gpt-5.1",
+
+        "glm/glm-4.7",
+        "glm/glm-5",
+
+        "kai/google/lyria-3-clip-preview",
+        "kai/google/lyria-3-pro-preview",
+
+        "or/google/lyria-3-clip-preview",
+        "or/google/lyria-3-pro-preview"
+      ]
+    },
+    {
+      "name": "Pro Models",
+      "minimum_server_goal_level": 2,
+      "minimum_tier_level": 1,
+      "models": [
+        "bbl/claude-4.5-sonnet",
+        "bbl/claude-4.6-sonnet",
+        "bbl/gemini-3.0-pro",
+        "bbl/gemini-3.1-pro",
+        "bbl/gpt-5.2",
+        "bbl/grok-4",
+        "bbl/o3",
+
+        "cat/claude-4-5-sonnet",
+        "cat/claude-4-6-sonnet",
+        "cat/gemini-3-1-pro",
+        "cat/gpt-5.2",
+
+        "glm/glm-5.1",
+
+        "wsf/kimi-k2.5",
+        "wsf/kimi-k2.6",
+        "wsf/swe-1.5",
+        "wsf/swe-1.6"
+      ]
+    },
+    {
+      "name": "Prestige Models",
+      "minimum_server_goal_level": 3,
+      "minimum_tier_level": 1,
+      "models": [
+        "bbl/claude-4.5-opus",
+        "bbl/claude-4.6-opus",
+        "bbl/claude-4.7-opus",
+        "bbl/gpt-5-max",
+        "bbl/gpt-5.4",
+
+        "cat/agent-1",
+        "cat/gpt-5.4"
+      ]
+    }
+  ]
+}
