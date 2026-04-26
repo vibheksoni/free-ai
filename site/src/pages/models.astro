@@ -1,0 +1,329 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { siteConfig } from '../config/site';
+import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
+
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="FreeTheAi Models - Search the live catalog"
+			description="Search and page through the FreeTheAi live model catalog loaded from the authenticated /v1/models response."
+			jsonLd={jsonLd}
+		/>
+	</head>
+	<body>
+		<div class="page-shell">
+			<header class="site-header">
+				<nav class="nav">
+					<a class="brand" href="/">[FreeTheAi]</a>
+					<div class="nav-links">
+						<a href="/#how">How</a>
+						<a href="/#usage">Usage</a>
+						<a href="/models">Models</a>
+						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
+					</div>
+					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+						<span class="material-symbols-outlined">forum</span>
+						<span>Discord</span>
+					</a>
+				</nav>
+			</header>
+
+			<main>
+				<section class="hero catalog-hero">
+					<div class="hero-copy">
+						<div class="eyebrow">MODEL CATALOG</div>
+						<h1>Search the live alias catalog.</h1>
+						<p class="hero-text">
+							This page loads from the exported <code>/v1/models</code> snapshot and gives you a clean,
+							paginated browser for the full gateway catalog. Use search to jump straight to the models
+							you want.
+						</p>
+						<div class="hero-actions">
+							<a class="primary-button" href={siteConfig.socials.api} target="_blank" rel="noreferrer">
+								<span class="material-symbols-outlined">api</span>
+								<span>Open API</span>
+							</a>
+							<a class="ghost-button" href="/">
+								<span class="material-symbols-outlined">arrow_back</span>
+								<span>Back Home</span>
+							</a>
+						</div>
+					</div>
+
+					<div class="stats-card catalog-callout">
+						<div class="stats-top">
+							<div class="stat-number">15k+</div>
+							<div class="stat-copy">live aliases available now</div>
+						</div>
+						<div class="stats-grid">
+							<div class="mini-stat">
+								<span class="material-symbols-outlined">view_list</span>
+								<div>
+									<strong>Source</strong>
+									<code>/models.json</code>
+								</div>
+							</div>
+							<div class="mini-stat">
+								<span class="material-symbols-outlined">search</span>
+								<div>
+									<strong>UI</strong>
+									<code>search + pagination</code>
+								</div>
+							</div>
+							<div class="mini-stat">
+								<span class="material-symbols-outlined">hub</span>
+								<div>
+									<strong>Prefixes</strong>
+									<code id="prefix-count">loading...</code>
+								</div>
+							</div>
+							<div class="mini-stat">
+								<span class="material-symbols-outlined">database</span>
+								<div>
+									<strong>Total</strong>
+									<code id="catalog-total">loading...</code>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section class="section">
+					<div class="section-head">
+						<div class="eyebrow">BROWSE</div>
+						<h2>Search, filter, and page the full list.</h2>
+						<p>
+							Alias ids are exact. Use the same values your client passes to
+							<code>POST /v1/chat/completions</code>.
+						</p>
+					</div>
+
+					<div class="panel catalog-panel">
+						<div class="catalog-toolbar">
+							<label class="catalog-search">
+								<span class="material-symbols-outlined">search</span>
+								<input
+									id="catalog-search"
+									type="search"
+									placeholder="Search alias ids like fth/, glm/, sonnet, kimi, gemma..."
+									autocomplete="off"
+								/>
+							</label>
+							<label class="catalog-page-size">
+								<span>Per page</span>
+								<select id="catalog-page-size">
+									<option value="40">40</option>
+									<option value="80" selected>80</option>
+									<option value="120">120</option>
+								</select>
+							</label>
+						</div>
+
+						<div id="catalog-prefixes" class="catalog-prefixes"></div>
+
+						<div class="catalog-meta">
+							<div id="catalog-status" class="catalog-status">Loading models...</div>
+							<div id="catalog-page-label" class="catalog-page-label"></div>
+						</div>
+
+						<div id="catalog-results" class="catalog-results"></div>
+
+						<div class="catalog-pagination">
+							<button id="catalog-prev" class="ghost-button pagination-button" type="button">Previous</button>
+							<div id="catalog-pagination-text" class="catalog-pagination-text"></div>
+							<button id="catalog-next" class="ghost-button pagination-button" type="button">Next</button>
+						</div>
+					</div>
+				</section>
+			</main>
+		</div>
+
+		<script is:inline>
+			const state = {
+				allModels: [],
+				filteredModels: [],
+				page: 1,
+				pageSize: 80,
+				prefix: 'all',
+				query: '',
+			};
+
+			const elements = {
+				search: document.getElementById('catalog-search'),
+				pageSize: document.getElementById('catalog-page-size'),
+				prefixes: document.getElementById('catalog-prefixes'),
+				results: document.getElementById('catalog-results'),
+				status: document.getElementById('catalog-status'),
+				pageLabel: document.getElementById('catalog-page-label'),
+				paginationText: document.getElementById('catalog-pagination-text'),
+				prev: document.getElementById('catalog-prev'),
+				next: document.getElementById('catalog-next'),
+				total: document.getElementById('catalog-total'),
+				prefixCount: document.getElementById('prefix-count'),
+			};
+
+			const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
+
+			function modelPrefix(id) {
+				const slashIndex = id.indexOf('/');
+				return slashIndex === -1 ? 'other' : id.slice(0, slashIndex);
+			}
+
+			function sortModels(models) {
+				return models.sort((left, right) => collator.compare(left.id, right.id));
+			}
+
+			function buildPrefixCounts(models) {
+				const counts = new Map();
+				for (const model of models) {
+					const prefix = model.prefix;
+					counts.set(prefix, (counts.get(prefix) ?? 0) + 1);
+				}
+				return [...counts.entries()].sort((left, right) => {
+					if (right[1] !== left[1]) return right[1] - left[1];
+					return collator.compare(left[0], right[0]);
+				});
+			}
+
+			function renderPrefixes() {
+				const counts = buildPrefixCounts(state.allModels);
+				elements.prefixCount.textContent = `${counts.length} prefixes`;
+				const buttons = [
+					`<button class="catalog-chip ${state.prefix === 'all' ? 'is-active' : ''}" data-prefix="all" type="button">All <span>${state.allModels.length}</span></button>`,
+					...counts.map(
+						([prefix, count]) =>
+							`<button class="catalog-chip ${state.prefix === prefix ? 'is-active' : ''}" data-prefix="${prefix}" type="button">${prefix}/* <span>${count}</span></button>`,
+					),
+				];
+				elements.prefixes.innerHTML = buttons.join('');
+			}
+
+			function applyFilters() {
+				const query = state.query.trim().toLowerCase();
+				state.filteredModels = state.allModels.filter((model) => {
+					if (state.prefix !== 'all' && model.prefix !== state.prefix) {
+						return false;
+					}
+					if (query && !model.id.toLowerCase().includes(query)) {
+						return false;
+					}
+					return true;
+				});
+				state.page = 1;
+				render();
+			}
+
+			function render() {
+				const total = state.filteredModels.length;
+				const pageCount = Math.max(1, Math.ceil(total / state.pageSize));
+				if (state.page > pageCount) {
+					state.page = pageCount;
+				}
+
+				const startIndex = (state.page - 1) * state.pageSize;
+				const visible = state.filteredModels.slice(startIndex, startIndex + state.pageSize);
+
+				elements.total.textContent = `${state.allModels.length.toLocaleString()} aliases`;
+				elements.status.textContent = `${total.toLocaleString()} matching models`;
+				elements.pageLabel.textContent =
+					state.prefix === 'all'
+						? 'Showing all prefixes'
+						: `Filtering prefix ${state.prefix}/*`;
+				elements.paginationText.textContent = `Page ${state.page} of ${pageCount}`;
+				elements.prev.disabled = state.page <= 1;
+				elements.next.disabled = state.page >= pageCount;
+
+				if (visible.length === 0) {
+					elements.results.innerHTML = `<div class="catalog-empty">No models match your current search.</div>`;
+					return;
+				}
+
+				elements.results.innerHTML = visible
+					.map(
+						(model, index) => `
+							<article class="model-card">
+								<div class="model-card-top">
+									<span class="model-prefix">${model.prefix}/*</span>
+									<span class="model-index">#${(startIndex + index + 1).toLocaleString()}</span>
+								</div>
+								<code class="model-id">${model.id}</code>
+							</article>
+						`,
+					)
+					.join('');
+			}
+
+			async function loadModels() {
+				try {
+					const response = await fetch('/models.json', {
+						headers: {
+							Accept: 'application/json',
+						},
+					});
+					if (!response.ok) {
+						throw new Error(`Model catalog request failed with status ${response.status}`);
+					}
+
+					const payload = await response.json();
+					const items = Array.isArray(payload?.data) ? payload.data : [];
+					state.allModels = sortModels(
+						items
+							.filter((item) => typeof item?.id === 'string' && item.id.trim() !== '')
+							.map((item) => ({
+								id: item.id.trim(),
+								prefix: modelPrefix(item.id.trim()),
+							})),
+					);
+					renderPrefixes();
+					applyFilters();
+				} catch (error) {
+					elements.status.textContent = 'Failed to load the model catalog.';
+					elements.results.innerHTML = `<div class="catalog-empty">Could not load /models.json for this page.</div>`;
+					elements.total.textContent = 'unavailable';
+					elements.prefixCount.textContent = 'unavailable';
+					console.error(error);
+				}
+			}
+
+			elements.search?.addEventListener('input', (event) => {
+				state.query = event.currentTarget.value;
+				applyFilters();
+			});
+
+			elements.pageSize?.addEventListener('change', (event) => {
+				state.pageSize = Number(event.currentTarget.value) || 80;
+				render();
+			});
+
+			elements.prefixes?.addEventListener('click', (event) => {
+				const button = event.target.closest('[data-prefix]');
+				if (!button) return;
+				state.prefix = button.dataset.prefix || 'all';
+				renderPrefixes();
+				applyFilters();
+			});
+
+			elements.prev?.addEventListener('click', () => {
+				if (state.page > 1) {
+					state.page -= 1;
+					render();
+				}
+			});
+
+			elements.next?.addEventListener('click', () => {
+				const pageCount = Math.max(1, Math.ceil(state.filteredModels.length / state.pageSize));
+				if (state.page < pageCount) {
+					state.page += 1;
+					render();
+				}
+			});
+
+			void loadModels();
+		</script>
+	</body>
+</html>
