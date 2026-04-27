@@ -277,6 +277,60 @@
             "owned_by": "gateway"
         },
         {
+            "created": 0,
+            "id": "yng/agent-1",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/claude-4-5-sonnet",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/claude-4-6-sonnet",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/gemini-3-1-pro",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/gemini-3-flash",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/gpt-5",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/gpt-5.1",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/gpt-5.2",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "yng/gpt-5.4",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
             "created": 1749729111,
             "id": "fth/000ADI/Qwen2.5-0.5B-Instruct-Gensyn-Swarm-grazing_bellowing_locust",
             "object": "model",

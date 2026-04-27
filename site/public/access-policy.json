@@ -61,6 +61,8 @@
       "minimum_tier_level": 1,
       "models": [
         "fth/*",
+        "cat/*",
+        "yng/*",
 
         "bbl/claude-4.5-haiku",
         "bbl/deepseek-r1",
@@ -73,13 +75,6 @@
         "bbl/gpt-5.4-mini",
         "bbl/grok-4.1-fast-non-reasoning",
         "bbl/o3-mini",
-
-        "cat/claude-4-5-haiku",
-        "cat/gemini-2-5-flash",
-        "cat/gpt-4.1",
-        "cat/gpt-4.1-mini",
-        "cat/gpt-5-mini",
-        "cat/gpt-5.4-mini",
 
         "glm/glm-4.5",
         "glm/glm-4.5-air",
@@ -152,6 +147,10 @@
         "cat/gpt-5",
         "cat/gpt-5.1",
 
+        "yng/gemini-3-flash",
+        "yng/gpt-5",
+        "yng/gpt-5.1",
+
         "glm/glm-4.7",
         "glm/glm-5",
 
@@ -180,6 +179,11 @@
         "cat/gemini-3-1-pro",
         "cat/gpt-5.2",
 
+        "yng/claude-4-5-sonnet",
+        "yng/claude-4-6-sonnet",
+        "yng/gemini-3-1-pro",
+        "yng/gpt-5.2",
+
         "glm/glm-5.1",
 
         "wsf/kimi-k2.5",
@@ -200,7 +204,10 @@
         "bbl/gpt-5.4",
 
         "cat/agent-1",
-        "cat/gpt-5.4"
+        "cat/gpt-5.4",
+
+        "yng/agent-1",
+        "yng/gpt-5.4"
       ]
     }
   ]

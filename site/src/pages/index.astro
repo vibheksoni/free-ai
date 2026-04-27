@@ -188,7 +188,7 @@ const aliasFamilies = [
 	{
 		label: 'FTH',
 		slug: 'fth/*',
-		note: 'Expanded open-model catalog. Full listing stays API-only.',
+		note: 'Expanded open-model catalog browsable on the site.',
 	},
 	{
 		label: 'GLM',
@@ -214,6 +214,11 @@ const aliasFamilies = [
 		label: 'WSF',
 		slug: 'wsf/*',
 		note: 'Selected Windsurf aliases only.',
+	},
+	{
+		label: 'YNG',
+		slug: 'yng/*',
+		note: 'Additional chat and coding aliases.',
 	},
 	{
 		label: 'XAI',
@@ -476,9 +481,9 @@ const modelCountLabel = '15k+ models';
 						<div class="eyebrow">MODELS</div>
 						<h2>Alias families and a compact live catalog preview.</h2>
 						<p>
-							The source of truth is always <code>GET /v1/models</code>. The site only previews the
-							alias families plus a compact slice of the large <code>fth/*</code> catalog so we do
-							not dump 15k+ models into the page.
+							<code>GET /v1/models</code> stays lightweight for API clients. The dedicated models
+							page uses the site catalog route to search the full alias list, including the large
+							<code>fth/*</code> catalog, without making normal clients download 15k+ entries.
 						</p>
 						<a class="inline-link" href="/models">
 							<span class="material-symbols-outlined">travel_explore</span>
@@ -521,8 +526,8 @@ const modelCountLabel = '15k+ models';
 							</div>
 						</div>
 						<p class="family-note">
-							Current warm picks from the expanded open catalog. The API returns the full list; the
-							site only shows this compact preview.
+							Current warm picks from the expanded open catalog. The full searchable list is on the
+							models page; the normal API models route stays compact for client compatibility.
 						</p>
 						<div class="family-scroll">
 							<ul>
@@ -554,9 +559,9 @@ const modelCountLabel = '15k+ models';
 						<p>
 							The public repo and site document the live deployed catalog across
 							<code>bbl/*</code>, <code>cat/*</code>, <code>fth/*</code>, <code>glm/*</code>,
-							<code>kai/*</code>, <code>opc/*</code>, <code>or/*</code>, and <code>wsf/*</code>.
-							The private backend
-							implementation is not exposed here.
+							<code>kai/*</code>, <code>opc/*</code>, <code>or/*</code>, <code>wsf/*</code>,
+							<code>yng/*</code>, and <code>xai/*</code>. The private backend implementation is not
+							exposed here.
 						</p>
 						<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
 							<span class="material-symbols-outlined">open_in_new</span>

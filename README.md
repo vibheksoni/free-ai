@@ -85,7 +85,7 @@ https://api.freetheai.xyz
 | Route | Method | Description |
 | --- | --- | --- |
 | `/v1/health` | `GET` | Health check |
-| `/v1/models` | `GET` | Live model catalog |
+| `/v1/models` | `GET` | Lightweight live model catalog for API clients |
 | `/v1/chat/completions` | `POST` | OpenAI-compatible chat completions |
 | `/v1/images/generations` | `POST` | Image generation |
 | `/v1/videos/generations` | `POST` | Start video generation |
@@ -288,7 +288,7 @@ console.log(completion.choices[0].message.content);
 
 ## Model Families
 
-Use the exact ids returned by `GET /v1/models`.
+Use exact alias ids from `GET /v1/models` or the website model catalog. The API route stays compact for client compatibility, while the website catalog can show the expanded list.
 
 - `bbl/*`
 - `cat/*`
@@ -298,15 +298,18 @@ Use the exact ids returned by `GET /v1/models`.
 - `opc/*`
 - `or/*`
 - `wsf/*`
+- `yng/*`
 - `xai/*`
 
 ## Current Live Snapshot
 
-The live source of truth is always:
+The lightweight client source of truth is:
 
 ```text
 GET /v1/models
 ```
+
+The website uses its dedicated catalog route for the full searchable list, including expanded `fth/*` entries.
 
 Current notable families from the deployed API:
 
@@ -362,10 +365,22 @@ Current notable families from the deployed API:
 - `cat/gemini-3-flash`
 - `cat/gemini-3-1-pro`
 
+### `yng/*`
+
+- `yng/agent-1`
+- `yng/gpt-5`
+- `yng/gpt-5.1`
+- `yng/gpt-5.2`
+- `yng/gpt-5.4`
+- `yng/claude-4-5-sonnet`
+- `yng/claude-4-6-sonnet`
+- `yng/gemini-3-flash`
+- `yng/gemini-3-1-pro`
+
 ### `fth/*`
 
 - expanded open-model catalog
-- full listing stays API-driven through `GET /v1/models`
+- full listing is browsable on the website model catalog
 - use the exact returned alias ids such as `fth/Qwen/Qwen2.5-7B-Instruct`
 
 ### `wsf/*`

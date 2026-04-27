@@ -35,6 +35,7 @@ export const siteConfig = {
 			'claude 4.7 opus api',
 			'bbl api',
 			'cat api',
+			'yng api',
 			'glm api',
 			'free glm api',
 			'free gpt oss api',
