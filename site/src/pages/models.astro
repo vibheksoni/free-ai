@@ -11,7 +11,7 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 	<head>
 		<BaseHead
 			title="FreeTheAi Models - Search the live catalog"
-			description="Search and page through the FreeTheAi live model catalog loaded from the authenticated /v1/models response."
+			description="Search and page through the FreeTheAi live model catalog with tier and unlock metadata."
 			jsonLd={jsonLd}
 		/>
 	</head>
@@ -39,9 +39,8 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 						<div class="eyebrow">MODEL CATALOG</div>
 						<h1>Search the live alias catalog.</h1>
 						<p class="hero-text">
-							This page loads from the exported <code>/v1/models</code> snapshot and gives you a clean,
-							paginated browser for the full gateway catalog. Use search to jump straight to the models
-							you want.
+							This page loads from the live site catalog endpoint and gives you a clean, paginated browser
+							for aliases plus unlock tiers. Use search to jump straight to the models you want.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.api} target="_blank" rel="noreferrer">
@@ -65,7 +64,7 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 								<span class="material-symbols-outlined">view_list</span>
 								<div>
 									<strong>Source</strong>
-									<code>/models.json</code>
+									<code id="catalog-source">/v1/models/full</code>
 								</div>
 							</div>
 							<div class="mini-stat">
@@ -181,7 +180,11 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				next: document.getElementById('catalog-next'),
 				total: document.getElementById('catalog-total'),
 				prefixCount: document.getElementById('prefix-count'),
+				source: document.getElementById('catalog-source'),
 			};
+
+			const liveCatalogEndpoint = 'https://api.freetheai.xyz/v1/models/full';
+			const liveCatalogKey = 'freetheai.xyz';
 
 			const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
 
@@ -410,10 +413,11 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 					.join('');
 			}
 
-			async function fetchJson(path) {
+			async function fetchJson(path, headers = {}) {
 				const response = await fetch(path, {
 					headers: {
 						Accept: 'application/json',
+						...headers,
 					},
 				});
 				if (!response.ok) {
@@ -422,31 +426,61 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				return response.json();
 			}
 
+			function itemTier(item, alias, policyIndex) {
+				const tier = typeof item?.tier === 'string' ? item.tier.trim() : '';
+				return tier || resolveTier(alias, policyIndex);
+			}
+
+			function itemTierRank(item, tier) {
+				if (Number.isFinite(item?.tier_rank)) {
+					return item.tier_rank;
+				}
+				const rank = state.tierOrder.indexOf(tier);
+				return rank === -1 ? Number.MAX_SAFE_INTEGER : rank;
+			}
+
 			async function loadModels() {
 				try {
-					const [payload, policy] = await Promise.all([
-						fetchJson('/models.json'),
-						fetchJson('/access-policy.json').catch(() => null),
-					]);
+					let payload;
+					let policy;
+					let source = 'live';
+					try {
+						payload = await fetchJson(liveCatalogEndpoint, {
+							Authorization: `Bearer ${liveCatalogKey}`,
+						});
+						policy = payload?.policy ?? null;
+					} catch (liveError) {
+						source = 'snapshot';
+						[payload, policy] = await Promise.all([
+							fetchJson('/models.json'),
+							fetchJson('/access-policy.json').catch(() => null),
+						]);
+						console.warn('Falling back to bundled model catalog snapshot.', liveError);
+					}
 					const items = Array.isArray(payload?.data) ? payload.data : [];
 					const policyIndex = buildPolicyIndex(policy);
 					state.tierOrder = policyIndex.order.length > 0 ? policyIndex.order : ['Unmapped'];
 					state.allModels = sortModels(
 						items
 							.filter((item) => typeof item?.id === 'string' && item.id.trim() !== '')
-							.map((item) => ({
-								id: item.id.trim(),
-								prefix: modelPrefix(item.id.trim()),
-								tier: resolveTier(item.id.trim(), policyIndex),
-								tierRank: Math.max(0, state.tierOrder.indexOf(resolveTier(item.id.trim(), policyIndex))),
-							})),
+							.map((item) => {
+								const id = item.id.trim();
+								const tier = itemTier(item, id, policyIndex);
+								return {
+									id,
+									prefix: typeof item?.prefix === 'string' && item.prefix.trim() !== '' ? item.prefix.trim() : modelPrefix(id),
+									tier,
+									tierRank: itemTierRank(item, tier),
+								};
+							}),
 					);
+					elements.source.textContent = source === 'live' ? '/v1/models/full' : '/models.json fallback';
 					renderPrefixes();
 					renderTiers();
 					applyFilters();
 				} catch (error) {
 					elements.status.textContent = 'Failed to load the model catalog.';
-					elements.results.innerHTML = `<div class="catalog-empty">Could not load /models.json for this page.</div>`;
+					elements.results.innerHTML = `<div class="catalog-empty">Could not load the live catalog or fallback snapshot for this page.</div>`;
 					elements.total.textContent = 'unavailable';
 					elements.prefixCount.textContent = 'unavailable';
 					console.error(error);
