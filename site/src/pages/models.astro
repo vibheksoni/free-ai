@@ -185,6 +185,17 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 
 			const liveCatalogEndpoint = 'https://api.freetheai.xyz/v1/models/full';
 			const liveCatalogKey = 'freetheai.xyz';
+			const pinnedAliases = [
+				'yng/agent-1',
+				'yng/claude-4-5-sonnet',
+				'yng/claude-4-6-sonnet',
+				'yng/gemini-3-1-pro',
+				'yng/gemini-3-flash',
+				'yng/gpt-5',
+				'yng/gpt-5.1',
+				'yng/gpt-5.2',
+				'yng/gpt-5.4',
+			];
 
 			const collator = new Intl.Collator(undefined, { sensitivity: 'base', numeric: true });
 
@@ -458,10 +469,19 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 						console.warn('Falling back to bundled model catalog snapshot.', liveError);
 					}
 					const items = Array.isArray(payload?.data) ? payload.data : [];
+					const seenAliases = new Set(items.map((item) => String(item?.id || '').trim()).filter(Boolean));
+					const mergedItems = [
+						...items,
+						...pinnedAliases
+							.filter((id) => !seenAliases.has(id))
+							.map((id) => ({
+								id,
+							})),
+					];
 					const policyIndex = buildPolicyIndex(policy);
 					state.tierOrder = policyIndex.order.length > 0 ? policyIndex.order : ['Unmapped'];
 					state.allModels = sortModels(
-						items
+						mergedItems
 							.filter((item) => typeof item?.id === 'string' && item.id.trim() !== '')
 							.map((item) => {
 								const id = item.id.trim();
