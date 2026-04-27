@@ -170,6 +170,41 @@ Pending jobs may return `202` with a payload like:
 
 Keep polling the same `request_id` until the response includes the final video payload.
 
+### Text To Speech
+
+The speech route returns binary audio. Use `response_format: "pcm"` for 24 kHz PCM or `response_format: "mp3"` for MP3 output.
+
+```bash
+curl https://api.freetheai.xyz/v1/audio/speech \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  --output speech.pcm \
+  -d '{
+    "model": "xai/grok-tts",
+    "input": "Hello, how are you?",
+    "voice": "Eve",
+    "wrapper": "soft",
+    "response_format": "pcm",
+    "language": "en"
+  }'
+```
+
+Supported voices: `Ara`, `Eve`, `Leo`, `Rex`, `Sal`.
+
+Supported voice wrappers can be used either as raw tags inside `input` or through the helper field `wrapper`.
+
+```json
+{
+  "model": "xai/grok-tts",
+  "input": "Do not tell anyone",
+  "voice": "Ara",
+  "wrapper": "whisper",
+  "response_format": "mp3"
+}
+```
+
+Supported wrappers: `soft`, `whisper`, `loud`, `build-intensity`, `decrease-intensity`, `higher-pitch`, `lower-pitch`, `slow`, `fast`, `sing-song`, `singing`, `laugh-speak`, `emphasis`.
+
 ## Current Media Limits
 
 The API currently enforces the same anonymous-compatible media limits used by the public site flow:
@@ -180,6 +215,9 @@ The API currently enforces the same anonymous-compatible media limits used by th
 - `xai/grok-imagine-video`
 - video resolution: `480p` only
 - video duration: `1` to `5` seconds
+- `xai/grok-tts`
+- speech response formats: `pcm` or `mp3`
+- speech voices: `Ara`, `Eve`, `Leo`, `Rex`, `Sal`
 
 ## Tool Calling
 
@@ -291,7 +329,6 @@ console.log(completion.choices[0].message.content);
 Use exact alias ids from `GET /v1/models` or the website model catalog. The API route stays compact for client compatibility, while the website catalog can show the expanded list.
 
 - `bbl/*`
-- `bee/*`
 - `cat/*`
 - `fth/*`
 - `glm/*`
@@ -313,40 +350,6 @@ GET /v1/models
 The website uses its dedicated catalog route for the full searchable list, including expanded `fth/*` entries.
 
 Current notable families from the deployed API:
-
-### `bee/*`
-
-- `bee/deepseek-v4-flash`
-- `bee/gemini-3-flash-preview`
-- `bee/openai-gpt-4o-2024-11-20`
-- `bee/openai-gpt-4o-mini-2024-07-18`
-- `bee/openai-gpt-54-mini`
-- `bee/z-ai-glm-5-turbo`
-- `bee/zai-org-glm-5`
-- `bee/claude-sonnet-4-5`
-- `bee/claude-sonnet-4-6`
-- `bee/deepseek-v4-pro`
-- `bee/gemini-3-1-pro-preview`
-- `bee/grok-4-20`
-- `bee/grok-4-20-multi-agent`
-- `bee/kimi-k2-5`
-- `bee/kimi-k2-6`
-- `bee/kimi-k2-thinking`
-- `bee/openai-gpt-52`
-- `bee/openai-gpt-52-codex`
-- `bee/openai-gpt-53-codex`
-- `bee/qwen3-coder-480b-a35b-instruct-turbo`
-- `bee/qwen3-vl-235b-a22b`
-- `bee/z-ai-glm-5v-turbo`
-- `bee/zai-org-glm-5-1`
-- `bee/claude-opus-4-5`
-- `bee/claude-opus-4-6`
-- `bee/claude-opus-4-6-fast`
-- `bee/claude-opus-4-7`
-- `bee/openai-gpt-54`
-- `bee/openai-gpt-54-pro`
-- `bee/openai-gpt-55`
-- `bee/openai-gpt-55-pro`
 
 ### `bbl/*`
 

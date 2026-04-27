@@ -78,6 +78,19 @@ const videoSnippet = `curl https://api.freetheai.xyz/v1/videos/generations \\
 const videoStatusSnippet = `curl https://api.freetheai.xyz/v1/videos/REQUEST_ID \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
 
+const speechSnippet = `curl https://api.freetheai.xyz/v1/audio/speech \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  --output speech.pcm \\
+  -d '{
+    "model": "xai/grok-tts",
+    "input": "Do not tell anyone",
+    "voice": "Ara",
+    "wrapper": "whisper",
+    "response_format": "pcm",
+    "language": "en"
+  }'`;
+
 const pythonSnippet = `from openai import OpenAI
 
 client = OpenAI(
@@ -179,11 +192,6 @@ const aliasFamilies = [
 		label: 'BBL',
 		slug: 'bbl/*',
 		note: 'Curated chat, reasoning, and premium aliases.',
-	},
-	{
-		label: 'BEE',
-		slug: 'bee/*',
-		note: 'Rotating session aliases for text chat models.',
 	},
 	{
 		label: 'CAT',
@@ -419,6 +427,7 @@ const modelCountLabel = '15k+ models';
 								<li><span class="material-symbols-outlined">imagesmode</span><code>POST /v1/images/generations</code></li>
 								<li><span class="material-symbols-outlined">movie</span><code>POST /v1/videos/generations</code></li>
 								<li><span class="material-symbols-outlined">progress_activity</span><code>GET /v1/videos/:request_id</code></li>
+								<li><span class="material-symbols-outlined">volume_up</span><code>POST /v1/audio/speech</code></li>
 							</ul>
 							<h3>Auth</h3>
 							<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
@@ -441,12 +450,12 @@ const modelCountLabel = '15k+ models';
 				<section class="section" id="media">
 					<div class="section-head">
 						<div class="eyebrow">MEDIA</div>
-						<h2>Generate images and videos through the public API.</h2>
+						<h2>Generate images, videos, and speech through the public API.</h2>
 						<p>
 							Use <code>xai/grok-imagine-image</code> for images and
-							<code>xai/grok-imagine-video</code> for videos. Video generation is deferred: start the
-							job, then poll the returned <code>request_id</code> until the status response includes a
-							video URL.
+							<code>xai/grok-imagine-video</code> for videos, and <code>xai/grok-tts</code> for
+							text-to-speech. Video generation is deferred: start the job, then poll the returned
+							<code>request_id</code> until the status response includes a video URL.
 						</p>
 					</div>
 					<div class="usage-grid">
@@ -459,6 +468,9 @@ const modelCountLabel = '15k+ models';
 								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-imagine-video</code></li>
 								<li><span class="material-symbols-outlined">check_circle</span>Video resolution: <code>480p</code> only</li>
 								<li><span class="material-symbols-outlined">check_circle</span>Video duration: <code>1</code> to <code>5</code> seconds</li>
+								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-tts</code></li>
+								<li><span class="material-symbols-outlined">check_circle</span>Speech formats: <code>pcm</code> or <code>mp3</code></li>
+								<li><span class="material-symbols-outlined">check_circle</span>Voices: <code>Ara</code>, <code>Eve</code>, <code>Leo</code>, <code>Rex</code>, <code>Sal</code></li>
 							</ul>
 						</div>
 						<div class="panel">
@@ -477,6 +489,18 @@ const modelCountLabel = '15k+ models';
 							Pending jobs may return <code>202</code> with a payload like
 							<code>&#123;"status":"pending","progress":0&#125;</code>. Keep polling the same
 							<code>request_id</code> until the response contains the final video payload.
+						</p>
+					</div>
+					<div class="panel wide-panel">
+						<h3>Text to speech</h3>
+						<pre><code>{speechSnippet}</code></pre>
+						<p>
+							Voice wrappers can be sent through <code>wrapper</code> or written directly in
+							<code>input</code>. Supported wrappers include <code>soft</code>, <code>whisper</code>,
+							<code>loud</code>, <code>build-intensity</code>, <code>decrease-intensity</code>,
+							<code>higher-pitch</code>, <code>lower-pitch</code>, <code>slow</code>,
+							<code>fast</code>, <code>sing-song</code>, <code>singing</code>,
+							<code>laugh-speak</code>, and <code>emphasis</code>.
 						</p>
 					</div>
 				</section>
@@ -563,7 +587,7 @@ const modelCountLabel = '15k+ models';
 						<h2>Public docs. Private backend.</h2>
 						<p>
 							The public repo and site document the live deployed catalog across
-							<code>bbl/*</code>, <code>bee/*</code>, <code>cat/*</code>, <code>fth/*</code>,
+							<code>bbl/*</code>, <code>cat/*</code>, <code>fth/*</code>,
 							<code>glm/*</code>, <code>kai/*</code>, <code>opc/*</code>, <code>or/*</code>,
 							<code>wsf/*</code>, <code>yng/*</code>, and <code>xai/*</code>. The private backend
 							implementation is not exposed here.
