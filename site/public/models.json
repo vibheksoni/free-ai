@@ -2,6 +2,54 @@
     "data": [
         {
             "created": 0,
+            "id": "agr/claude-haiku-4-5-20251001",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/claude-opus-4-6",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/deepseek-r1-0528",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/deepseek-v3.1",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/deepseek-v3.2",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/glm-4.5",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/glm-4.6",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
+            "id": "agr/glm-5.1",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
             "id": "bbl/claude-3.7-sonnet",
             "object": "model",
             "owned_by": "gateway"

@@ -209,6 +209,8 @@
         "yng/agent-1",
         "yng/gpt-5.4",
 
+        "agr/*",
+
         "xai/grok-imagine-image",
         "xai/grok-imagine-video",
         "xai/grok-tts"
