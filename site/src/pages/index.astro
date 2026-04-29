@@ -3,11 +3,10 @@ import BaseHead from '../components/BaseHead.astro';
 import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
 
-const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
+const pageDescription =
+	'FreeTheAi is a free OpenAI-compatible AI API for builders. Get a Discord API key, use streaming, tool calling, images, video, speech, and a live model catalog with no billing.';
 
-type FeatherlessSearchItem = {
-	id: string;
-};
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
 
 const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
@@ -17,239 +16,135 @@ const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
     "messages": [
       {
         "role": "user",
-        "content": "Write a Python hello world"
-      }
-    ]
-  }'`;
-
-const toolSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "bbl/gpt-4.1",
-    "tool_choice": "required",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Use the get_weather tool for Boston and do not answer directly."
+        "content": "Build me a clean product launch checklist"
       }
     ],
-    "tools": [
-      {
-        "type": "function",
-        "function": {
-          "name": "get_weather",
-          "description": "Get the weather for a city.",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "city": { "type": "string" }
-            },
-            "required": ["city"],
-            "additionalProperties": false
-          }
-        }
-      }
-    ]
+    "stream": true
   }'`;
 
-const imageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "xai/grok-imagine-image",
-    "prompt": "A neon sports car parked under rainy city lights",
-    "n": 1,
-    "aspect_ratio": "auto",
-    "resolution": "1k"
-  }'`;
-
-const videoSnippet = `curl https://api.freetheai.xyz/v1/videos/generations \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "xai/grok-imagine-video",
-    "prompt": "A neon sports car slowly driving through rainy city lights",
-    "duration": 5,
-    "resolution": "480p",
-    "aspect_ratio": "16:9"
-  }'`;
-
-const videoStatusSnippet = `curl https://api.freetheai.xyz/v1/videos/REQUEST_ID \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
-
-const speechSnippet = `curl https://api.freetheai.xyz/v1/audio/speech \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  --output speech.pcm \\
-  -d '{
-    "model": "xai/grok-tts",
-    "input": "Do not tell anyone",
-    "voice": "Ara",
-    "wrapper": "whisper",
-    "response_format": "pcm",
-    "language": "en"
-  }'`;
-
-const pythonSnippet = `from openai import OpenAI
-
-client = OpenAI(
-    api_key="YOUR_API_KEY",
-    base_url="https://api.freetheai.xyz/v1",
-)
-
-completion = client.chat.completions.create(
-    model="bbl/gpt-4.1",
-    tool_choice="required",
-    messages=[
-        {
-            "role": "user",
-            "content": "Use the get_weather tool for Boston and do not answer directly."
-        }
-    ],
-    tools=[
-        {
-            "type": "function",
-            "function": {
-                "name": "get_weather",
-                "description": "Get the weather for a city.",
-                "parameters": {
-                    "type": "object",
-                    "properties": {"city": {"type": "string"}},
-                    "required": ["city"],
-                    "additionalProperties": False,
-                },
-            },
-        }
-    ],
-)
-
-print(completion.choices[0].message.tool_calls)`;
-
-const jsSnippet = `import OpenAI from "openai";
+const sdkSnippet = `import OpenAI from "openai";
 
 const client = new OpenAI({
-  apiKey: "YOUR_API_KEY",
+  apiKey: process.env.FREETHEAI_API_KEY,
   baseURL: "https://api.freetheai.xyz/v1"
 });
 
-const completion = await client.chat.completions.create({
+const response = await client.chat.completions.create({
   model: "glm/glm-5.1",
-  messages: [
-    { role: "user", content: "Say hello in one sentence." }
-  ]
-});
+  messages: [{ role: "user", content: "Ship a tiny REST API example." }],
+  stream: true
+});`;
 
-console.log(completion.choices[0].message.content);`;
+const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "rev/claude-sonnet-4.5",
+    "max_tokens": 256,
+    "messages": [
+      { "role": "user", "content": "Reply with a compact migration plan." }
+    ]
+  }'`;
 
-const featherlessPreviewEndpoint =
-	'https://featherless.ai/api/feather/search/models?page=1&perPage=20&prioritize_warm=true';
-
-const featherlessFallbackItems: FeatherlessSearchItem[] = [
-	{ id: 'Qwen/Qwen3-0.6B' },
-	{ id: 'Qwen/Qwen2.5-7B-Instruct' },
-	{ id: 'Qwen/Qwen3-4B-Instruct-2507' },
-	{ id: 'meta-llama/Meta-Llama-3.1-8B-Instruct' },
-	{ id: 'meta-llama/Llama-3.3-70B-Instruct' },
-	{ id: 'deepseek-ai/DeepSeek-R1-Distill-Llama-8B' },
-	{ id: 'google/gemma-3-27b-it' },
-	{ id: 'mistralai/Mistral-Nemo-Instruct-2407' },
-];
-
-async function loadFeatherlessPreview(): Promise<FeatherlessSearchItem[]> {
-	try {
-		const response = await fetch(featherlessPreviewEndpoint, {
-			headers: {
-				Accept: 'application/json',
-			},
-		});
-		if (!response.ok) {
-			throw new Error(`Feather preview request failed with status ${response.status}`);
-		}
-
-		const payload = await response.json();
-		if (!payload || !Array.isArray(payload.items)) {
-			throw new Error('Feather preview payload did not contain an items array');
-		}
-
-		const items = payload.items
-			.filter((item: FeatherlessSearchItem) => typeof item?.id === 'string' && item.id.trim() !== '')
-			.slice(0, 20)
-			.map((item: FeatherlessSearchItem) => ({
-				id: item.id.trim(),
-			}));
-
-		return items.length > 0 ? items : featherlessFallbackItems;
-	} catch {
-		return featherlessFallbackItems;
-	}
-}
-
-const featherlessPreviewItems = await loadFeatherlessPreview();
-
-const aliasFamilies = [
+const proofStats = [
 	{
-		label: 'BBL',
-		slug: 'bbl/*',
-		note: 'Curated chat, reasoning, and premium aliases.',
+		value: '2k',
+		label: 'Discord members soon',
+		copy: 'A fast-growing builder community around one free API key flow.',
 	},
 	{
-		label: 'CAT',
-		slug: 'cat/*',
-		note: 'Alias set for chat and coding.',
+		value: '700+',
+		label: 'registered users',
+		copy: 'People are already signing up and testing real projects.',
 	},
 	{
-		label: 'FTH',
-		slug: 'fth/*',
-		note: 'Expanded open-model catalog browsable on the site.',
+		value: '$0',
+		label: 'charged',
+		copy: 'No paid plans, no billing page, no card prompt.',
 	},
 	{
-		label: 'GLM',
-		slug: 'glm/*',
-		note: 'Direct GLM aliases for the current exposed versions.',
-	},
-	{
-		label: 'KAI',
-		slug: 'kai/*',
-		note: 'Free/open routing aliases and utility models.',
-	},
-	{
-		label: 'OPC',
-		slug: 'opc/*',
-		note: 'Curated OpenCode-facing public aliases.',
-	},
-	{
-		label: 'OR',
-		slug: 'or/*',
-		note: 'Free OpenRouter aliases exposed through the gateway.',
-	},
-	{
-		label: 'WSF',
-		slug: 'wsf/*',
-		note: 'Selected Windsurf aliases only.',
-	},
-	{
-		label: 'YNG',
-		slug: 'yng/*',
-		note: 'Additional chat and coding aliases.',
-	},
-	{
-		label: 'XAI',
-		slug: 'xai/*',
-		note: 'Site-backed image and deferred video generation aliases.',
+		value: '1 key',
+		label: 'many routes',
+		copy: 'Chat, streaming, tools, media, speech, and model browsing.',
 	},
 ];
 
-const familyCount = aliasFamilies.length;
-const modelCountLabel = '15k+ models';
+const quickSteps = [
+	{
+		icon: 'forum',
+		title: 'Join Discord',
+		copy: 'Everything starts in the community. The signup flow lives there so key rotation and support stay simple.',
+	},
+	{
+		icon: 'vpn_key',
+		title: 'Run /signup',
+		copy: 'The bot gives you an API key. If you lose it later, use /resetkey instead of making a new account.',
+	},
+	{
+		icon: 'code_blocks',
+		title: 'Use the OpenAI shape',
+		copy: 'Point your OpenAI-compatible SDK at our base URL and keep using the client code you already know.',
+	},
+	{
+		icon: 'travel_explore',
+		title: 'Browse /models',
+		copy: 'The homepage stays lightweight. The full searchable catalog has its own page with tiers and aliases.',
+	},
+];
+
+const capabilities = [
+	{
+		icon: 'bolt',
+		title: 'Streaming chat',
+		copy: 'Use the standard chat completions route for fast interactive apps, CLIs, and agents.',
+		route: 'POST /v1/chat/completions',
+	},
+	{
+		icon: 'handyman',
+		title: 'Tool calling',
+		copy: 'Send normal OpenAI tool schemas and let supported aliases return structured tool calls.',
+		route: 'tools + tool_choice',
+	},
+	{
+		icon: 'alternate_email',
+		title: 'Messages API',
+		copy: 'Use an Anthropic-style messages route when your client or agent framework expects it.',
+		route: 'POST /v1/messages',
+	},
+	{
+		icon: 'imagesmode',
+		title: 'Images',
+		copy: 'Generate image assets through the same API key and a familiar generation route.',
+		route: 'POST /v1/images/generations',
+	},
+	{
+		icon: 'movie',
+		title: 'Video jobs',
+		copy: 'Start deferred video generations and poll by request id until the result is ready.',
+		route: 'POST /v1/videos/generations',
+	},
+	{
+		icon: 'volume_up',
+		title: 'Text to speech',
+		copy: 'Create voice output with supported voices and wrappers for lightweight audio workflows.',
+		route: 'POST /v1/audio/speech',
+	},
+];
+
+const fairnessItems = [
+	'No subscription checkout and no paid upgrade funnel.',
+	'Access is community-managed through Discord signup and fair-use tiers.',
+	'The public model catalog is searchable on /models instead of dumped on the homepage.',
+	'Request logging focuses on usage metadata, not storing prompt or completion text.',
+];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead
-			title="FreeTheAi - Making AI free and accessible"
-			description="FreeTheAi gives builders free AI access with Discord key signup, live models, streaming, tool calling, no daily limit, and no prompt storage."
+			title="FreeTheAi - Free OpenAI-compatible AI API"
+			description={pageDescription}
 			jsonLd={jsonLd}
 		/>
 	</head>
@@ -257,361 +152,237 @@ const modelCountLabel = '15k+ models';
 		<div class="page-shell">
 			<header class="site-header">
 				<nav class="nav">
-					<a class="brand" href="/">[FreeTheAi]</a>
+					<a class="brand" href="/" aria-label="FreeTheAi home">
+						<span class="brand-mark">FTA</span>
+						<span>FreeTheAi</span>
+					</a>
 					<div class="nav-links">
-						<a href="#how">How</a>
-						<a href="#usage">Usage</a>
-						<a href="#media">Media</a>
+						<a href="#quickstart">Quickstart</a>
+						<a href="#capabilities">API</a>
+						<a href="#free">Free</a>
 						<a href="/models">Models</a>
 						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
 					</div>
 					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
 						<span class="material-symbols-outlined">forum</span>
-						<span>Discord</span>
+						<span>Join Discord</span>
 					</a>
 				</nav>
 			</header>
 
 			<main>
-				<section class="hero">
+				<section class="hero landing-hero">
 					<div class="hero-copy">
-						<div class="eyebrow">FREE AI FOR BUILDERS</div>
-						<h1>Making AI free and accessible.</h1>
+						<div class="eyebrow">FREE AI API FOR BUILDERS</div>
+						<h1>Build with AI without opening a billing page.</h1>
 						<p class="hero-text">
-							Get a key in Discord, hit a real API, and build with live models, streaming, and
-							tool calling without the usual friction of billing, micro credits, or daily caps.
-							Image and video generation are live too.
+							FreeTheAi gives you a free API key through Discord and a real OpenAI-compatible gateway
+							for chat, streaming, tool calls, images, video, speech, and a live model catalog.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
 								<span class="material-symbols-outlined">vpn_key</span>
-								<span>Get API Key</span>
+								<span>Get a Free API Key</span>
 							</a>
-							<a class="ghost-button" href="#usage">
-								<span class="material-symbols-outlined">menu_book</span>
-								<span>Read Usage</span>
+							<a class="ghost-button" href="/models">
+								<span class="material-symbols-outlined">travel_explore</span>
+								<span>Browse Models</span>
 							</a>
 						</div>
-						<div class="signal-row">
-							<div class="signal-box">
-								<span class="material-symbols-outlined">all_inclusive</span>
-								<div>
-									<strong>No daily limit</strong>
-									<p>Build without caps.</p>
-								</div>
-							</div>
-							<div class="signal-box">
-								<span class="material-symbols-outlined">speed</span>
-								<div>
-									<strong>30 RPM</strong>
-									<p>Fair-use for everyone.</p>
-								</div>
-							</div>
-							<div class="signal-box">
-								<span class="material-symbols-outlined">shield_lock</span>
-								<div>
-									<strong>No prompt storage</strong>
-									<p>Prompt text is not saved.</p>
-								</div>
-							</div>
-							<div class="signal-box">
-								<span class="material-symbols-outlined">integration_instructions</span>
-								<div>
-									<strong>Tool calling works</strong>
-									<p>Use normal OpenAI tool calls.</p>
-								</div>
-							</div>
-							<div class="signal-box">
-								<span class="material-symbols-outlined">movie</span>
-								<div>
-									<strong>Media routes live</strong>
-									<p>Images and deferred video.</p>
-								</div>
-							</div>
+						<div class="hero-note">
+							<span class="material-symbols-outlined">verified</span>
+							<span>No paid plans. No card required. Community fair-use access.</span>
 						</div>
 					</div>
 
-					<div class="hero-shell">
-						<div class="code-card">
+					<div class="hero-console" aria-label="FreeTheAi API example">
+						<div class="console-glow"></div>
+						<div class="code-card hero-code-card">
 							<div class="card-head">
 								<div class="dot-row"><span></span><span></span><span></span></div>
-								<div class="card-label">Request</div>
+								<div class="card-label">OpenAI-compatible request</div>
 							</div>
 							<pre><code>{requestSnippet}</code></pre>
 						</div>
-						<div class="stats-card">
-							<div class="stats-top">
-								<div class="stat-number">0$</div>
-								<div class="stat-copy">to start building</div>
-							</div>
-							<div class="stats-grid">
-								<div class="mini-stat">
-									<span class="material-symbols-outlined">public</span>
-									<div>
-										<strong>Base URL</strong>
-										<code>api.freetheai.xyz</code>
-									</div>
-								</div>
-								<div class="mini-stat">
-									<span class="material-symbols-outlined">deployed_code</span>
-									<div>
-										<strong>Catalog</strong>
-										<code>{modelCountLabel} / {familyCount} alias families</code>
-									</div>
-								</div>
-								<div class="mini-stat">
-									<span class="material-symbols-outlined">chat</span>
-								<div>
-									<strong>Route</strong>
-									<code>/v1/chat/completions</code>
-								</div>
-							</div>
-							<div class="mini-stat">
-								<span class="material-symbols-outlined">imagesmode</span>
-								<div>
-									<strong>Media</strong>
-									<code>/v1/images + /v1/videos</code>
-								</div>
-							</div>
-							<div class="mini-stat">
-								<span class="material-symbols-outlined">description</span>
-								<div>
-										<strong>Docs / Repo</strong>
-										<code>github.com/vibheksoni/free-ai</code>
-									</div>
-								</div>
-							</div>
+						<div class="console-chip chip-a">
+							<span class="material-symbols-outlined">stream</span>
+							Streaming
+						</div>
+						<div class="console-chip chip-b">
+							<span class="material-symbols-outlined">build</span>
+							Tool calls
+						</div>
+						<div class="console-chip chip-c">
+							<span class="material-symbols-outlined">imagesmode</span>
+							Media
 						</div>
 					</div>
 				</section>
 
-				<section class="section" id="how">
-					<div class="section-head">
-						<div class="eyebrow">HOW IT WORKS</div>
-						<h2>Three steps and you’re building.</h2>
-					</div>
-					<div class="steps-grid">
-						<div class="step-card">
-							<span class="material-symbols-outlined">looks_one</span>
-							<h3>Run `/signup`</h3>
-							<p>Generate your API key directly in Discord.</p>
-						</div>
-						<div class="step-card">
-							<span class="material-symbols-outlined">looks_two</span>
-							<h3>Copy it immediately</h3>
-							<p>The original message is only shown once.</p>
-						</div>
-						<div class="step-card">
-							<span class="material-symbols-outlined">looks_3</span>
-							<h3>Use `/resetkey` if needed</h3>
-							<p>Rotate your key later without touching your stats.</p>
-						</div>
-					</div>
+				<section class="proof-grid" aria-label="FreeTheAi usage proof">
+					{proofStats.map((stat) => (
+						<article class="proof-card">
+							<strong>{stat.value}</strong>
+							<span>{stat.label}</span>
+							<p>{stat.copy}</p>
+						</article>
+					))}
 				</section>
 
-				<section class="section" id="usage">
-					<div class="section-head">
-						<div class="eyebrow">USAGE</div>
-						<h2>Clean routes. Familiar clients.</h2>
-						<p>Use the normal OpenAI SDK shape, or send tool definitions directly to `chat/completions`.</p>
-					</div>
-					<div class="usage-grid">
-						<div class="panel">
-							<h3>Base URL</h3>
-							<pre><code>https://api.freetheai.xyz</code></pre>
-							<h3>Routes</h3>
-							<ul class="route-list">
-								<li><span class="material-symbols-outlined">favorite</span><code>GET /v1/health</code></li>
-								<li><span class="material-symbols-outlined">view_list</span><code>GET /v1/models</code></li>
-								<li><span class="material-symbols-outlined">chat</span><code>POST /v1/chat/completions</code></li>
-								<li><span class="material-symbols-outlined">imagesmode</span><code>POST /v1/images/generations</code></li>
-								<li><span class="material-symbols-outlined">movie</span><code>POST /v1/videos/generations</code></li>
-								<li><span class="material-symbols-outlined">progress_activity</span><code>GET /v1/videos/:request_id</code></li>
-								<li><span class="material-symbols-outlined">volume_up</span><code>POST /v1/audio/speech</code></li>
-							</ul>
-							<h3>Auth</h3>
-							<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
-						</div>
-						<div class="panel">
-							<h3>Python</h3>
-							<pre><code>{pythonSnippet}</code></pre>
-						</div>
-					</div>
-					<div class="panel wide-panel">
-						<h3>JavaScript</h3>
-						<pre><code>{jsSnippet}</code></pre>
-					</div>
-					<div class="panel wide-panel">
-						<h3>Tool Calling</h3>
-						<pre><code>{toolSnippet}</code></pre>
-					</div>
-				</section>
-
-				<section class="section" id="media">
-					<div class="section-head">
-						<div class="eyebrow">MEDIA</div>
-						<h2>Generate images, videos, and speech through the public API.</h2>
+				<section class="section split-section" id="quickstart">
+					<div class="section-head sticky-copy">
+						<div class="eyebrow">QUICKSTART</div>
+						<h2>One Discord command, then normal SDK code.</h2>
 						<p>
-							Use <code>xai/grok-imagine-image</code> for images and
-							<code>xai/grok-imagine-video</code> for videos, and <code>xai/grok-tts</code> for
-							text-to-speech. Video generation is deferred: start the job, then poll the returned
-							<code>request_id</code> until the status response includes a video URL.
+							The fastest path is not a dashboard. Join the server, run <code>/signup</code>,
+							put the key in your environment, and point your OpenAI-compatible client at the API.
 						</p>
-					</div>
-					<div class="usage-grid">
-						<div class="panel">
-							<h3>Current enforced limits</h3>
-							<ul class="privacy-list">
-								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-imagine-image</code></li>
-								<li><span class="material-symbols-outlined">check_circle</span>Image resolution: <code>1k</code> only</li>
-								<li><span class="material-symbols-outlined">check_circle</span>Image response format is returned as <code>b64_json</code></li>
-								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-imagine-video</code></li>
-								<li><span class="material-symbols-outlined">check_circle</span>Video resolution: <code>480p</code> only</li>
-								<li><span class="material-symbols-outlined">check_circle</span>Video duration: <code>1</code> to <code>5</code> seconds</li>
-								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-tts</code></li>
-								<li><span class="material-symbols-outlined">check_circle</span>Speech formats: <code>pcm</code> or <code>mp3</code></li>
-								<li><span class="material-symbols-outlined">check_circle</span>Voices: <code>Ara</code>, <code>Eve</code>, <code>Leo</code>, <code>Rex</code>, <code>Sal</code></li>
-							</ul>
-						</div>
-						<div class="panel">
-							<h3>Image generation</h3>
-							<pre><code>{imageSnippet}</code></pre>
-						</div>
-					</div>
-					<div class="panel wide-panel">
-						<h3>Start video generation</h3>
-						<pre><code>{videoSnippet}</code></pre>
-					</div>
-					<div class="panel wide-panel">
-						<h3>Poll video status</h3>
-						<pre><code>{videoStatusSnippet}</code></pre>
-						<p>
-							Pending jobs may return <code>202</code> with a payload like
-							<code>&#123;"status":"pending","progress":0&#125;</code>. Keep polling the same
-							<code>request_id</code> until the response contains the final video payload.
-						</p>
-					</div>
-					<div class="panel wide-panel">
-						<h3>Text to speech</h3>
-						<pre><code>{speechSnippet}</code></pre>
-						<p>
-							Voice wrappers can be sent through <code>wrapper</code> or written directly in
-							<code>input</code>. Supported wrappers include <code>soft</code>, <code>whisper</code>,
-							<code>loud</code>, <code>build-intensity</code>, <code>decrease-intensity</code>,
-							<code>higher-pitch</code>, <code>lower-pitch</code>, <code>slow</code>,
-							<code>fast</code>, <code>sing-song</code>, <code>singing</code>,
-							<code>laugh-speak</code>, and <code>emphasis</code>.
-						</p>
-					</div>
-				</section>
-
-				<section class="section" id="models">
-					<div class="section-head">
-						<div class="eyebrow">MODELS</div>
-						<h2>Alias families and a compact live catalog preview.</h2>
-						<p>
-							<code>GET /v1/models</code> stays lightweight for API clients. The dedicated models
-							page uses the site catalog route to search the full alias list, including the large
-							<code>fth/*</code> catalog, without making normal clients download 15k+ entries.
-						</p>
-						<a class="inline-link" href="/models">
-							<span class="material-symbols-outlined">travel_explore</span>
-							<span>Browse the full searchable catalog</span>
+						<a class="inline-link" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+							<span class="material-symbols-outlined">open_in_new</span>
+							<span>Open the Discord signup flow</span>
 						</a>
-						<p>
-							The repo and docs stay live at
-							<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
-								<span class="material-symbols-outlined">open_in_new</span>
-								<span>github.com/vibheksoni/free-ai</span>
-							</a>
-						</p>
 					</div>
-					<div class="family-grid">
-						{aliasFamilies.map((family) => (
-							<div class="family-card">
-								<div class="family-top">
-									<div class="family-title">
-										<span class="material-symbols-outlined">apps</span>
-										<strong>{family.label}</strong>
-									</div>
-									<div class="family-meta">
-										<code>{family.slug}</code>
-										<span class="family-count">Gateway alias</span>
-									</div>
-								</div>
-								<p class="family-note">{family.note}</p>
-							</div>
+					<div class="steps-grid vertical-steps">
+						{quickSteps.map((step, index) => (
+							<article class="step-card">
+								<div class="step-index">0{index + 1}</div>
+								<span class="material-symbols-outlined">{step.icon}</span>
+								<h3>{step.title}</h3>
+								<p>{step.copy}</p>
+							</article>
 						))}
 					</div>
-					<div class="family-card catalog-preview">
-						<div class="family-top">
-							<div class="family-title">
-								<span class="material-symbols-outlined">deployed_code_history</span>
-								<strong>FTH Preview</strong>
-							</div>
-							<div class="family-meta">
-								<code>fth/*</code>
-								<span class="family-count">{modelCountLabel}</span>
-							</div>
-						</div>
-						<p class="family-note">
-							Current warm picks from the expanded open catalog. The full searchable list is on the
-							models page; the normal API models route stays compact for client compatibility.
+				</section>
+
+				<section class="section" id="capabilities">
+					<div class="section-head">
+						<div class="eyebrow">API SURFACE</div>
+						<h2>Enough routes to build real products, not just demos.</h2>
+						<p>
+							The gateway keeps the developer experience familiar while exposing multiple workloads behind
+							one key. Model discovery belongs on the dedicated models page.
 						</p>
-						<div class="family-scroll">
-							<ul>
-								{featherlessPreviewItems.map((item) => (
-									<li><code>fth/{item.id}</code></li>
-								))}
-								<li class="more-marker"><code>... More</code></li>
-							</ul>
+					</div>
+					<div class="capability-grid">
+						{capabilities.map((item) => (
+							<article class="capability-card">
+								<div class="capability-icon">
+									<span class="material-symbols-outlined">{item.icon}</span>
+								</div>
+								<h3>{item.title}</h3>
+								<p>{item.copy}</p>
+								<code>{item.route}</code>
+							</article>
+						))}
+					</div>
+				</section>
+
+				<section class="section code-section" id="usage">
+					<div class="section-head">
+						<div class="eyebrow">COPY, PASTE, SHIP</div>
+						<h2>Use the clients and agent frameworks you already have.</h2>
+						<p>
+							Start with chat completions for most apps. If a framework expects a messages route,
+							use <code>/v1/messages</code> with the same bearer key.
+						</p>
+					</div>
+					<div class="usage-grid">
+						<div class="panel code-panel">
+							<div class="panel-kicker">JavaScript SDK</div>
+							<h3>OpenAI-compatible client</h3>
+							<pre><code>{sdkSnippet}</code></pre>
+						</div>
+						<div class="panel code-panel">
+							<div class="panel-kicker">Messages route</div>
+							<h3>Anthropic-style request shape</h3>
+							<pre><code>{messagesSnippet}</code></pre>
 						</div>
 					</div>
 				</section>
 
-				<section class="section two-panel">
-					<div class="panel">
-						<div class="eyebrow">PRIVACY</div>
-						<h2>Prompts are not stored.</h2>
+				<section class="models-cta" id="models">
+					<div>
+						<div class="eyebrow">MODEL CATALOG</div>
+						<h2>The full model list moved where it belongs.</h2>
+						<p>
+							The landing page should explain the product. The <a href="/models">models page</a>
+							searches the live catalog, shows tiers, and lets builders find exact aliases without
+							making the homepage feel like a data dump.
+						</p>
+					</div>
+					<div class="model-orbit" aria-hidden="true">
+						<div class="orbit-ring"></div>
+						<div class="orbit-pill pill-one">chat</div>
+						<div class="orbit-pill pill-two">tools</div>
+						<div class="orbit-pill pill-three">media</div>
+						<div class="orbit-pill pill-four">speech</div>
+						<div class="orbit-center">/models</div>
+					</div>
+					<a class="primary-button" href="/models">
+						<span class="material-symbols-outlined">search</span>
+						<span>Search Live Models</span>
+					</a>
+				</section>
+
+				<section class="section two-panel" id="free">
+					<div class="panel free-panel">
+						<div class="eyebrow">WHY FREE</div>
+						<h2>We do not charge anything.</h2>
+						<p>
+							The point is access. FreeTheAi is community-run, with usage controls to keep the service
+							usable for everyone instead of turning the homepage into a pricing table.
+						</p>
 						<ul class="privacy-list">
-							<li><span class="material-symbols-outlined">check_circle</span> model id</li>
-							<li><span class="material-symbols-outlined">check_circle</span> input token count</li>
-							<li><span class="material-symbols-outlined">check_circle</span> output token count</li>
-							<li><span class="material-symbols-outlined">check_circle</span> timestamp</li>
-							<li><span class="material-symbols-outlined">block</span> prompt text</li>
-							<li><span class="material-symbols-outlined">block</span> completion text</li>
+							{fairnessItems.map((item) => (
+								<li>
+									<span class="material-symbols-outlined">check_circle</span>
+									<span>{item}</span>
+								</li>
+							))}
 						</ul>
 					</div>
-					<div class="panel">
-						<div class="eyebrow">LIVE NOW</div>
-						<h2>Public docs. Private backend.</h2>
-						<p>
-							The public repo and site document the live deployed catalog across
-							<code>bbl/*</code>, <code>cat/*</code>, <code>fth/*</code>,
-							<code>glm/*</code>, <code>kai/*</code>, <code>opc/*</code>, <code>or/*</code>,
-							<code>wsf/*</code>, <code>yng/*</code>, and <code>xai/*</code>. The private backend
-							implementation is not exposed here.
-						</p>
-						<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
-							<span class="material-symbols-outlined">open_in_new</span>
-							<span>github.com/vibheksoni/free-ai</span>
-						</a>
+					<div class="panel privacy-panel">
+						<div class="eyebrow">PRIVACY POSTURE</div>
+						<h2>Usage is measured. Prompt text is not stored.</h2>
+						<div class="privacy-columns">
+							<div>
+								<h3>Tracked</h3>
+								<ul class="privacy-list">
+									<li><span class="material-symbols-outlined">check_circle</span>model id</li>
+									<li><span class="material-symbols-outlined">check_circle</span>token counts</li>
+									<li><span class="material-symbols-outlined">check_circle</span>status code</li>
+									<li><span class="material-symbols-outlined">check_circle</span>timestamp</li>
+								</ul>
+							</div>
+							<div>
+								<h3>Not stored</h3>
+								<ul class="privacy-list">
+									<li><span class="material-symbols-outlined">block</span>prompt text</li>
+									<li><span class="material-symbols-outlined">block</span>completion text</li>
+									<li><span class="material-symbols-outlined">block</span>billing data</li>
+									<li><span class="material-symbols-outlined">block</span>credit card data</li>
+								</ul>
+							</div>
+						</div>
 					</div>
 				</section>
 
 				<section class="cta-banner">
 					<div>
 						<div class="eyebrow">START NOW</div>
-						<h2>Get your key and build something.</h2>
+						<h2>Get a key, browse the catalog, and build.</h2>
+						<p>
+							Nearly 2,000 Discord members, 700+ registrations, and still no billing flow.
+						</p>
 					</div>
 					<div class="cta-actions">
 						<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
 							<span class="material-symbols-outlined">forum</span>
-							<span>Open Discord</span>
+							<span>Join Discord</span>
 						</a>
-						<a class="ghost-button" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
-							<span class="material-symbols-outlined">description</span>
-							<span>Repo / Docs</span>
+						<a class="ghost-button" href="/models">
+							<span class="material-symbols-outlined">travel_explore</span>
+							<span>Open Models</span>
 						</a>
 					</div>
 				</section>
