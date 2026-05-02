@@ -4,7 +4,7 @@ import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
 
 const pageDescription =
-	'FreeTheAi is a free OpenAI-compatible AI API for builders. Get a Discord API key, use streaming, tool calling, image generation, image editing, and a live model catalog with no billing.';
+	'FreeTheAi — free OpenAI-compatible API. Get a key via Discord, use chat, streaming, tools, images, and 15k+ models.';
 
 const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
 
@@ -49,23 +49,23 @@ const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
 const proofStats = [
 	{
 		value: '2k',
-		label: 'Discord members soon',
-		copy: 'A fast-growing builder community around one free API key flow.',
+		label: 'members',
+		copy: 'Active builder community on Discord.',
 	},
 	{
 		value: '700+',
-		label: 'registered users',
-		copy: 'People are already signing up and testing real projects.',
+		label: 'users',
+		copy: 'Registered and building real projects.',
 	},
 	{
 		value: '$0',
-		label: 'charged',
-		copy: 'No paid plans, no billing page, no card prompt.',
+		label: 'cost',
+		copy: 'No billing, no cards, no paid tiers.',
 	},
 	{
-		value: '1 key',
-		label: 'many routes',
-		copy: 'Chat, streaming, tools, images, edits, and model browsing.',
+		value: '15k+',
+		label: 'models',
+		copy: 'Chat, images, tools — one key.',
 	},
 ];
 
@@ -73,22 +73,22 @@ const quickSteps = [
 	{
 		icon: 'forum',
 		title: 'Join Discord',
-		copy: 'Everything starts in the community. The signup flow lives there so key rotation and support stay simple.',
+		copy: 'Signup and support happen in the community server.',
 	},
 	{
 		icon: 'vpn_key',
 		title: 'Run /signup',
-		copy: 'The bot gives you an API key. If you lose it later, use /resetkey instead of making a new account.',
+		copy: 'Get your API key instantly. Use /resetkey if you lose it.',
 	},
 	{
 		icon: 'code_blocks',
-		title: 'Use the OpenAI shape',
-		copy: 'Point your OpenAI-compatible SDK at our base URL and keep using the client code you already know.',
+		title: 'Use any SDK',
+		copy: 'Point your OpenAI-compatible client at our base URL.',
 	},
 	{
 		icon: 'travel_explore',
-		title: 'Browse /models',
-		copy: 'The homepage stays lightweight. The full searchable catalog has its own page with tiers and aliases.',
+		title: 'Browse models',
+		copy: 'Search the full catalog on the /models page.',
 	},
 ];
 
@@ -96,40 +96,40 @@ const capabilities = [
 	{
 		icon: 'bolt',
 		title: 'Streaming chat',
-		copy: 'Use the standard chat completions route for fast interactive apps, CLIs, and agents.',
+		copy: 'Standard chat completions for apps, CLIs, and agents.',
 		route: 'POST /v1/chat/completions',
 	},
 	{
 		icon: 'handyman',
 		title: 'Tool calling',
-		copy: 'Send normal OpenAI tool schemas and let supported aliases return structured tool calls.',
+		copy: 'OpenAI tool schemas with structured function responses.',
 		route: 'tools + tool_choice',
 	},
 	{
 		icon: 'alternate_email',
 		title: 'Messages API',
-		copy: 'Use an Anthropic-style messages route when your client or agent framework expects it.',
+		copy: 'Anthropic-style messages route for compatible frameworks.',
 		route: 'POST /v1/messages',
 	},
 	{
 		icon: 'imagesmode',
-		title: 'Images',
-		copy: 'Generate image assets with img/gpt-image-2 through the same API key and a familiar route.',
+		title: 'Image generation',
+		copy: 'Generate images with img/gpt-image-2.',
 		route: 'POST /v1/images/generations',
 	},
 	{
 		icon: 'edit_square',
 		title: 'Image edits',
-		copy: 'Send a prompt plus a base64 data-url image when you want the image model to improve or restyle an input.',
+		copy: 'Edit images with prompt + base64 input.',
 		route: 'POST /v1/images/edits',
 	},
 ];
 
 const fairnessItems = [
-	'No subscription checkout and no paid upgrade funnel.',
-	'Access is community-managed through Discord signup and fair-use tiers.',
-	'The public model catalog is searchable on /models instead of dumped on the homepage.',
-	'Request logging focuses on usage metadata, not storing prompt or completion text.',
+	'No billing page, no paid plans.',
+	'Community-managed via Discord and fair-use tiers.',
+	'Searchable model catalog on /models.',
+	'Usage metadata only — no prompt/completion storage.',
 ];
 ---
 
@@ -168,10 +168,10 @@ const fairnessItems = [
 				<section class="hero landing-hero">
 					<div class="hero-copy">
 						<div class="eyebrow">FREE AI API FOR BUILDERS</div>
-						<h1>Build with AI without opening a billing page.</h1>
+						<h1>Free AI API for builders.</h1>
 						<p class="hero-text">
-							FreeTheAi gives you a free API key through Discord and a real OpenAI-compatible gateway
-							for chat, streaming, tool calls, images, image edits, and a live model catalog.
+							OpenAI-compatible gateway with chat, streaming, tools, images, and 15k+ models.
+							Get a free API key through Discord.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
@@ -185,7 +185,7 @@ const fairnessItems = [
 						</div>
 						<div class="hero-note">
 							<span class="material-symbols-outlined">verified</span>
-							<span>No paid plans. No card required. Community fair-use access.</span>
+							<span>No paid plans. No card required.</span>
 						</div>
 					</div>
 
@@ -226,10 +226,9 @@ const fairnessItems = [
 				<section class="section split-section" id="quickstart">
 					<div class="section-head sticky-copy">
 						<div class="eyebrow">QUICKSTART</div>
-						<h2>One Discord command, then normal SDK code.</h2>
+						<h2>Get started in under a minute.</h2>
 						<p>
-							The fastest path is not a dashboard. Join the server, run <code>/signup</code>,
-							put the key in your environment, and point your OpenAI-compatible client at the API.
+							Join the server, run <code>/signup</code>, set your base URL, and start building.
 						</p>
 						<a class="inline-link" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
 							<span class="material-symbols-outlined">open_in_new</span>
@@ -251,10 +250,9 @@ const fairnessItems = [
 				<section class="section" id="capabilities">
 					<div class="section-head">
 						<div class="eyebrow">API SURFACE</div>
-						<h2>Enough routes to build real products, not just demos.</h2>
+						<h2>API surface</h2>
 						<p>
-							The gateway keeps the developer experience familiar while exposing multiple workloads behind
-							one key. Model discovery belongs on the dedicated models page.
+							Multiple workloads behind one key. Full model catalog on the models page.
 						</p>
 					</div>
 					<div class="capability-grid">
@@ -274,10 +272,9 @@ const fairnessItems = [
 				<section class="section code-section" id="usage">
 					<div class="section-head">
 						<div class="eyebrow">COPY, PASTE, SHIP</div>
-						<h2>Use the clients and agent frameworks you already have.</h2>
+						<h2>Code examples</h2>
 						<p>
-							Start with chat completions for most apps. If a framework expects a messages route,
-							use <code>/v1/messages</code> with the same bearer key.
+							Chat completions for most apps. <code>/v1/messages</code> for Anthropic-style frameworks.
 						</p>
 					</div>
 					<div class="usage-grid">
@@ -297,11 +294,10 @@ const fairnessItems = [
 				<section class="models-cta" id="models">
 					<div>
 						<div class="eyebrow">MODEL CATALOG</div>
-						<h2>The full model list moved where it belongs.</h2>
+						<h2>Full model catalog</h2>
 						<p>
-							The landing page should explain the product. The <a href="/models">models page</a>
-							searches the live catalog, shows tiers, and lets builders find exact aliases without
-							making the homepage feel like a data dump.
+							Search the live catalog, browse tiers, and find exact aliases on the
+							<a href="/models">models page</a>.
 						</p>
 					</div>
 					<div class="model-orbit" aria-hidden="true">
@@ -321,10 +317,9 @@ const fairnessItems = [
 				<section class="section two-panel" id="free">
 					<div class="panel free-panel">
 						<div class="eyebrow">WHY FREE</div>
-						<h2>We do not charge anything.</h2>
+						<h2>No charge. Ever.</h2>
 						<p>
-							The point is access. FreeTheAi is community-run, with usage controls to keep the service
-							usable for everyone instead of turning the homepage into a pricing table.
+							Community-run with fair-use controls. No pricing page.
 						</p>
 						<ul class="privacy-list">
 							{fairnessItems.map((item) => (
@@ -337,7 +332,7 @@ const fairnessItems = [
 					</div>
 					<div class="panel privacy-panel">
 						<div class="eyebrow">PRIVACY POSTURE</div>
-						<h2>Usage is measured. Prompt text is not stored.</h2>
+						<h2>Privacy</h2>
 						<div class="privacy-columns">
 							<div>
 								<h3>Tracked</h3>
@@ -364,9 +359,9 @@ const fairnessItems = [
 				<section class="cta-banner">
 					<div>
 						<div class="eyebrow">START NOW</div>
-						<h2>Get a key, browse the catalog, and build.</h2>
+						<h2>Get a key and start building.</h2>
 						<p>
-							Nearly 2,000 Discord members, 700+ registrations, and still no billing flow.
+							2k members, 700+ registrations, zero billing.
 						</p>
 					</div>
 					<div class="cta-actions">
