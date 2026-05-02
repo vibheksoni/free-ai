@@ -46,6 +46,34 @@ const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
     ]
   }'`;
 
+const imageGenSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "img/gpt-image-2",
+    "prompt": "A minimal flat logo for a dev tool"
+  }'`;
+
+const imageEditSnippet = `import base64, requests, os
+
+def edit_image(prompt, image_path):
+    with open(image_path, "rb") as f:
+        data_url = "data:image/png;base64," + \\
+            base64.b64encode(f.read()).decode()
+
+    return requests.post(
+        "https://api.freetheai.xyz/v1/images/edits",
+        headers={
+            "Authorization": f"Bearer {os.environ['FREETHEAI_API_KEY']}",
+            "Content-Type": "application/json",
+        },
+        json={
+            "model": "img/gpt-image-2",
+            "prompt": prompt,
+            "image": data_url,
+        },
+    ).json()`;
+
 const proofStats = [
 	{
 		value: '2k',
@@ -270,26 +298,36 @@ const fairnessItems = [
 				</section>
 
 				<section class="section code-section" id="usage">
-					<div class="section-head">
-						<div class="eyebrow">COPY, PASTE, SHIP</div>
-						<h2>Code examples</h2>
-						<p>
-							Chat completions for most apps. <code>/v1/messages</code> for Anthropic-style frameworks.
-						</p>
+				<div class="section-head">
+					<div class="eyebrow">COPY, PASTE, SHIP</div>
+					<h2>Code examples</h2>
+					<p>
+						Chat, messages, image generation, and image editing — all with the same key.
+					</p>
+				</div>
+				<div class="usage-grid">
+					<div class="panel code-panel">
+						<div class="panel-kicker">JavaScript SDK</div>
+						<h3>OpenAI-compatible client</h3>
+						<pre><code>{sdkSnippet}</code></pre>
 					</div>
-					<div class="usage-grid">
-						<div class="panel code-panel">
-							<div class="panel-kicker">JavaScript SDK</div>
-							<h3>OpenAI-compatible client</h3>
-							<pre><code>{sdkSnippet}</code></pre>
-						</div>
-						<div class="panel code-panel">
-							<div class="panel-kicker">Messages route</div>
-							<h3>Anthropic-style request shape</h3>
-							<pre><code>{messagesSnippet}</code></pre>
-						</div>
+					<div class="panel code-panel">
+						<div class="panel-kicker">Messages route</div>
+						<h3>Anthropic-style request</h3>
+						<pre><code>{messagesSnippet}</code></pre>
 					</div>
-				</section>
+					<div class="panel code-panel">
+						<div class="panel-kicker">Image generation</div>
+						<h3>img/gpt-image-2</h3>
+						<pre><code>{imageGenSnippet}</code></pre>
+					</div>
+					<div class="panel code-panel">
+						<div class="panel-kicker">Image editing · Python</div>
+						<h3>Prompt + base64 input</h3>
+						<pre><code>{imageEditSnippet}</code></pre>
+					</div>
+				</div>
+			</section>
 
 				<section class="models-cta" id="models">
 					<div>
