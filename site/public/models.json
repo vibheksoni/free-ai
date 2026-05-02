@@ -326,6 +326,12 @@
         },
         {
             "created": 0,
+            "id": "img/gpt-image-2",
+            "object": "model",
+            "owned_by": "gateway"
+        },
+        {
+            "created": 0,
             "id": "yng/agent-1",
             "object": "model",
             "owned_by": "gateway"

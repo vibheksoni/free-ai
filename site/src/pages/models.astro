@@ -21,7 +21,7 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 				<nav class="nav">
 					<a class="brand" href="/">[FreeTheAi]</a>
 					<div class="nav-links">
-						<a href="/#how">How</a>
+						<a href="/#quickstart">How</a>
 						<a href="/#usage">Usage</a>
 						<a href="/models">Models</a>
 						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
@@ -99,7 +99,7 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 						<p>
 							Alias ids are exact. Use the same values your client passes to
 							<code>POST /v1/chat/completions</code>, <code>POST /v1/images/generations</code>,
-							or <code>POST /v1/videos/generations</code>.
+							or <code>POST /v1/images/edits</code>.
 						</p>
 					</div>
 
@@ -185,7 +185,9 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 
 			const liveCatalogEndpoint = 'https://api.freetheai.xyz/v1/models/full';
 			const liveCatalogKey = 'freetheai.xyz';
+			const disabledPrefixes = new Set(['xai']);
 			const pinnedAliases = [
+				'img/gpt-image-2',
 				'yng/agent-1',
 				'yng/claude-4-5-sonnet',
 				'yng/claude-4-6-sonnet',
@@ -492,7 +494,8 @@ const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJs
 									tier,
 									tierRank: itemTierRank(item, tier),
 								};
-							}),
+							})
+							.filter((item) => !disabledPrefixes.has(item.prefix)),
 					);
 					elements.source.textContent = source === 'live' ? '/v1/models/full' : '/models.json fallback';
 					renderPrefixes();

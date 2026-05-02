@@ -2,11 +2,11 @@
 
 # FreeTheAi
 
-### Free AI API access with Discord signup, OpenAI-compatible chat routes, xAI image and video generation, streaming, and tool calling
+### Free AI API access with Discord signup, OpenAI-compatible chat routes, image generation, streaming, and tool calling
 
 [![API](https://img.shields.io/badge/API-OpenAI%20Compatible-111827?style=for-the-badge)](https://api.freetheai.xyz)
 [![Base URL](https://img.shields.io/badge/Base%20URL-api.freetheai.xyz-0ea5e9?style=for-the-badge)](https://api.freetheai.xyz)
-[![Limits](https://img.shields.io/badge/Limit-30%20RPM-f59e0b?style=for-the-badge)](https://discord.gg/secrets)
+[![Limits](https://img.shields.io/badge/Limit-10--35%20RPM-f59e0b?style=for-the-badge)](https://discord.gg/secrets)
 [![Privacy](https://img.shields.io/badge/Logging-No%20Prompt%20Storage-16a34a?style=for-the-badge)](https://api.freetheai.xyz/v1/health)
 [![Discord](https://img.shields.io/badge/Discord-discord.gg%2Fsecrets-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/secrets)
 
@@ -19,7 +19,7 @@
 - Discord slash-command signup
 - OpenAI-compatible `chat/completions`
 - Image generation via `images/generations`
-- Deferred video generation via `videos/generations`
+- Image editing via `images/edits`
 - Streaming support
 - Tool calling support
 - No daily cap
@@ -57,7 +57,7 @@ Useful Discord commands:
 
 ## Limits
 
-- `30 requests per minute`
+- `10-35 requests per minute` depending on invite tier
 - `No daily limit`
 
 The minute cap is there so the pool stays usable for everyone.
@@ -88,8 +88,7 @@ https://api.freetheai.xyz
 | `/v1/models` | `GET` | Lightweight live model catalog for API clients |
 | `/v1/chat/completions` | `POST` | OpenAI-compatible chat completions |
 | `/v1/images/generations` | `POST` | Image generation |
-| `/v1/videos/generations` | `POST` | Start video generation |
-| `/v1/videos/:request_id` | `GET` | Poll video generation status |
+| `/v1/images/edits` | `POST` | Image editing |
 
 Auth:
 
@@ -130,94 +129,32 @@ curl https://api.freetheai.xyz/v1/images/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "xai/grok-imagine-image",
-    "prompt": "A neon sports car parked under rainy city lights",
-    "n": 1,
-    "aspect_ratio": "auto",
-    "resolution": "1k"
+    "model": "img/gpt-image-2",
+    "prompt": "A neon sports car parked under rainy city lights"
   }'
 ```
 
-### Video Generation
-
-Start the job:
+### Image Editing
 
 ```bash
-curl https://api.freetheai.xyz/v1/videos/generations \
+curl https://api.freetheai.xyz/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "xai/grok-imagine-video",
-    "prompt": "A neon sports car slowly driving through rainy city lights",
-    "duration": 5,
-    "resolution": "480p",
-    "aspect_ratio": "16:9"
+    "model": "img/gpt-image-2",
+    "prompt": "Improve this logo and make it cleaner",
+    "image": "data:image/png;base64,..."
   }'
 ```
-
-Poll it:
-
-```bash
-curl https://api.freetheai.xyz/v1/videos/REQUEST_ID \
-  -H "Authorization: Bearer YOUR_API_KEY"
-```
-
-Pending jobs may return `202` with a payload like:
-
-```json
-{"status":"pending","progress":0}
-```
-
-Keep polling the same `request_id` until the response includes the final video payload.
-
-### Text To Speech
-
-The speech route returns binary audio. Use `response_format: "pcm"` for 24 kHz PCM or `response_format: "mp3"` for MP3 output.
-
-```bash
-curl https://api.freetheai.xyz/v1/audio/speech \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  --output speech.pcm \
-  -d '{
-    "model": "xai/grok-tts",
-    "input": "Hello, how are you?",
-    "voice": "Eve",
-    "wrapper": "soft",
-    "response_format": "pcm",
-    "language": "en"
-  }'
-```
-
-Supported voices: `Ara`, `Eve`, `Leo`, `Rex`, `Sal`.
-
-Supported voice wrappers can be used either as raw tags inside `input` or through the helper field `wrapper`.
-
-```json
-{
-  "model": "xai/grok-tts",
-  "input": "Do not tell anyone",
-  "voice": "Ara",
-  "wrapper": "whisper",
-  "response_format": "mp3"
-}
-```
-
-Supported wrappers: `soft`, `whisper`, `loud`, `build-intensity`, `decrease-intensity`, `higher-pitch`, `lower-pitch`, `slow`, `fast`, `sing-song`, `singing`, `laugh-speak`, `emphasis`.
 
 ## Current Media Limits
 
-The API currently enforces the same anonymous-compatible media limits used by the public site flow:
+The active image provider currently exposes:
 
-- `xai/grok-imagine-image`
-- image resolution: `1k` only
-- image responses are returned as `b64_json`
-- `xai/grok-imagine-video`
-- video resolution: `480p` only
-- video duration: `1` to `5` seconds
-- `xai/grok-tts`
-- speech response formats: `pcm` or `mp3`
-- speech voices: `Ara`, `Eve`, `Leo`, `Rex`, `Sal`
+- `img/gpt-image-2`
+- `POST /v1/images/generations` forwards only `prompt`
+- `POST /v1/images/edits` forwards only `prompt` plus base64 data-url `image`
+- image responses are returned as OpenAI-compatible `b64_json`
 
 ## Tool Calling
 
@@ -337,7 +274,7 @@ Use exact alias ids from `GET /v1/models` or the website model catalog. The API 
 - `or/*`
 - `wsf/*`
 - `yng/*`
-- `xai/*`
+- `img/*`
 
 ## Current Live Snapshot
 
@@ -414,6 +351,10 @@ Current notable families from the deployed API:
 - `yng/claude-4-6-sonnet`
 - `yng/gemini-3-flash`
 - `yng/gemini-3-1-pro`
+
+### `img/*`
+
+- `img/gpt-image-2`
 
 ### `fth/*`
 

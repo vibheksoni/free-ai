@@ -4,7 +4,7 @@ import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
 
 const pageDescription =
-	'FreeTheAi is a free OpenAI-compatible AI API for builders. Get a Discord API key, use streaming, tool calling, images, video, speech, and a live model catalog with no billing.';
+	'FreeTheAi is a free OpenAI-compatible AI API for builders. Get a Discord API key, use streaming, tool calling, image generation, image editing, and a live model catalog with no billing.';
 
 const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
 
@@ -65,7 +65,7 @@ const proofStats = [
 	{
 		value: '1 key',
 		label: 'many routes',
-		copy: 'Chat, streaming, tools, media, speech, and model browsing.',
+		copy: 'Chat, streaming, tools, images, edits, and model browsing.',
 	},
 ];
 
@@ -114,20 +114,14 @@ const capabilities = [
 	{
 		icon: 'imagesmode',
 		title: 'Images',
-		copy: 'Generate image assets through the same API key and a familiar generation route.',
+		copy: 'Generate image assets with img/gpt-image-2 through the same API key and a familiar route.',
 		route: 'POST /v1/images/generations',
 	},
 	{
-		icon: 'movie',
-		title: 'Video jobs',
-		copy: 'Start deferred video generations and poll by request id until the result is ready.',
-		route: 'POST /v1/videos/generations',
-	},
-	{
-		icon: 'volume_up',
-		title: 'Text to speech',
-		copy: 'Create voice output with supported voices and wrappers for lightweight audio workflows.',
-		route: 'POST /v1/audio/speech',
+		icon: 'edit_square',
+		title: 'Image edits',
+		copy: 'Send a prompt plus a base64 data-url image when you want the image model to improve or restyle an input.',
+		route: 'POST /v1/images/edits',
 	},
 ];
 
@@ -177,7 +171,7 @@ const fairnessItems = [
 						<h1>Build with AI without opening a billing page.</h1>
 						<p class="hero-text">
 							FreeTheAi gives you a free API key through Discord and a real OpenAI-compatible gateway
-							for chat, streaming, tool calls, images, video, speech, and a live model catalog.
+							for chat, streaming, tool calls, images, image edits, and a live model catalog.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
@@ -315,7 +309,7 @@ const fairnessItems = [
 						<div class="orbit-pill pill-one">chat</div>
 						<div class="orbit-pill pill-two">tools</div>
 						<div class="orbit-pill pill-three">media</div>
-						<div class="orbit-pill pill-four">speech</div>
+						<div class="orbit-pill pill-four">edits</div>
 						<div class="orbit-center">/models</div>
 					</div>
 					<a class="primary-button" href="/models">

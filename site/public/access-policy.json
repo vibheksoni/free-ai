@@ -84,7 +84,6 @@
         "kai/inclusionai/ling-2.6-1t:free",
         "kai/inclusionai/ling-2.6-flash:free",
         "kai/kilo-auto/free",
-        "kai/kilo/auto-free",
         "kai/nvidia/nemotron-3-super-120b-a12b:free",
         "kai/openrouter/free",
         "kai/stepfun/step-3.5-flash:free",
@@ -94,10 +93,8 @@
         "opc/big-pickle",
         "opc/gpt-5-nano",
         "opc/hy3-preview-free",
-        "opc/ling-2.6-flash-free",
         "opc/minimax-m2.5-free",
         "opc/nemotron-3-super-free",
-        "opc/trinity-large-preview-free",
 
         "or/baidu/qianfan-ocr-fast:free",
         "or/cognitivecomputations/dolphin-mistral-24b-venice-edition:free",
@@ -210,10 +207,13 @@
         "yng/gpt-5.4",
 
         "agr/*",
+        "bbg/*",
+        "img/gpt-image-2",
 
-        "xai/grok-imagine-image",
-        "xai/grok-imagine-video",
-        "xai/grok-tts"
+        "rev/claude-haiku-4.5",
+        "rev/claude-sonnet-4.5",
+        "rev/minimax-m2.1",
+        "rev/minimax-m2.5"
       ]
     }
   ]

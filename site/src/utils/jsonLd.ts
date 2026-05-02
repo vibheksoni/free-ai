@@ -10,7 +10,7 @@ export function buildWebsiteJsonLd() {
 		name: 'FreeTheAi',
 		url: 'https://freetheai.xyz',
 		description:
-			'Free OpenAI-compatible AI API with Discord key signup, streaming chat completions, tool calling, image generation, video jobs, text to speech, and a live searchable model catalog.',
+			'Free OpenAI-compatible AI API with Discord key signup, streaming chat completions, tool calling, image generation, image editing, and a live searchable model catalog.',
 		inLanguage: 'en-US',
 	};
 }
@@ -49,7 +49,7 @@ export function buildSoftwareJsonLd() {
 		applicationCategory: 'DeveloperApplication',
 		operatingSystem: 'Web',
 		description:
-			'Free AI API for builders with Discord key signup, OpenAI-compatible chat completions, streaming, tool calling, image generation, video jobs, text to speech, and a live searchable model catalog.',
+			'Free AI API for builders with Discord key signup, OpenAI-compatible chat completions, streaming, tool calling, image generation, image editing, and a live searchable model catalog.',
 		url: 'https://freetheai.xyz',
 		audience: {
 			'@type': 'Audience',
@@ -62,8 +62,7 @@ export function buildSoftwareJsonLd() {
 			'Tool calling',
 			'Anthropic-style messages endpoint',
 			'Image generation',
-			'Deferred video generation',
-			'Text to speech',
+			'Image editing',
 			'Live searchable model catalog',
 		],
 		offers: {
