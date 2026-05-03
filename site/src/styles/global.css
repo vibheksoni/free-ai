@@ -507,7 +507,7 @@ h3 {
 	padding: 20px;
 }
 
-.step-card > .material-symbols-outlined {
+.step-card>.material-symbols-outlined {
 	display: inline-flex;
 	width: 40px;
 	height: 40px;
@@ -592,7 +592,7 @@ h3 {
 	gap: 14px;
 }
 
-.panel h3 + pre {
+.panel h3+pre {
 	margin-top: 0;
 }
 
@@ -787,7 +787,7 @@ h3 {
 	background: rgba(255, 255, 255, 0.03);
 }
 
-.mini-stat > .material-symbols-outlined {
+.mini-stat>.material-symbols-outlined {
 	color: var(--muted);
 }
 
@@ -822,7 +822,7 @@ h3 {
 	background: rgba(255, 255, 255, 0.03);
 }
 
-.signal-box > .material-symbols-outlined {
+.signal-box>.material-symbols-outlined {
 	display: inline-flex;
 	width: 42px;
 	height: 42px;
@@ -1181,6 +1181,7 @@ h3 {
 }
 
 @media (max-width: 1120px) {
+
 	.hero,
 	.split-section,
 	.usage-grid,
