@@ -1,12 +1,12 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import { siteConfig } from '../config/site';
-import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
+import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
 const pageDescription =
-	'FreeTheAi — free OpenAI-compatible API. Get a key via Discord, use chat, streaming, tools, images, and 15k+ models.';
+	'FreeTheAi — free OpenAI-compatible API with 16,000+ models. Get a key via Discord, use chat, streaming, tool calling, image generation, and more.';
 
-const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
 
 const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\

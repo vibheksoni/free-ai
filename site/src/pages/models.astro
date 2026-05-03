@@ -1,17 +1,17 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import { siteConfig } from '../config/site';
-import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from '../utils/jsonLd';
+import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
-const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead
-			title="FreeTheAi Models - Search the live catalog"
-			description="Search and page through the FreeTheAi live model catalog with tier and unlock metadata."
+			title="Free AI Model Catalog — 16,000+ Models"
+			description="Search and browse the FreeTheAi live model catalog. 16,000+ free AI models including GPT, Claude, Gemini, DeepSeek, and open-weight models. Filter by family, tier, and availability."
 			jsonLd={jsonLd}
 		/>
 	</head>

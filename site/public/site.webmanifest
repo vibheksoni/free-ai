@@ -1,10 +1,11 @@
 {
   "name": "FreeTheAi",
   "short_name": "FreeTheAi",
+  "description": "Free OpenAI-compatible API with 16,000+ models",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#08111f",
-  "theme_color": "#0b62ff",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "icons": [
     {
       "src": "/favicon.svg",
