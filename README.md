@@ -2,6 +2,11 @@
 
 # FreeTheAi
 
+<img src="assets/TrevorSecretsToAi.webp" alt="TrevorSecretsToAi" width="400" style="border-radius: 8px;" />
+<br>
+<sub><i>gpt-image-2 api for free</i></sub>
+<br><br>
+
 **Free OpenAI-compatible API — 16,000+ models, zero billing**
 
 Chat · Streaming · Tool Calling · Image Generation · Image Editing
