@@ -41,6 +41,8 @@ export const siteConfig = {
 			'free image editing api',
 			'free gpt image api',
 			'gpt-image-2 free',
+			'free ai api docs',
+			'free image generation api docs',
 			'anthropic messages api free',
 			'free ai gateway',
 			'ai model catalog',

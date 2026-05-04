@@ -21,7 +21,7 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 <br>
 
-[Website](https://freetheai.xyz) · [Model Catalog](https://freetheai.xyz/models) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets)
+[Website](https://freetheai.xyz) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets)
 
 </div>
 
@@ -29,7 +29,7 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 ## Overview
 
-Free API gateway with 16,000+ models behind a single key. OpenAI-compatible — if your SDK works with OpenAI, it works here.
+Free API gateway with 16,000+ models behind a single key. OpenAI-compatible — if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
 - `POST /v1/chat/completions` — chat with streaming
 - `POST /v1/messages` — Anthropic-style messages route
@@ -97,7 +97,8 @@ Point any OpenAI SDK at the base URL
 | `/v1/messages` | `POST` | Anthropic-style messages |
 | `/v1/images/generations` | `POST` | Image generation |
 | `/v1/images/edits` | `POST` | Image editing |
-| `/v1/models` | `GET` | Full model catalog |
+| `/v1/models` | `GET` | Authenticated model catalog |
+| `/v1/models/full` | `GET` | Expanded model catalog with tier metadata |
 | `/v1/health` | `GET` | Health check |
 
 ---
@@ -231,12 +232,17 @@ curl https://api.freetheai.xyz/v1/images/generations \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "img/gpt-image-2",
+    "model": "vhr/gpt_image_2",
     "prompt": "A neon sports car under rainy city lights"
   }'
 ```
 
-Response contains `data[0].b64_json`.
+Generation models include `img/gpt-image-2`, `vhr/flux_dev`, `vhr/gpt_image_2`, `vhr/nano_banana_2`, and `vhr/bytedance_seedream_v4`.
+
+Robust clients should support both response shapes:
+
+- `data[0].b64_json` for base64 image data
+- `data[0].url` for a generated image URL
 
 </details>
 
@@ -266,7 +272,7 @@ def edit_image(prompt, image_path):
     ).json()
 ```
 
-See [`examples/image_client.py`](examples/image_client.py) for a full CLI tool.
+See [`examples/image_client.py`](examples/image_client.py) for a beginner-friendly CLI tool that saves the key locally and handles both `b64_json` and `url` image responses.
 
 </details>
 
@@ -274,7 +280,7 @@ See [`examples/image_client.py`](examples/image_client.py) for a full CLI tool.
 
 ## Models
 
-**16,248** models across **13 families**. Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.xyz/models).
+Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.xyz/models). Request examples and endpoint details are on [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
 | Prefix | Models | |
 | :--- | ---: | :--- |
@@ -289,6 +295,7 @@ See [`examples/image_client.py`](examples/image_client.py) for a full CLI tool.
 | `opc/*` | 5 | Free models |
 | `rev/*` | 4 | Chat models |
 | `wsf/*` | 4 | Chat models |
+| `vhr/*` | 4 | Image generation |
 | `img/*` | 1 | Image generation |
 
 > [!NOTE]
@@ -383,11 +390,10 @@ Prompt and completion text are **not stored**.
 
 <br>
 
-[Website](https://freetheai.xyz) · [Model Catalog](https://freetheai.xyz/models) · [API](https://api.freetheai.xyz) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF)
+[Website](https://freetheai.xyz) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [API](https://api.freetheai.xyz) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF)
 
 <br>
 
 <sub>No paid tiers. No billing page. Community-run.</sub>
 
 </div>
-

@@ -1,0 +1,335 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { siteConfig } from '../config/site';
+import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
+
+const pageDescription =
+	'FreeTheAi API documentation for chat completions, Anthropic-style messages, model listing, image generation, and image editing.';
+
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
+
+const baseSnippet = `Base URL: https://api.freetheai.xyz/v1
+Auth:     Authorization: Bearer YOUR_API_KEY`;
+
+const chatCurlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "glm/glm-5.1",
+    "messages": [
+      { "role": "user", "content": "Write a tiny Flask route." }
+    ],
+    "stream": true
+  }'`;
+
+const openAISDKSnippet = `import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.FREETHEAI_API_KEY,
+  baseURL: "https://api.freetheai.xyz/v1"
+});
+
+const res = await client.chat.completions.create({
+  model: "glm/glm-5.1",
+  messages: [{ role: "user", content: "Reply with OK." }]
+});
+
+console.log(res.choices[0].message.content);`;
+
+const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "rev/claude-sonnet-4.5",
+    "max_tokens": 256,
+    "messages": [
+      { "role": "user", "content": "Give me a short implementation plan." }
+    ]
+  }'`;
+
+const modelListSnippet = `curl https://api.freetheai.xyz/v1/models \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
+
+const fullModelListSnippet = `curl "https://api.freetheai.xyz/v1/models/full" \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
+
+const vhrImageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "vhr/gpt_image_2",
+    "prompt": "A cinematic neon sports car parked under rainy city lights"
+  }'`;
+
+const imageEditSnippet = `curl https://api.freetheai.xyz/v1/images/edits \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "img/gpt-image-2",
+    "prompt": "Improve this logo and make it cleaner",
+    "image": "data:image/png;base64,BASE64_IMAGE_HERE"
+  }'`;
+
+const pythonImageSnippet = `import base64
+import os
+from pathlib import Path
+
+import requests
+
+API_KEY = os.environ["FREETHEAI_API_KEY"]
+API_BASE = "https://api.freetheai.xyz/v1"
+
+
+def save_image_result(result, output_path):
+    item = (result.get("data") or [{}])[0]
+    if item.get("b64_json"):
+        Path(output_path).write_bytes(base64.b64decode(item["b64_json"]))
+        return
+    if item.get("url"):
+        image = requests.get(item["url"], timeout=120)
+        image.raise_for_status()
+        Path(output_path).write_bytes(image.content)
+        return
+    raise RuntimeError(f"No image found in response: {result}")
+
+
+res = requests.post(
+    f"{API_BASE}/images/generations",
+    headers={
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json",
+    },
+    json={
+        "model": "vhr/gpt_image_2",
+        "prompt": "A clean product mockup on a dark desk",
+    },
+    timeout=180,
+)
+res.raise_for_status()
+save_image_result(res.json(), "generated.png")`;
+
+const endpoints = [
+	['POST', '/v1/chat/completions', 'OpenAI-compatible chat, streaming, tool calling, and multi-turn conversations.'],
+	['POST', '/v1/messages', 'Anthropic-style Messages API for compatible clients and frameworks.'],
+	['GET', '/v1/models', 'Authenticated model list for normal clients.'],
+	['GET', '/v1/models/full', 'Expanded model catalog with tier metadata for catalog UIs.'],
+	['POST', '/v1/images/generations', 'Image generation with img/gpt-image-2 and vhr/* generation models.'],
+	['POST', '/v1/images/edits', 'Image editing with img/gpt-image-2 and a base64 data URL input image.'],
+	['GET', '/v1/health', 'Public API health and catalog status.'],
+];
+
+const imageModels = [
+	['img/gpt-image-2', 'Generation + editing', 'Returns base64 image data. Use this for edits.'],
+	['vhr/flux_dev', 'Generation only', 'Text-to-image model.'],
+	['vhr/gpt_image_2', 'Generation only', 'Text-to-image model.'],
+	['vhr/nano_banana_2', 'Generation only', 'Text-to-image model.'],
+	['vhr/bytedance_seedream_v4', 'Generation only', 'Text-to-image model.'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title="FreeTheAi API Docs - Chat, Models, Images"
+			description={pageDescription}
+			jsonLd={jsonLd}
+		/>
+	</head>
+	<body>
+		<div class="page-shell">
+			<header class="site-header">
+				<nav class="nav">
+					<a class="brand" href="/" aria-label="FreeTheAi home">
+						<span class="brand-mark">FTA</span>
+						<span>FreeTheAi</span>
+					</a>
+					<div class="nav-links">
+						<a href="/#quickstart">Quickstart</a>
+						<a href="/docs">Docs</a>
+						<a href="/models">Models</a>
+						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
+					</div>
+					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+						<span class="material-symbols-outlined">forum</span>
+						<span>Discord</span>
+					</a>
+				</nav>
+			</header>
+
+			<main>
+				<section class="hero docs-hero">
+					<div class="hero-copy">
+						<div class="eyebrow">API DOCS</div>
+						<h1>Build against one free API.</h1>
+						<p class="hero-text">
+							Use the same key for chat, streaming, Messages API clients, model catalog browsing,
+							image generation, and image edits.
+						</p>
+						<div class="hero-actions">
+							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+								<span class="material-symbols-outlined">vpn_key</span>
+								<span>Get a Key</span>
+							</a>
+							<a class="ghost-button" href="/models">
+								<span class="material-symbols-outlined">travel_explore</span>
+								<span>Browse Models</span>
+							</a>
+						</div>
+					</div>
+					<div class="code-card">
+						<div class="card-head">
+							<div class="dot-row"><span></span><span></span><span></span></div>
+							<div class="card-label">Base setup</div>
+						</div>
+						<pre><code>{baseSnippet}</code></pre>
+					</div>
+				</section>
+
+				<section class="docs-layout">
+					<aside class="docs-sidebar">
+						<a href="#auth">Auth</a>
+						<a href="#endpoints">Endpoints</a>
+						<a href="#chat">Chat</a>
+						<a href="#messages">Messages</a>
+						<a href="#models">Models</a>
+						<a href="#images">Images</a>
+						<a href="#errors">Errors</a>
+					</aside>
+
+					<div class="docs-content">
+						<section class="panel docs-card" id="auth">
+							<div class="eyebrow">AUTH</div>
+							<h2>Get a key</h2>
+							<p>
+								Join Discord and run <code>/signup</code>. Send the key as a bearer token.
+								If you lose it, run <code>/resetkey</code>.
+							</p>
+							<pre><code>{baseSnippet}</code></pre>
+						</section>
+
+						<section class="panel docs-card" id="endpoints">
+							<div class="eyebrow">ENDPOINTS</div>
+							<h2>Supported routes</h2>
+							<div class="docs-table">
+								{endpoints.map(([method, route, desc]) => (
+									<div class="docs-row">
+										<code>{method}</code>
+										<code>{route}</code>
+										<span>{desc}</span>
+									</div>
+								))}
+							</div>
+						</section>
+
+						<section class="panel docs-card" id="chat">
+							<div class="eyebrow">CHAT COMPLETIONS</div>
+							<h2>OpenAI-compatible chat</h2>
+							<p>
+								Point OpenAI-compatible clients at <code>https://api.freetheai.xyz/v1</code>.
+								Use exact model aliases from <a href="/models">/models</a>.
+							</p>
+							<div class="docs-code-grid">
+								<div>
+									<h3>curl</h3>
+									<pre><code>{chatCurlSnippet}</code></pre>
+								</div>
+								<div>
+									<h3>JavaScript SDK</h3>
+									<pre><code>{openAISDKSnippet}</code></pre>
+								</div>
+							</div>
+						</section>
+
+						<section class="panel docs-card" id="messages">
+							<div class="eyebrow">MESSAGES API</div>
+							<h2>Anthropic-style clients</h2>
+							<p>
+								Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.
+							</p>
+							<pre><code>{messagesSnippet}</code></pre>
+						</section>
+
+						<section class="panel docs-card" id="models">
+							<div class="eyebrow">MODEL CATALOG</div>
+							<h2>List models</h2>
+							<p>
+								Use <code>/v1/models</code> for normal clients. Use <code>/v1/models/full</code>
+								when you need tier and catalog metadata for a UI.
+							</p>
+							<div class="docs-code-grid">
+								<div>
+									<h3>Client catalog</h3>
+									<pre><code>{modelListSnippet}</code></pre>
+								</div>
+								<div>
+									<h3>Full catalog</h3>
+									<pre><code>{fullModelListSnippet}</code></pre>
+								</div>
+							</div>
+						</section>
+
+						<section class="panel docs-card" id="images">
+							<div class="eyebrow">IMAGES</div>
+							<h2>Generate and edit images</h2>
+							<p>
+								Use <code>/v1/images/generations</code> for text-to-image. Use
+								<code>/v1/images/edits</code> only with <code>img/gpt-image-2</code>.
+								Generation responses may contain either <code>b64_json</code> or <code>url</code>,
+								so robust clients should support both.
+							</p>
+							<div class="docs-table">
+								{imageModels.map(([model, support, desc]) => (
+									<div class="docs-row">
+										<code>{model}</code>
+										<span>{support}</span>
+										<span>{desc}</span>
+									</div>
+								))}
+							</div>
+							<div class="docs-code-grid">
+								<div>
+									<h3>Image generation</h3>
+									<pre><code>{vhrImageSnippet}</code></pre>
+								</div>
+								<div>
+									<h3>Image edit</h3>
+									<pre><code>{imageEditSnippet}</code></pre>
+								</div>
+							</div>
+							<h3>Python save helper</h3>
+							<pre><code>{pythonImageSnippet}</code></pre>
+						</section>
+
+						<section class="panel docs-card" id="errors">
+							<div class="eyebrow">ERRORS</div>
+							<h2>Common responses</h2>
+							<div class="docs-table compact">
+								<div class="docs-row">
+									<code>400</code>
+									<span>Invalid request body, missing prompt, unknown model, or unsupported media operation.</span>
+								</div>
+								<div class="docs-row">
+									<code>401</code>
+									<span>Missing or invalid API key. Run <code>/signup</code> or <code>/resetkey</code>.</span>
+								</div>
+								<div class="docs-row">
+									<code>403</code>
+									<span>The model is not available for your current access tier.</span>
+								</div>
+								<div class="docs-row">
+									<code>429</code>
+									<span>Rate limit or concurrency limit reached. Wait and retry.</span>
+								</div>
+								<div class="docs-row">
+									<code>5xx</code>
+									<span>Provider or gateway failure. Retry once before reporting it in Discord.</span>
+								</div>
+							</div>
+						</section>
+					</div>
+				</section>
+			</main>
+		</div>
+	</body>
+</html>

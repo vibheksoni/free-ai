@@ -50,7 +50,7 @@ const imageGenSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "img/gpt-image-2",
+    "model": "vhr/gpt_image_2",
     "prompt": "A minimal flat logo for a dev tool"
   }'`;
 
@@ -115,8 +115,8 @@ const quickSteps = [
 	},
 	{
 		icon: 'travel_explore',
-		title: 'Browse models',
-		copy: 'Search the full catalog on the /models page.',
+		title: 'Read docs',
+		copy: 'Use /docs for examples, then search exact aliases on /models.',
 	},
 ];
 
@@ -142,7 +142,7 @@ const capabilities = [
 	{
 		icon: 'imagesmode',
 		title: 'Image generation',
-		copy: 'Generate images with img/gpt-image-2.',
+		copy: 'Generate images with img/gpt-image-2 or vhr/* text-to-image models.',
 		route: 'POST /v1/images/generations',
 	},
 	{
@@ -181,6 +181,7 @@ const fairnessItems = [
 					<div class="nav-links">
 						<a href="#quickstart">Quickstart</a>
 						<a href="#capabilities">API</a>
+						<a href="/docs">Docs</a>
 						<a href="#free">Free</a>
 						<a href="/models">Models</a>
 						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
@@ -209,6 +210,10 @@ const fairnessItems = [
 							<a class="ghost-button" href="/models">
 								<span class="material-symbols-outlined">travel_explore</span>
 								<span>Browse Models</span>
+							</a>
+							<a class="ghost-button" href="/docs">
+								<span class="material-symbols-outlined">menu_book</span>
+								<span>Read Docs</span>
 							</a>
 						</div>
 						<div class="hero-note">
@@ -302,7 +307,8 @@ const fairnessItems = [
 					<div class="eyebrow">COPY, PASTE, SHIP</div>
 					<h2>Code examples</h2>
 					<p>
-						Chat, messages, image generation, and image editing — all with the same key.
+						Chat, messages, image generation, and image editing - all with the same key.
+						For the full guide, open <a href="/docs">/docs</a>.
 					</p>
 				</div>
 				<div class="usage-grid">
@@ -318,7 +324,7 @@ const fairnessItems = [
 					</div>
 					<div class="panel code-panel">
 						<div class="panel-kicker">Image generation</div>
-						<h3>img/gpt-image-2</h3>
+						<h3>vhr/gpt_image_2</h3>
 						<pre><code>{imageGenSnippet}</code></pre>
 					</div>
 					<div class="panel code-panel">
@@ -336,6 +342,7 @@ const fairnessItems = [
 						<p>
 							Search the live catalog, browse tiers, and find exact aliases on the
 							<a href="/models">models page</a>.
+							Use the <a href="/docs">docs page</a> for complete request examples.
 						</p>
 					</div>
 					<div class="model-orbit" aria-hidden="true">
@@ -410,6 +417,10 @@ const fairnessItems = [
 						<a class="ghost-button" href="/models">
 							<span class="material-symbols-outlined">travel_explore</span>
 							<span>Open Models</span>
+						</a>
+						<a class="ghost-button" href="/docs">
+							<span class="material-symbols-outlined">menu_book</span>
+							<span>Open Docs</span>
 						</a>
 					</div>
 					<div class="discord-widget" id="discord-widget">

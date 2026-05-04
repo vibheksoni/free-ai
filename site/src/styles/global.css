@@ -25,6 +25,7 @@
 
 html {
 	scroll-behavior: smooth;
+	scroll-padding-top: 96px;
 }
 
 body {
@@ -457,6 +458,7 @@ h3 {
 .section {
 	display: grid;
 	gap: 26px;
+	scroll-margin-top: 110px;
 }
 
 .section-head {
@@ -1194,6 +1196,106 @@ h3 {
 	max-width: 100%;
 }
 
+.docs-hero {
+	min-height: 52vh;
+}
+
+.docs-layout {
+	display: grid;
+	grid-template-columns: 220px minmax(0, 1fr);
+	gap: 26px;
+	align-items: start;
+}
+
+.docs-sidebar {
+	position: sticky;
+	top: 112px;
+	display: grid;
+	gap: 8px;
+	padding: 12px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+}
+
+.docs-sidebar a {
+	padding: 10px 12px;
+	border-radius: var(--radius-sm);
+	color: var(--muted);
+	text-decoration: none;
+	font-size: 0.86rem;
+	font-weight: 600;
+}
+
+.docs-sidebar a:hover {
+	background: rgba(255, 255, 255, 0.04);
+	color: var(--text);
+}
+
+.docs-content {
+	display: grid;
+	gap: 22px;
+	min-width: 0;
+}
+
+.docs-card {
+	scroll-margin-top: 110px;
+}
+
+.docs-card p {
+	max-width: 78ch;
+	color: var(--muted);
+	line-height: 1.7;
+}
+
+.docs-card a {
+	color: var(--text);
+	font-weight: 700;
+}
+
+.docs-code-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 16px;
+	margin-top: 18px;
+}
+
+.docs-code-grid h3,
+.docs-card > h3 {
+	margin: 20px 0 10px;
+	color: var(--text);
+	font-size: 1rem;
+	letter-spacing: -0.02em;
+}
+
+.docs-table {
+	display: grid;
+	gap: 8px;
+	margin: 18px 0;
+}
+
+.docs-row {
+	display: grid;
+	grid-template-columns: minmax(130px, 0.6fr) minmax(150px, 0.8fr) minmax(0, 1.6fr);
+	gap: 12px;
+	align-items: start;
+	padding: 12px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: rgba(255, 255, 255, 0.025);
+	color: var(--muted);
+	font-size: 0.9rem;
+	line-height: 1.55;
+}
+
+.docs-table.compact .docs-row {
+	grid-template-columns: 76px minmax(0, 1fr);
+}
+
+.docs-row code {
+	overflow-wrap: anywhere;
+}
+
 @media (max-width: 1120px) {
 
 	.hero,
@@ -1230,6 +1332,16 @@ h3 {
 		columns: 2;
 	}
 
+	.docs-layout,
+	.docs-code-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.docs-sidebar {
+		position: static;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
 	.catalog-preview ul {
 		columns: 1;
 	}
@@ -1241,20 +1353,34 @@ h3 {
 }
 
 @media (max-width: 820px) {
+	html {
+		scroll-padding-top: 16px;
+	}
+
 	.page-shell {
 		width: min(100vw - 20px, 1220px);
 		padding-top: 10px;
 	}
 
+	.site-header {
+		position: static;
+	}
+
 	main {
 		gap: 64px;
-		padding-top: 42px;
+		padding-top: 28px;
 	}
 
 	.nav {
 		align-items: stretch;
 		border-radius: 28px;
 		flex-direction: column;
+		position: relative;
+	}
+
+	.section,
+	.docs-card {
+		scroll-margin-top: 16px;
 	}
 
 	.nav-links,
@@ -1316,6 +1442,15 @@ h3 {
 	.catalog-page-size,
 	.catalog-sort {
 		width: 100%;
+	}
+
+	.docs-row,
+	.docs-table.compact .docs-row {
+		grid-template-columns: 1fr;
+	}
+
+	.docs-sidebar {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 }
 
