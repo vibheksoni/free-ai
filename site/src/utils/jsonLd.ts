@@ -154,7 +154,7 @@ export function buildFaqJsonLd() {
 				name: 'Does FreeTheAi support image generation?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'Yes. FreeTheAi supports image generation and image editing through the img/gpt-image-2 model via the standard OpenAI images API endpoints.',
+					text: 'Yes. FreeTheAi supports image generation through img/gpt-image-2 and vhr/* image models. Image editing is available through img/gpt-image-2 with a base64 input image.',
 				},
 			},
 			{
