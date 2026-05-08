@@ -99,6 +99,7 @@ export function buildWebApiJsonLd() {
 		description:
 			'Free OpenAI-compatible REST API with chat completions, streaming, tool calling, image generation, image editing, and 16,000+ models.',
 		documentation: 'https://freetheai.xyz',
+		termsOfService: 'https://freetheai.xyz/docs',
 		provider: {
 			'@type': 'Organization',
 			name: 'FreeTheAi',

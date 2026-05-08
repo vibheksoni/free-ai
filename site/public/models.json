@@ -96001,42 +96001,6 @@
             "owned_by": "gateway"
         },
         {
-            "created": 1777163606,
-            "id": "glm/glm-4.5",
-            "object": "model",
-            "owned_by": "gateway"
-        },
-        {
-            "created": 1777163606,
-            "id": "glm/glm-4.5-air",
-            "object": "model",
-            "owned_by": "gateway"
-        },
-        {
-            "created": 1777163606,
-            "id": "glm/glm-4.6",
-            "object": "model",
-            "owned_by": "gateway"
-        },
-        {
-            "created": 1777163606,
-            "id": "glm/glm-4.7",
-            "object": "model",
-            "owned_by": "gateway"
-        },
-        {
-            "created": 1777163606,
-            "id": "glm/glm-5",
-            "object": "model",
-            "owned_by": "gateway"
-        },
-        {
-            "created": 1777163606,
-            "id": "glm/glm-5.1",
-            "object": "model",
-            "owned_by": "gateway"
-        },
-        {
             "created": 1776707472,
             "id": "kai/baidu/qianfan-ocr-fast:free",
             "object": "model",

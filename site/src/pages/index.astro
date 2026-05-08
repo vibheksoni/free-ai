@@ -12,7 +12,7 @@ const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "glm/glm-5.1",
+    "model": "yng/gemini-3-1-pro",
     "messages": [
       {
         "role": "user",
@@ -30,7 +30,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: "glm/glm-5.1",
+  model: "yng/gemini-3-1-pro",
   messages: [{ role: "user", content: "Ship a tiny REST API example." }],
   stream: true
 });`;

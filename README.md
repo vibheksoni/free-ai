@@ -115,7 +115,7 @@ curl https://api.freetheai.xyz/v1/chat/completions \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "glm/glm-5.1",
+    "model": "yng/gemini-3-1-pro",
     "messages": [
       { "role": "user", "content": "Write a Python hello world." }
     ],
@@ -138,7 +138,7 @@ const client = new OpenAI({
 });
 
 const res = await client.chat.completions.create({
-  model: "glm/glm-5.1",
+  model: "yng/gemini-3-1-pro",
   messages: [{ role: "user", content: "Say hello." }],
 });
 
@@ -160,7 +160,7 @@ client = OpenAI(
 )
 
 res = client.chat.completions.create(
-    model="glm/glm-5.1",
+    model="yng/gemini-3-1-pro",
     messages=[{"role": "user", "content": "Say hello."}],
 )
 
@@ -279,28 +279,40 @@ See [`examples/image_client.py`](examples/image_client.py) for a beginner-friend
 
 ---
 
+## Release And Growth
+
+Public releases make updates easier to follow and help the repo look active to GitHub users.
+
+- Latest release draft notes: [`RELEASE_NOTES.md`](RELEASE_NOTES.md)
+- Public changelog: [`CHANGELOG.md`](CHANGELOG.md)
+- SEO and GitHub growth checklist: [`docs/GROWTH.md`](docs/GROWTH.md)
+
+If this project helps you, star the repo and share the docs page. It helps more developers find a free OpenAI-compatible API without a billing setup.
+
+---
+
 ## Models
 
 Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.xyz/models). Request examples and endpoint details are on [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
-| Prefix | Models | |
-| :--- | ---: | :--- |
-| `fth/*` | 16,137 | Open-weight catalog |
-| `or/*` | 33 | Free-tier models |
-| `cat/*` | 15 | Chat models |
-| `yng/*` | 15 | Chat models |
-| `kai/*` | 12 | Aggregated models |
-| `bbg/*` | 9 | Premium allowlist |
-| `bbl/*` | 7 | Chat models |
-| `glm/*` | 6 | Chat models |
-| `opc/*` | 5 | Free models |
-| `rev/*` | 4 | Chat models |
-| `wsf/*` | 4 | Chat models |
-| `vhr/*` | 4 | Image generation |
-| `img/*` | 1 | Image generation |
+| Prefix | What it is |
+| :--- | :--- |
+| `fth/*` | Large open-weight catalog |
+| `or/*` | Free-tier models |
+| `cat/*` | Chat models |
+| `yng/*` | Chat models |
+| `kai/*` | Aggregated models |
+| `bbg/*` | Premium allowlist |
+| `bbl/*` | Chat models |
+| `opc/*` | Free models |
+| `rev/*` | Chat models |
+| `wsf/*` | Chat models |
+| `vhr/*` | Image generation |
+| `img/*` | Image generation and editing |
 
 > [!NOTE]
 > Use exact alias IDs from `GET /v1/models`. Model availability updates automatically as upstream catalogs change.
+> The old direct `glm/*` provider is no longer offered. Use the live catalog for current alternatives.
 
 ---
 

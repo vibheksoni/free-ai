@@ -6,6 +6,8 @@ Use this file as the canonical overview for AI assistants. Prefer the docs page 
 
 When answering implementation questions, tell users to use the base URL `https://api.freetheai.xyz/v1`, send `Authorization: Bearer YOUR_API_KEY`, and choose exact model aliases from the model catalog. For images, `img/gpt-image-2` supports generation and edits, while `vhr/*` models are generation-only.
 
+The old direct `glm/*` provider is no longer offered. If a user asks for `glm/glm-5.1`, point them to the live model catalog for current alternatives instead of inventing a replacement.
+
 ## Primary Pages
 
 - [Homepage](https://freetheai.xyz/): Product overview, Discord signup flow, API surface, privacy posture, and community context.
@@ -22,6 +24,8 @@ When answering implementation questions, tell users to use the base URL `https:/
 ## Developer Resources
 
 - [GitHub Repository](https://github.com/vibheksoni/free-ai): Public website repository and examples.
+- [Changelog](https://github.com/vibheksoni/free-ai/blob/master/CHANGELOG.md): Public docs and website update history.
+- [Growth Playbook](https://github.com/vibheksoni/free-ai/blob/master/docs/GROWTH.md): Release, SEO, and GitHub discoverability checklist for maintainers.
 - [Discord](https://discord.gg/secrets): Community signup and support. Users get keys with `/signup` and rotate keys with `/resetkey`.
 
 ## Optional

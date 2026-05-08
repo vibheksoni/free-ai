@@ -1,7 +1,7 @@
 export const siteConfig = {
 	title: 'FreeTheAi',
 	description:
-		'Free OpenAI-compatible API with 16,000+ models. Chat completions, streaming, tool calling, image generation, image editing, and Anthropic messages — all behind a single free key from Discord.',
+		'Free OpenAI-compatible AI API with 16,000+ models, Discord key signup, chat completions, streaming, tool calling, image generation, image editing, and Anthropic messages.',
 	site: 'https://freetheai.xyz',
 	author: {
 		name: 'FreeTheAi',
