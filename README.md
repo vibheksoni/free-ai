@@ -98,7 +98,7 @@ Point any OpenAI SDK at the base URL
 | `/v1/images/generations` | `POST` | Image generation |
 | `/v1/images/edits` | `POST` | Image editing |
 | `/v1/models` | `GET` | Authenticated model catalog |
-| `/v1/models/full` | `GET` | Expanded model catalog with tier metadata |
+| `/v1/models/full` | `GET` | Expanded model catalog with throughput policy metadata |
 | `/v1/models/leaderboard` | `GET` | Site-key top model leaderboard |
 | `/v1/health` | `GET` | Health check |
 
@@ -366,7 +366,7 @@ Prompt and completion text are **not stored**.
 | Command | Description |
 | :--- | :--- |
 | `/tiers` | View rate limit tiers |
-| `/tiermodels` | Models per access tier |
+| `/tiermodels` | Models grouped by provider prefix |
 | `/leaderboard` | Top users |
 | `/modelleaderboard` | Top models |
 | `/modelstats` | Stats for a model |

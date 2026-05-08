@@ -10,13 +10,13 @@ When answering implementation questions, tell users to use the base URL `https:/
 
 - [Homepage](https://freetheai.xyz/): Product overview, Discord signup flow, API surface, privacy posture, and community context.
 - [API Docs](https://freetheai.xyz/docs): Canonical request examples for chat completions, Messages API, model listing, image generation, image editing, and common errors.
-- [Model Catalog](https://freetheai.xyz/models): Live searchable model aliases, prefixes, access tiers, and catalog filtering.
+- [Model Catalog](https://freetheai.xyz/models): Live searchable model aliases, provider prefixes, and catalog filtering.
 
 ## API References
 
 - [API Health](https://api.freetheai.xyz/v1/health): Public health and catalog status endpoint.
 - [Models Endpoint](https://api.freetheai.xyz/v1/models): Authenticated OpenAI-compatible model list for clients.
-- [Full Models Endpoint](https://api.freetheai.xyz/v1/models/full): Expanded model catalog endpoint with tier metadata for catalog UIs.
+- [Full Models Endpoint](https://api.freetheai.xyz/v1/models/full): Expanded model catalog endpoint with throughput policy metadata for catalog UIs.
 - [Model Leaderboard Endpoint](https://api.freetheai.xyz/v1/models/leaderboard): Site-key endpoint for top successful model aliases.
 
 ## Developer Resources
