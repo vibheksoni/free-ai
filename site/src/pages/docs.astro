@@ -112,7 +112,7 @@ const endpoints = [
 	['POST', '/v1/chat/completions', 'OpenAI-compatible chat, streaming, tool calling, and multi-turn conversations.'],
 	['POST', '/v1/messages', 'Anthropic-style Messages API for compatible clients and frameworks.'],
 	['GET', '/v1/models', 'Authenticated model list for normal clients.'],
-	['GET', '/v1/models/full', 'Expanded model catalog with tier metadata for catalog UIs.'],
+	['GET', '/v1/models/full', 'Expanded model catalog with throughput policy metadata for catalog UIs.'],
 	['GET', '/v1/models/leaderboard', 'Site-key model leaderboard for public catalog and landing-page widgets.'],
 	['POST', '/v1/images/generations', 'Image generation with img/gpt-image-2 and vhr/* generation models.'],
 	['POST', '/v1/images/edits', 'Image editing with img/gpt-image-2 and a base64 data URL input image.'],
@@ -316,7 +316,7 @@ const imageModels = [
 								</div>
 								<div class="docs-row">
 									<code>403</code>
-									<span>The model is not available for your current access tier.</span>
+									<span>The model is unknown, disabled, or unavailable in the current catalog.</span>
 								</div>
 								<div class="docs-row">
 									<code>429</code>
