@@ -43,6 +43,9 @@
 .kb-text-field__textarea[data-invalid],
 .kb-number-field__input[data-invalid] { border-color: var(--danger); }
 
+.kb-collapsible__trigger::-webkit-details-marker,
+.kb-accordion__trigger::-webkit-details-marker { display: none; }
+
 /* ── Button ── */
 .kb-button {
   display: inline-flex;
@@ -226,7 +229,8 @@
   align-items: center;
   justify-content: center;
 }
-.kb-checkbox__label {
+.kb-checkbox__label,
+.kb-switch__label {
   color: var(--text);
   font-size: 0.9rem;
   cursor: pointer;
@@ -254,7 +258,6 @@
   transition: transform 200ms ease;
 }
 .kb-switch__thumb[data-checked] { transform: translateX(18px); }
-.kb-switch__label { color: var(--text); font-size: 0.9rem; cursor: pointer; user-select: none; }
 
 /* ── Dialog ── */
 .kb-dialog__overlay {
@@ -583,8 +586,6 @@
   list-style: none;
 }
 
-.kb-collapsible__trigger::-webkit-details-marker { display: none; }
-
 .kb-collapsible__trigger:hover {
   background: rgba(231, 197, 154, 0.04);
 }
@@ -737,7 +738,6 @@
   gap: 12px;
   list-style: none;
 }
-.kb-accordion__trigger::-webkit-details-marker { display: none; }
 .kb-accordion__trigger:hover { color: var(--amber); }
 
 .kb-accordion__trigger-content {
