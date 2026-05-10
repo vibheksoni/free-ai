@@ -271,12 +271,9 @@ export default function CatalogBrowser() {
                 >
                   <span class="material-symbols-outlined">content_copy</span>
                 </button>
-                <div class="model-card-bottom">
-                  <span class="model-index">
-                    #{(idx() + 1 + (page() - 1) * pageSize()).toLocaleString()}
-                  </span>
-                  <span>exact alias</span>
-                </div>
+                <span class="model-index">
+                  #{(idx() + 1 + (page() - 1) * pageSize()).toLocaleString()}
+                </span>
               </article>
             )}
           </For>

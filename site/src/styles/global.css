@@ -1178,8 +1178,7 @@ h3 {
 	background: #090909;
 }
 
-.catalog-stat span,
-.model-card-bottom {
+.catalog-stat span {
 	color: var(--dim);
 	font-family: var(--font-mono);
 	font-size: 0.72rem;
@@ -1335,13 +1334,6 @@ h3 {
 .model-card.is-image .model-kind {
 	border-color: rgba(231, 197, 154, 0.2);
 	color: var(--amber);
-}
-
-.model-card-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
 }
 
 .model-copy {
@@ -1802,6 +1794,11 @@ h3 {
 
 	.docs-code-group .copy-btn {
 		opacity: 1;
+	}
+
+	.model-copy {
+		display: inline-flex;
+		opacity: 0.85;
 	}
 }
 
