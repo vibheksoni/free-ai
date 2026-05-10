@@ -468,6 +468,47 @@ h3 {
 	width: 100%;
 }
 
+.docs-code-group {
+	position: relative;
+}
+.docs-code-group pre {
+	padding-right: 2.5rem;
+}
+
+.copy-btn {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: 1px solid var(--border);
+	border-radius: calc(var(--radius) * 0.75);
+	background: var(--surface);
+	color: var(--muted);
+	cursor: pointer;
+	opacity: 0;
+	transition: opacity 150ms ease;
+}
+.copy-btn:hover {
+	color: var(--text);
+	border-color: var(--accent);
+}
+.copy-btn:focus-visible {
+	opacity: 1;
+	outline: 2px solid var(--accent);
+	outline-offset: 1px;
+}
+.copy-btn .material-symbols-outlined {
+	font-size: 1rem;
+}
+
+.docs-code-group:hover .copy-btn {
+	opacity: 1;
+}
+
 .console-chip {
 	position: absolute;
 	z-index: 3;

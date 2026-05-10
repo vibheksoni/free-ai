@@ -160,7 +160,12 @@ const imageModels = [
 					<div class="dot-row"><span></span><span></span><span></span></div>
 					<div class="card-label">Base setup</div>
 				</div>
-				<pre><code>{baseSnippet}</code></pre>
+				<div class="docs-code-group">
+					<pre><code>{baseSnippet}</code></pre>
+					<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+						<span class="material-symbols-outlined">content_copy</span>
+					</button>
+				</div>
 			</div>
 		</section>
 
@@ -184,7 +189,12 @@ const imageModels = [
 						Join Discord and run <code>/signup</code>. Send the key as a bearer token.
 						If you lose it, run <code>/resetkey</code>.
 					</p>
-					<pre><code>{baseSnippet}</code></pre>
+					<div class="docs-code-group">
+						<pre><code>{baseSnippet}</code></pre>
+						<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+							<span class="material-symbols-outlined">content_copy</span>
+						</button>
+					</div>
 				</section>
 
 				<section class="panel docs-card" id="endpoints">
@@ -211,11 +221,21 @@ const imageModels = [
 					<div class="docs-code-grid">
 						<div>
 							<h3>curl</h3>
-							<pre><code>{chatCurlSnippet}</code></pre>
+							<div class="docs-code-group">
+								<pre><code>{chatCurlSnippet}</code></pre>
+								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+									<span class="material-symbols-outlined">content_copy</span>
+								</button>
+							</div>
 						</div>
 						<div>
 							<h3>JavaScript SDK</h3>
-							<pre><code>{openAISDKSnippet}</code></pre>
+							<div class="docs-code-group">
+								<pre><code>{openAISDKSnippet}</code></pre>
+								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+									<span class="material-symbols-outlined">content_copy</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -226,7 +246,12 @@ const imageModels = [
 					<p>
 						Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.
 					</p>
-					<pre><code>{messagesSnippet}</code></pre>
+					<div class="docs-code-group">
+						<pre><code>{messagesSnippet}</code></pre>
+						<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+							<span class="material-symbols-outlined">content_copy</span>
+						</button>
+					</div>
 				</section>
 
 				<section class="panel docs-card" id="models">
@@ -239,11 +264,21 @@ const imageModels = [
 					<div class="docs-code-grid">
 						<div>
 							<h3>Client catalog</h3>
-							<pre><code>{modelListSnippet}</code></pre>
+							<div class="docs-code-group">
+								<pre><code>{modelListSnippet}</code></pre>
+								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+									<span class="material-symbols-outlined">content_copy</span>
+								</button>
+							</div>
 						</div>
 						<div>
 							<h3>Full catalog</h3>
-							<pre><code>{fullModelListSnippet}</code></pre>
+							<div class="docs-code-group">
+								<pre><code>{fullModelListSnippet}</code></pre>
+								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+									<span class="material-symbols-outlined">content_copy</span>
+								</button>
+							</div>
 						</div>
 					</div>
 				</section>
@@ -269,15 +304,30 @@ const imageModels = [
 					<div class="docs-code-grid">
 						<div>
 							<h3>Image generation</h3>
-							<pre><code>{vhrImageSnippet}</code></pre>
+							<div class="docs-code-group">
+								<pre><code>{vhrImageSnippet}</code></pre>
+								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+									<span class="material-symbols-outlined">content_copy</span>
+								</button>
+							</div>
 						</div>
 						<div>
 							<h3>Image edit</h3>
-							<pre><code>{imageEditSnippet}</code></pre>
+							<div class="docs-code-group">
+								<pre><code>{imageEditSnippet}</code></pre>
+								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+									<span class="material-symbols-outlined">content_copy</span>
+								</button>
+							</div>
 						</div>
 					</div>
 					<h3>Python save helper</h3>
-					<pre><code>{pythonImageSnippet}</code></pre>
+					<div class="docs-code-group">
+						<pre><code>{pythonImageSnippet}</code></pre>
+						<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+							<span class="material-symbols-outlined">content_copy</span>
+						</button>
+					</div>
 				</section>
 
 				<section class="panel docs-card" id="errors">

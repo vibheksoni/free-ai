@@ -64,6 +64,27 @@ const navLinks: [string, string][] = [
 
 			<slot />
 		<ToastRegion client:load />
-		</div>
-	</body>
+	</div>
+
+	<script>
+		document.addEventListener("click", async (e) => {
+			const btn = e.target.closest(".copy-btn");
+			if (!btn) return;
+			const code = btn.parentElement?.querySelector("code");
+			if (!code) return;
+			try {
+				await navigator.clipboard.writeText(code.textContent ?? "");
+			} catch {
+				return;
+			}
+			const icon = btn.querySelector(".material-symbols-outlined");
+			if (icon) {
+				icon.textContent = "check";
+				setTimeout(() => {
+					icon.textContent = "content_copy";
+				}, 2000);
+			}
+		});
+	</script>
+</body>
 </html>
