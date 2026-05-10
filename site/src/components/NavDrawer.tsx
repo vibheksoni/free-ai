@@ -1,5 +1,6 @@
 import { createSignal } from "solid-js";
 import { Dialog } from "@kobalte/core/dialog";
+import { Tooltip } from "./ui";
 import { siteConfig } from "../config/site";
 
 const LINKS: [string, string, boolean][] = [
@@ -18,9 +19,11 @@ export default function NavDrawer() {
         class="nav-hamburger"
         aria-label="Open navigation menu"
       >
-        <span class="hamburger-bar" />
-        <span class="hamburger-bar" />
-        <span class="hamburger-bar" />
+        <Tooltip content="Menu">
+          <span class="hamburger-bar" />
+          <span class="hamburger-bar" />
+          <span class="hamburger-bar" />
+        </Tooltip>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay class="nav-drawer-overlay" />
@@ -51,10 +54,12 @@ export default function NavDrawer() {
               Join Discord
             </a>
           </div>
-          <Dialog.CloseButton class="nav-drawer__close">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-            </svg>
+          <Dialog.CloseButton class="nav-drawer__close" aria-label="Close menu">
+            <Tooltip content="Close">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </Tooltip>
           </Dialog.CloseButton>
         </Dialog.Content>
       </Dialog.Portal>

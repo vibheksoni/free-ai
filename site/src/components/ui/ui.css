@@ -534,3 +534,51 @@
   from { transform: translateX(0); opacity: 1; }
   to   { transform: translateX(calc(100% + var(--viewport-padding))); opacity: 0; }
 }
+
+/* ===== T O O L T I P =====
+   https://kobalte.dev/docs/core/components/tooltip */
+
+.kb-tooltip__trigger {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: inherit;
+  display: inline-flex;
+}
+
+.kb-tooltip__content {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  color: var(--text);
+  max-width: 260px;
+  transform-origin: var(--kb-tooltip-content-transform-origin);
+  animation: tooltipIn 180ms ease-out;
+  z-index: 10000;
+  pointer-events: none;
+}
+
+.kb-tooltip__content[data-expanded] {
+  animation: tooltipIn 180ms ease-out;
+}
+
+.kb-tooltip__content[data-closed] {
+  animation: tooltipOut 120ms ease-in;
+}
+
+.kb-tooltip__arrow {
+  fill: var(--bg);
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes tooltipOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.94); }
+}
