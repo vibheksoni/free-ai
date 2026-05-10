@@ -3,7 +3,7 @@ export { default as Checkbox } from "./Checkbox";
 export { default as Collapsible } from "./Collapsible";
 export { default as Dialog } from "./Dialog";
 export { default as NumberField } from "./NumberField";
-export { default as Progress } from "./Progress";
+
 export { default as RadioGroup } from "./RadioGroup";
 export type { RadioOption } from "./RadioGroup";
 export { default as Select } from "./Select";

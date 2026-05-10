@@ -4,8 +4,7 @@
 /* ── Shared states ── */
 .kb-text-field__label,
 .kb-number-field__label,
-.kb-select__label,
-.kb-progress__label {
+.kb-select__label {
   color: var(--muted);
   font-size: 0.85rem;
   font-weight: 500;
@@ -256,42 +255,6 @@
 }
 .kb-switch__thumb[data-checked] { transform: translateX(18px); }
 .kb-switch__label { color: var(--text); font-size: 0.9rem; cursor: pointer; user-select: none; }
-
-/* ── Progress ── */
-.kb-progress { display: grid; gap: 8px; }
-.kb-progress__label-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.kb-progress__value-label {
-  color: var(--dim);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-}
-.kb-progress__track {
-  height: 6px;
-  border-radius: 999px;
-  background: var(--border-strong);
-  overflow: hidden;
-}
-.kb-progress__fill {
-  height: 100%;
-  border-radius: 999px;
-  background: var(--amber);
-  width: var(--kb-progress-fill-width);
-  transition: width 300ms ease;
-}
-.kb-progress[data-indeterminate] .kb-progress__fill {
-  width: 40%;
-  animation: progressIndeterminate 1.4s ease infinite;
-}
-@keyframes progressIndeterminate {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(350%); }
-}
 
 /* ── Dialog ── */
 .kb-dialog__overlay {
