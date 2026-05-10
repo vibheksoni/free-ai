@@ -679,7 +679,6 @@ h3 {
 
 .steps-grid,
 .capability-grid,
-.usage-grid,
 .two-panel,
 .privacy-columns,
 .stats-grid {
@@ -696,7 +695,6 @@ h3 {
 }
 
 .capability-grid,
-.usage-grid,
 .two-panel {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
@@ -1163,7 +1161,6 @@ h3 {
 
 	.hero,
 	.split-section,
-	.usage-grid,
 	.live-usage-grid,
 	.two-panel,
 	.models-cta {

@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import LiveStats from '../components/LiveStats';
+import CodeTabs from '../components/CodeTabs';
 import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
@@ -213,28 +214,12 @@ const fairnessItems = [
 					For the full guide, open <a href="/docs">/docs</a>.
 				</p>
 			</div>
-			<div class="usage-grid">
-				<div class="panel code-panel">
-					<div class="panel-kicker">JavaScript SDK</div>
-					<h3>OpenAI-compatible client</h3>
-					<pre><code>{sdkSnippet}</code></pre>
-				</div>
-				<div class="panel code-panel">
-					<div class="panel-kicker">Messages route</div>
-					<h3>Anthropic-style request</h3>
-					<pre><code>{messagesSnippet}</code></pre>
-				</div>
-				<div class="panel code-panel">
-					<div class="panel-kicker">Image generation</div>
-					<h3>vhr/gpt_image_2</h3>
-					<pre><code>{imageGenSnippet}</code></pre>
-				</div>
-				<div class="panel code-panel">
-					<div class="panel-kicker">Image editing · Python</div>
-					<h3>Prompt + base64 input</h3>
-					<pre><code>{imageEditSnippet}</code></pre>
-				</div>
-			</div>
+			<CodeTabs client:load examples={[
+				{ kicker: "JavaScript SDK", title: "OpenAI-compatible client", code: sdkSnippet },
+				{ kicker: "Messages route", title: "Anthropic-style request", code: messagesSnippet },
+				{ kicker: "Image generation", title: "vhr/gpt_image_2", code: imageGenSnippet },
+				{ kicker: "Image editing · Python", title: "Prompt + base64 input", code: imageEditSnippet },
+			]} />
 		</section>
 
 		<section class="models-cta" id="models">
