@@ -1,5 +1,6 @@
 export { default as Button } from "./Button";
 export { default as Checkbox } from "./Checkbox";
+export { default as Collapsible } from "./Collapsible";
 export { default as Dialog } from "./Dialog";
 export { default as NumberField } from "./NumberField";
 export { default as Progress } from "./Progress";
