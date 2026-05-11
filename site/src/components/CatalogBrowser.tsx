@@ -14,11 +14,24 @@ const PAGE_SIZE = 80;
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 const modelPrefix = (id: string): string => id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";
 
+const readCatalogParams = () => {
+  if (typeof window === "undefined") return { prefix: "all", query: "" };
+  const params = new URLSearchParams(window.location.search);
+  const rawPrefix = params.get("prefix")?.trim() || "all";
+  return {
+    prefix: rawPrefix === "*" ? "all" : rawPrefix,
+    query: params.get("q")?.trim() || "",
+  };
+};
+
 export default function CatalogBrowser() {
+  const initial = readCatalogParams();
   const [allModels, setAllModels] = createSignal<Model[]>([]);
-  const [query, setQuery] = createSignal("");
+  const [query, setQuery] = createSignal(initial.query);
   const [page, setPage] = createSignal(1);
-  const [prefix, setPrefix] = createSignal("all");
+  const [prefix, setPrefix] = createSignal(initial.prefix);
+  const [source, setSource] = createSignal<"live" | "snapshot" | "error">("live");
+  const [loadError, setLoadError] = createSignal("");
 
   const prefixCounts = () => {
     const m = new Map<string, number>();
@@ -44,10 +57,35 @@ export default function CatalogBrowser() {
     if (page() > pageCount()) setPage(pageCount());
   });
 
+  createEffect(() => {
+    const selected = prefix();
+    if (selected === "all") return;
+    if (allModels().length === 0) return;
+    if (!prefixCounts().some(([pfx]) => pfx === selected)) {
+      setPrefix("all");
+      setPage(1);
+    }
+  });
+
+  createEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const selected = prefix();
+    const search = query().trim();
+    if (selected === "all") params.delete("prefix");
+    else params.set("prefix", selected);
+    if (search) params.set("q", search);
+    else params.delete("q");
+    const next = `${window.location.pathname}${params.toString() ? `?${params}` : ""}${window.location.hash}`;
+    if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+      window.history.replaceState(null, "", next);
+    }
+  });
+
   onMount(async () => {
     try {
-      let items: any[],
-        src = "live";
+      let items: any[];
+      let src: "live" | "snapshot" = "live";
       try {
         const res = await fetch(LIVE_ENDPOINT, {
           headers: { Accept: "application/json", Authorization: `Bearer ${LIVE_KEY}` },
@@ -76,8 +114,20 @@ export default function CatalogBrowser() {
         }))
         .filter((m) => !DISABLED.has(m.prefix));
       setAllModels([...models].sort((a, b) => collator.compare(a.id, b.id)));
-    } catch {}
+      setSource(src);
+    } catch (err) {
+      setSource("error");
+      setLoadError(err instanceof Error ? err.message : "Failed to load model catalog.");
+    }
   });
+
+  const providerLabel = () => prefix() === "all" ? "all providers" : `${prefix()}/*`;
+  const resultLabel = () => {
+    if (allModels().length === 0 && source() !== "error") return "Loading model catalog...";
+    const count = filteredModels().length;
+    const plural = count === 1 ? "model" : "models";
+    return `${count.toLocaleString()} ${plural} across ${providerLabel()}`;
+  };
 
   return (
     <div class="panel catalog-panel">
@@ -85,6 +135,15 @@ export default function CatalogBrowser() {
         <div>
           <div class="eyebrow">LIVE INDEX</div>
           <h3>Find the alias your client should send.</h3>
+          <p>
+            Search exact aliases or filter by provider prefix. Every visible alias can be sent as the
+            <code> model</code> value.
+          </p>
+        </div>
+        <div class="catalog-meta" aria-live="polite">
+          <span>{source() === "snapshot" ? "Snapshot catalog" : source() === "error" ? "Catalog unavailable" : "Live catalog"}</span>
+          <span>{prefixCounts().length.toLocaleString()} providers</span>
+          <span>{allModels().length.toLocaleString()} aliases</span>
         </div>
       </div>
 
@@ -100,7 +159,7 @@ export default function CatalogBrowser() {
         </div>
         <div class="catalog-prefixes">
           <button class={`catalog-chip ${prefix() === "all" ? "is-active" : ""}`} onClick={() => { setPrefix("all"); setPage(1); }}>All</button>
-          <For each={prefixCounts().slice(0, 8)}>
+          <For each={prefixCounts()}>
             {([pfx, count]) => (
               <button class={`catalog-chip ${prefix() === pfx ? "is-active" : ""}`} onClick={() => { setPrefix(pfx); setPage(1); }}>
                 {pfx}/* <span>{count}</span>
@@ -110,12 +169,23 @@ export default function CatalogBrowser() {
         </div>
       </div>
 
-      <div class="catalog-results">
+      <div class="catalog-summary" aria-live="polite">
+        <span>{resultLabel()}</span>
+        <Show when={query().trim()}>
+          <button type="button" onClick={() => { setQuery(""); setPage(1); }}>
+            Clear search
+          </button>
+        </Show>
+      </div>
+
+      <div class={`catalog-results ${visibleModels().length <= 6 ? "is-short" : ""}`}>
         <Show
           when={visibleModels().length > 0}
           fallback={
             <div class="catalog-empty">
-              {allModels().length === 0
+              {source() === "error"
+                ? loadError()
+                : allModels().length === 0
                 ? <Skeleton width="200" height="14" />
                 : "No models match your search."}
             </div>
