@@ -376,6 +376,56 @@ h3 {
 	color: var(--accent);
 }
 
+.home-live-stats {
+	display: grid;
+	gap: 18px;
+	justify-items: center;
+	width: 100%;
+}
+
+.home-live-metrics {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: clamp(16px, 4vw, 40px);
+}
+
+.home-client-strip {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 8px;
+	max-width: 520px;
+}
+
+.home-client-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	min-height: 30px;
+	padding: 0 10px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface);
+	color: var(--muted);
+	font-family: var(--font-mono);
+	font-size: 0.68rem;
+	letter-spacing: 0.01em;
+}
+
+.home-client-chip span {
+	max-width: 130px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.home-client-chip strong {
+	color: var(--text);
+	font-size: 0.7rem;
+	font-weight: 700;
+}
+
 .hero-console {
 	position: relative;
 	min-width: 0;

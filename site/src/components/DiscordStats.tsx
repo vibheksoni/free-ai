@@ -1,8 +1,16 @@
 import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 
+type ClientUsage = {
+  client_name: string;
+  rank: number;
+  total_requests: number;
+  unique_users: number;
+};
+
 export default function LiveStats() {
   const [health, setHealth] = createSignal<{
     catalog: { model_count: number };
+    clients?: ClientUsage[];
     total_tokens_served: { total: number; successful_requests: number };
   } | null>(null);
 
@@ -34,6 +42,7 @@ export default function LiveStats() {
     if (!h) return null;
 
     return {
+      clients: (h.clients ?? []).slice(0, 4),
       models: h.catalog?.model_count ?? 0,
       requests: h.total_tokens_served?.successful_requests ?? 0,
       tokens: h.total_tokens_served?.total ?? 0,
@@ -41,25 +50,37 @@ export default function LiveStats() {
   });
 
   return (
-    <div style={{ display: "flex", gap: "clamp(16px,4vw,40px)", "flex-wrap": "wrap", "justify-content": "center" }}>
-      <div style={{"text-align": "center"}}>
-        <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
-          {stats() ? stats()!.models.toLocaleString() : "..."}
+    <div class="home-live-stats">
+      <div class="home-live-metrics">
+        <div style={{"text-align": "center"}}>
+          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
+            {stats() ? stats()!.models.toLocaleString() : "..."}
+          </div>
+          <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>models</div>
         </div>
-        <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>models</div>
-      </div>
-      <div style={{"text-align": "center"}}>
-        <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
-          {stats() ? fmt(stats()!.tokens) : "..."}
+        <div style={{"text-align": "center"}}>
+          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
+            {stats() ? fmt(stats()!.tokens) : "..."}
+          </div>
+          <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>tokens served</div>
         </div>
-        <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>tokens served</div>
-      </div>
-      <div style={{"text-align": "center"}}>
-        <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
-          {stats() ? stats()!.requests.toLocaleString() : "..."}
+        <div style={{"text-align": "center"}}>
+          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
+            {stats() ? stats()!.requests.toLocaleString() : "..."}
+          </div>
+          <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>requests</div>
         </div>
-        <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>requests</div>
       </div>
+      {stats() && stats()!.clients.length > 0 && (
+        <div class="home-client-strip" aria-label="Top API clients">
+          {stats()!.clients.map((client) => (
+            <div class="home-client-chip">
+              <span>{client.client_name}</span>
+              <strong>{fmt(client.total_requests)}</strong>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
