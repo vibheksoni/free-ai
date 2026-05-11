@@ -15,25 +15,6 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
     "model": "yng/gemini-3-1-pro",
     "messages": [{ "role": "user", "content": "Hello" }]
   }'`;
-
-let discordOnline = 0;
-let modelCount = 0;
-let tokensServed = 0;
-let requestsServed = 0;
-
-try {
-  const [d, h] = await Promise.all([
-    fetch("https://discord.com/api/guilds/1461555807731585158/widget.json"),
-    fetch("https://api.freetheai.xyz/v1/health"),
-  ]);
-  if (d.ok) { const data = await d.json(); discordOnline = data.presence_count || 0; }
-  if (h.ok) {
-    const data = await h.json();
-    modelCount = data.catalog?.model_count || 0;
-    tokensServed = data.total_tokens_served?.total || 0;
-    requestsServed = data.total_tokens_served?.successful_requests || 0;
-  }
-} catch {}
 ---
 
 <Layout
@@ -63,7 +44,7 @@ try {
       </div>
 
       <div style="margin-top:56px;display:flex;flex-direction:column;align-items:center">
-        <LiveStats client:load discordOnline={discordOnline} modelCount={modelCount} tokensServed={tokensServed} requestsServed={requestsServed} />
+        <LiveStats client:load />
         <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:500">
           Join Discord <span style="font-size:1rem">&rarr;</span>
         </a>
