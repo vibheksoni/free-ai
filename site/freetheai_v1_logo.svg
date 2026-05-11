@@ -1,0 +1,51 @@
+<svg width="1200" height="1200" viewBox="0 0 1200 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="45%" r="65%">
+      <stop offset="0%" stop-color="#14171A"/>
+      <stop offset="100%" stop-color="#050607"/>
+    </radialGradient>
+    <linearGradient id="ringGrad" x1="280" y1="260" x2="920" y2="940" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#66C5F1"/>
+      <stop offset="18%" stop-color="#D772EC"/>
+      <stop offset="36%" stop-color="#F64F39"/>
+      <stop offset="52%" stop-color="#FA9D2E"/>
+      <stop offset="66%" stop-color="#FFCE43"/>
+      <stop offset="82%" stop-color="#1DCDA1"/>
+      <stop offset="100%" stop-color="#398AC7"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.4 0 0 0 0 0.77 0 0 0 0 0.95 0 0 0 0.45 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="1200" fill="url(#bg)"/>
+
+  <!-- broken open ring, symbolizing free/open AI -->
+  <g filter="url(#softGlow)" stroke-linecap="round">
+    <path d="M352 464 A280 280 0 0 1 560 326" stroke="url(#ringGrad)" stroke-width="14"/>
+    <path d="M640 326 A280 280 0 0 1 848 464" stroke="url(#ringGrad)" stroke-width="14"/>
+    <path d="M848 736 A280 280 0 0 1 640 874" stroke="url(#ringGrad)" stroke-width="14"/>
+    <path d="M560 874 A280 280 0 0 1 352 736" stroke="url(#ringGrad)" stroke-width="14"/>
+  </g>
+
+  <!-- FTA monogram -->
+  <g stroke="#F4F6F7" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" filter="url(#softGlow)">
+    <!-- F -->
+    <path d="M430 548 H520"/>
+    <path d="M430 548 V642"/>
+    <path d="M430 595 H505"/>
+    <!-- T -->
+    <path d="M556 548 H668"/>
+    <path d="M612 548 V646"/>
+    <!-- A -->
+    <path d="M700 646 L758 548 L816 646"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="600" y="795" text-anchor="middle" fill="#F4F6F7" font-family="Montserrat, Avenir Next, Arial, sans-serif" font-size="44" font-weight="300" letter-spacing="24">FreeTheAI</text>
+</svg>

@@ -70,7 +70,7 @@
   background: var(--accent);
   color: #0a0a0a;
 }
-.kb-button[data-variant="primary"]:hover { background: rgba(255, 255, 255, 0.85); }
+.kb-button[data-variant="primary"]:hover { background: #e55d00; }
 .kb-button[data-variant="ghost"] {
   border-color: var(--border);
   background: transparent;
@@ -78,7 +78,7 @@
 }
 .kb-button[data-variant="ghost"]:hover {
   border-color: var(--border-strong);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--control-bg);
 }
 .kb-button[data-variant="danger"] {
   border-color: var(--danger);
@@ -198,7 +198,7 @@
   cursor: pointer;
   outline: none;
 }
-.kb-select__item[data-highlighted] { background: rgba(255, 255, 255, 0.06); color: var(--text); }
+.kb-select__item[data-highlighted] { background: var(--control-bg); color: var(--text); }
 .kb-select__item[data-selected] { color: var(--text); }
 .kb-select__item-indicator { color: var(--amber); }
 
@@ -486,7 +486,7 @@
 }
 .kb-toast__close:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--control-bg);
 }
 
 .kb-toast__progress-track {
@@ -657,7 +657,7 @@
 }
 .kb-radio-group__item:hover:not([data-disabled]) {
   border-color: var(--border-strong);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--control-bg);
 }
 .kb-radio-group__item[data-checked]:hover {
   border-color: var(--accent);

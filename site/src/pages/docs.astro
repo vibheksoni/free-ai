@@ -2,11 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import FeedbackPanel from '../components/FeedbackPanel';
 import DocsAccordion from '../components/DocsAccordion';
-import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
-const pageDescription =
-	'FreeTheAi API documentation for chat completions, Anthropic-style messages, model listing, image generation, and image editing.';
+const pageDescription = 'FreeTheAi API documentation for chat completions, model listing, image generation, and image editing.';
 
 const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
 
@@ -130,27 +128,7 @@ const imageModels = [
 	['vhr/gpt_image_2', 'Generation only', 'Text-to-image model.'],
 	['vhr/nano_banana_2', 'Generation only', 'Text-to-image model.'],
 	['vhr/bytedance_seedream_v4', 'Generation only', 'Text-to-image model.'],
-];
 
-const quickStarts = [
-	{
-		icon: 'vpn_key',
-		title: 'Get a key',
-		text: 'Join Discord, run /signup, and send the key as a bearer token.',
-		href: '#auth',
-	},
-	{
-		icon: 'terminal',
-		title: 'Make a chat call',
-		text: 'Use curl or any OpenAI-compatible SDK against /v1/chat/completions.',
-		href: '#chat',
-	},
-	{
-		icon: 'deployed_code',
-		title: 'Pick a model',
-		text: 'Browse exact aliases, tiers, and image-capable models before shipping.',
-		href: '/models',
-	},
 ];
 ---
 
@@ -161,63 +139,9 @@ const quickStarts = [
 	currentPath="/docs"
 >
 	<main class="docs-main">
-		<section class="hero docs-hero">
-			<div class="hero-copy">
-				<div class="eyebrow">API DOCS</div>
-				<h1>Build against one free API.</h1>
-				<p class="hero-text">
-					Use the same key for chat, streaming, Messages API clients, model catalog browsing,
-					image generation, and image edits.
-				</p>
-				<div class="hero-actions">
-					<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-						<span class="material-symbols-outlined">vpn_key</span>
-						<span>Get a Key</span>
-					</a>
-					<a class="ghost-button" href="/models">
-						<span class="material-symbols-outlined">travel_explore</span>
-						<span>Browse Models</span>
-					</a>
-				</div>
-			</div>
-			<div class="code-card">
-				<div class="card-head">
-					<div class="dot-row"><span></span><span></span><span></span></div>
-					<div class="card-label">Base setup</div>
-				</div>
-				<div class="docs-code-group">
-					<pre><code>{baseSnippet}</code></pre>
-					<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-						<span class="material-symbols-outlined">content_copy</span>
-					</button>
-				</div>
-			</div>
-		</section>
-
-		<section class="section docs-start" id="start" aria-labelledby="docs-start-title">
-			<div class="section-head docs-start-head">
-				<div class="eyebrow">START HERE</div>
-				<h2 id="docs-start-title">Fast path to a first response.</h2>
-				<p>
-					The API is intentionally small: authenticate once, choose an exact model alias,
-					then call the OpenAI-compatible or Messages endpoint your client already supports.
-				</p>
-			</div>
-			<div class="docs-start-grid">
-				{quickStarts.map((item) => (
-					<a class="docs-start-card" href={item.href}>
-						<span class="docs-start-icon material-symbols-outlined" aria-hidden="true">{item.icon}</span>
-						<strong>{item.title}</strong>
-						<span class="docs-start-copy">{item.text}</span>
-					</a>
-				))}
-			</div>
-		</section>
-
 		<section class="docs-layout">
 			<aside class="docs-sidebar">
 				<span class="docs-sidebar-label">On this page</span>
-				<a href="#start">Start</a>
 				<a href="#auth">Auth</a>
 				<a href="#endpoints">Endpoints</a>
 				<a href="#chat">Chat</a>
@@ -229,6 +153,10 @@ const quickStarts = [
 			</aside>
 
 			<div class="docs-content">
+				<div class="docs-content-head">
+					<h1>API Docs</h1>
+					<p>Chat, models, images — one key, one base URL.</p>
+				</div>
 				<DocsAccordion
 					baseSnippet={baseSnippet}
 					chatCurlSnippet={chatCurlSnippet}

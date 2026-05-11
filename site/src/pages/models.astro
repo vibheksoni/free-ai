@@ -4,126 +4,16 @@ import CatalogBrowser from '../components/CatalogBrowser';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
 const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
-
-const modelPaths = [
-	{
-		icon: 'chat',
-		title: 'Chat models',
-		copy: 'Use text aliases with the OpenAI-compatible chat completions endpoint.',
-		meta: 'POST /v1/chat/completions',
-		href: '/docs#chat',
-	},
-	{
-		icon: 'image',
-		title: 'Image models',
-		copy: 'Filter to image-capable aliases before wiring generations or edits.',
-		meta: 'img/* and vhr/*',
-		href: '#catalog',
-	},
-	{
-		icon: 'hub',
-		title: 'Provider prefixes',
-		copy: 'Group aliases by prefix when you need stable families for routing.',
-		meta: 'yng/*, fth/*, cat/*',
-		href: '#catalog',
-	},
-];
 ---
 
 <Layout
 	title="Free AI Model Catalog"
-	description="Search and browse the FreeTheAi live model catalog. 16,000+ free AI models including GPT, Claude, Gemini, DeepSeek, and open-weight models. Filter by provider prefix and exact alias."
+	description="Live model index for FreeTheAi — search model aliases by ID."
 	jsonLd={jsonLd}
 	currentPath="/models"
 >
 	<main class="models-main">
-		<section class="hero catalog-hero">
-			<div class="hero-copy">
-				<div class="eyebrow">MODEL CATALOG</div>
-				<h1>Find the exact model alias.</h1>
-				<p class="hero-text">
-					Search the live model index, filter by provider prefix, and copy the alias your client should
-					send to FreeTheAi endpoints.
-				</p>
-				<div class="hero-actions">
-					<a class="primary-button" href="https://api.freetheai.xyz" target="_blank" rel="noreferrer">
-						<span class="material-symbols-outlined">api</span>
-						<span>Open API</span>
-					</a>
-					<a class="ghost-button" href="/docs#chat">
-						<span class="material-symbols-outlined">article</span>
-						<span>Read docs</span>
-					</a>
-				</div>
-			</div>
-
-			<div class="stats-card catalog-callout">
-				<div class="stats-top">
-					<div class="stat-number">15k+</div>
-					<div class="stat-copy">live aliases available now</div>
-				</div>
-				<div class="stats-grid">
-					<div class="mini-stat">
-						<span class="material-symbols-outlined">view_list</span>
-						<div>
-							<strong>Source</strong>
-							<code>/v1/models/full</code>
-						</div>
-					</div>
-					<div class="mini-stat">
-						<span class="material-symbols-outlined">search</span>
-						<div>
-							<strong>UI</strong>
-							<code>search + pagination</code>
-						</div>
-					</div>
-					<div class="mini-stat">
-						<span class="material-symbols-outlined">hub</span>
-						<div>
-							<strong>Prefixes</strong>
-							<code>by provider</code>
-						</div>
-					</div>
-					<div class="mini-stat">
-						<span class="material-symbols-outlined">database</span>
-						<div>
-							<strong>Total</strong>
-							<code>from live endpoint</code>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<section class="section models-start" id="model-paths" aria-labelledby="model-paths-title">
-			<div class="section-head models-start-head">
-				<div class="eyebrow">START HERE</div>
-				<h2 id="model-paths-title">Choose the catalog view that matches your build.</h2>
-			</div>
-
-			<div class="models-start-grid">
-				{modelPaths.map((item) => (
-					<a class="models-start-card" href={item.href}>
-						<span class="material-symbols-outlined models-start-icon">{item.icon}</span>
-						<strong>{item.title}</strong>
-						<span class="models-start-copy">{item.copy}</span>
-						<code>{item.meta}</code>
-					</a>
-				))}
-			</div>
-		</section>
-
 		<section class="section models-catalog-section" id="catalog">
-			<div class="section-head">
-				<div class="eyebrow">BROWSE</div>
-				<h2>Search, filter, sort, and page the live list.</h2>
-				<p>
-					Alias ids are exact. Use the same values your client passes to
-					<code>POST /v1/chat/completions</code>, <code>POST /v1/images/generations</code>,
-					or <code>POST /v1/images/edits</code>.
-				</p>
-			</div>
-
 			<CatalogBrowser client:load />
 		</section>
 	</main>

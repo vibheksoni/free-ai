@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CanvasScroller from '../components/CanvasScroller';
+import LiveStats from '../components/DiscordStats';
+import { siteConfig } from '../config/site';
+
+const jsonLd = [
+  { "@context": "https://schema.org", "@type": "WebSite", "name": "FreeTheAi", "url": "https://freetheai.xyz" }
+];
+
+const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "yng/gemini-3-1-pro",
+    "messages": [{ "role": "user", "content": "Hello" }]
+  }'`;
+
+let discordOnline = 0;
+let modelCount = 0;
+let tokensServed = 0;
+let requestsServed = 0;
+
+try {
+  const [d, h] = await Promise.all([
+    fetch("https://discord.com/api/guilds/1461555807731585158/widget.json"),
+    fetch("https://api.freetheai.xyz/v1/health"),
+  ]);
+  if (d.ok) { const data = await d.json(); discordOnline = data.presence_count || 0; }
+  if (h.ok) {
+    const data = await h.json();
+    modelCount = data.catalog?.model_count || 0;
+    tokensServed = data.total_tokens_served?.total || 0;
+    requestsServed = data.total_tokens_served?.successful_requests || 0;
+  }
+} catch {}
+---
+
+<Layout
+  title="FreeTheAi — Free AI API"
+  description="Free OpenAI-compatible API. 16,000+ models. Get a key via Discord."
+  jsonLd={jsonLd}
+  currentPath="/home"
+>
+  <main>
+    <CanvasScroller client:load />
+    <section style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center" data-parallax="0.3">
+      <h1 style="font-size:clamp(2.6rem,6vw,4rem);line-height:1.05;letter-spacing:-0.04em" data-parallax="0.2">
+        Free AI API.
+      </h1>
+      <p style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px">
+        OpenAI-compatible. 16,000+ models.<br>No card. No catch.
+      </p>
+      <div style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+        <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+          <span>Get a free API key</span>
+          <span style="opacity:0.6;font-size:0.85rem;margin-left:4px">&rarr;</span>
+        </a>
+      </div>
+      <div style="display:flex;gap:16px;margin-top:16px;justify-content:center">
+        <a href="/models" style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px">Browse Models</a>
+        <a href="/docs" style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px">Read Docs</a>
+      </div>
+
+      <div style="margin-top:56px;display:flex;flex-direction:column;align-items:center">
+        <LiveStats client:load discordOnline={discordOnline} modelCount={modelCount} tokensServed={tokensServed} requestsServed={requestsServed} />
+        <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:500">
+          Join Discord <span style="font-size:1rem">&rarr;</span>
+        </a>
+      </div>
+
+      <div class="code-card" style="margin-top:64px;text-align:left" data-parallax="-0.4">
+        <div class="card-head">
+          <div class="dot-row"><span></span><span></span><span></span></div>
+          <div class="card-label">Try it</div>
+        </div>
+        <div class="docs-code-group">
+          <pre><code>{snippet}</code></pre>
+          <button class="copy-btn" type="button" title="Copy">
+            <span class="material-symbols-outlined">content_copy</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Lightweight scroll parallax
+    const els = document.querySelectorAll('[data-parallax]');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const maxY = document.documentElement.scrollHeight - window.innerHeight;
+          const ratio = maxY > 0 ? window.scrollY / maxY : 0;
+          els.forEach(el => {
+            const speed = parseFloat(el.getAttribute('data-parallax') || '0');
+            el.style.transform = `translateY(${-ratio * speed * 120}px)`;
+            el.style.willChange = 'transform';
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }, { passive: true });
+  </script>
+</Layout>

@@ -6,6 +6,7 @@ interface ComboboxProps {
   value: string;
   label?: string;
   placeholder?: string;
+  allowsCustomValue?: boolean;
   onChange: (value: string) => void;
   onInputChange: (value: string) => void;
   class?: string;
@@ -18,6 +19,7 @@ export default function Combobox(props: ComboboxProps) {
       value={props.value}
       onChange={props.onChange}
       onInputChange={props.onInputChange}
+      allowsCustomValue={props.allowsCustomValue}
       placeholder={props.placeholder}
       itemComponent={(ip) => (
         <KCombobox.Item item={ip.item} class="kb-combobox__item">

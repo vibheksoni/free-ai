@@ -33,7 +33,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "Get a key",
       eyebrow: "Auth",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <p>
             Join Discord and run <code>/signup</code>. Send the key as a bearer token.
             If you lose it, run <code>/resetkey</code>.
@@ -47,7 +47,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "Supported routes",
       eyebrow: "Endpoints",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <div class="docs-table">
             <For each={props.endpoints}>
               {([method, route, desc]) => (
@@ -67,7 +67,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "OpenAI-compatible chat",
       eyebrow: "Chat Completions",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <p>
             Point OpenAI-compatible clients at <code>https://api.freetheai.xyz/v1</code>.
             Use exact model aliases from <a href="/models">/models</a>.
@@ -90,7 +90,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "Anthropic-style clients",
       eyebrow: "Messages API",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <p>
             Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.
           </p>
@@ -103,7 +103,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "List models",
       eyebrow: "Model Catalog",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <p>
             Use <code>/v1/models</code> for normal clients. Use <code>/v1/models/full</code>
             when you need tier and catalog metadata for a UI.
@@ -126,7 +126,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "Generate and edit images",
       eyebrow: "Images",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <p>
             Use <code>/v1/images/generations</code> for text-to-image. Use
             <code>/v1/images/edits</code> only with <code>img/gpt-image-2</code>.
@@ -164,7 +164,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
       label: "Common responses",
       eyebrow: "Errors",
       children: (
-        <section class="panel docs-card">
+        <section class="docs-card">
           <div class="docs-table compact">
             <div class="docs-row"><code>400</code><span>Invalid request body, missing prompt, unknown model, or unsupported media operation.</span></div>
             <div class="docs-row"><code>401</code><span>Missing or invalid API key. Run <code>/signup</code> or <code>/resetkey</code>.</span></div>

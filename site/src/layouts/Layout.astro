@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import NavDrawer from '../components/NavDrawer';
+import SmoothScroll from '../components/SmoothScroll';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 
@@ -21,10 +22,9 @@ const {
 } = Astro.props;
 
 const navLinks: [string, string][] = [
-	['/', 'Home'],
+	['/home', 'Home'],
 	['/docs', 'Docs'],
 	['/models', 'Models'],
-	[siteConfig.socials.github, 'Repo'],
 ];
 ---
 
@@ -34,36 +34,70 @@ const navLinks: [string, string][] = [
 		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} />
 	</head>
 	<body>
+		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center">
+			<style>
+				@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+				@keyframes draw{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
+				.load-ring{animation:pulse 2s ease-in-out infinite}
+				.load-line{stroke-dasharray:200;stroke-dashoffset:200;animation:draw 2.5s ease-out infinite}
+			</style>
+			<div style="display:flex;flex-direction:column;align-items:center;gap:24px">
+				<svg width="40" height="40" viewBox="0 0 40 40" style="animation:pulse 2s ease-in-out infinite">
+					<circle class="load-ring" cx="20" cy="20" r="16" fill="none" stroke="#ee5d20" stroke-width="1.5" opacity=".5"/>
+					<line class="load-line" x1="20" y1="10" x2="20" y2="30" stroke="#ee5d20" stroke-width="1.5"/>
+					<line class="load-line" x1="12" y1="14" x2="28" y2="14" stroke="#ee5d20" stroke-width="1" stroke-dashoffset="100" style="animation-delay:.3s"/>
+				</svg>
+				<div style="font-family:var(--font-serif);font-size:1.1rem;color:rgba(255,255,255,.3);letter-spacing:-.02em">FreeTheAi</div>
+			</div>
+		</div>
+		<script>
+			(function(){
+				var l=document.getElementById('loader');
+				function hide(){l.style.opacity='0';l.style.transition='opacity .5s ease';setTimeout(function(){l.remove()},600)}
+				if(document.readyState==='interactive'||document.readyState==='complete'){setTimeout(hide,600)}
+				else{document.addEventListener('DOMContentLoaded',function(){setTimeout(hide,600)})}
+			})();
+		</script>
 		<div class="page-shell">
 			<header class="site-header">
 				<nav class="nav">
-					<a class="brand" href="/" aria-label="FreeTheAi home">
-						<span class="brand-mark">FTA</span>
-						<span>FreeTheAi</span>
-					</a>
+					<a class="brand" href="/home">FreeTheAi</a>
 					<div class="nav-links">
 						{navLinks.map(([href, label]) => (
 							<a
 								href={href}
 								class={currentPath === href ? 'is-active' : ''}
-								target={href.startsWith('http') ? '_blank' : undefined}
-								rel={href.startsWith('http') ? 'noreferrer' : undefined}
 							>
 								{label}
 							</a>
 						))}
+						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
 					</div>
-				<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-					<span class="material-symbols-outlined">forum</span>
-					<span class="desktop-label">Join Discord</span>
-					<span class="mobile-label">Discord</span>
-				</a>
-				<NavDrawer client:load />
+					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+						Join Discord
+					</a>
+					<NavDrawer client:load />
 				</nav>
 			</header>
 
 			<slot />
+
+			<footer class="site-footer">
+				<div class="footer-top">
+					<span class="footer-brand">FreeTheAi</span>
+					<span class="footer-tagline">Free AI API &mdash; no card, no catch.</span>
+				</div>
+				<div class="footer-links">
+					<a href="/models">Models</a>
+					<a href="/docs">Docs</a>
+					<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
+					<a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">Discord</a>
+				</div>
+				<div class="footer-bottom">Free forever.</div>
+			</footer>
+
 		<ToastRegion client:load />
+		<SmoothScroll client:load />
 	</div>
 
 	<script>
