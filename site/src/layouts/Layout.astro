@@ -1,5 +1,6 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
+import Logo from '../components/Logo.astro';
 import NavDrawer from '../components/NavDrawer';
 import SmoothScroll from '../components/SmoothScroll';
 import { ToastRegion } from '../components/ui';
@@ -35,7 +36,7 @@ const navLinks: [string, string][] = [
 		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} />
 	</head>
 	<body>
-		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#050505;display:flex;align-items:center;justify-content:center">
+		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center">
 			<style>
 				@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
 				@keyframes draw{0%{stroke-dashoffset:200}100%{stroke-dashoffset:0}}
@@ -48,7 +49,7 @@ const navLinks: [string, string][] = [
 					<line class="load-line" x1="20" y1="10" x2="20" y2="30" stroke="#ee5d20" stroke-width="1.5"/>
 					<line class="load-line" x1="12" y1="14" x2="28" y2="14" stroke="#ee5d20" stroke-width="1" stroke-dashoffset="100" style="animation-delay:.3s"/>
 				</svg>
-				<div style="font-family:var(--font-serif);font-size:1.1rem;color:rgba(255,255,255,.3);letter-spacing:-.02em">FreeTheAi</div>
+				<Logo width={200} style="opacity:.3" />
 			</div>
 		</div>
 		<script>
@@ -62,7 +63,7 @@ const navLinks: [string, string][] = [
 		<div class="page-shell">
 			<header class="site-header">
 				<nav class="nav">
-					<a class="brand" href="/home">FreeTheAi</a>
+					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
 						{navLinks.map(([href, label]) => (
 							<a
@@ -86,10 +87,6 @@ const navLinks: [string, string][] = [
 			</div>
 
 			<footer class="site-footer">
-				<div class="footer-top">
-					<span class="footer-brand">FreeTheAi</span>
-					<span class="footer-tagline">Free AI API &mdash; no card, no catch.</span>
-				</div>
 				<div class="footer-links">
 					<a href="/models">Models</a>
 					<a href="/status">Status</a>
@@ -97,7 +94,7 @@ const navLinks: [string, string][] = [
 					<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
 					<a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">Discord</a>
 				</div>
-				<div class="footer-bottom">Free forever.</div>
+				<div class="footer-bottom">no card, no catch. &mdash; Free forever.</div>
 			</footer>
 
 		<ToastRegion client:load />
