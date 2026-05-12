@@ -15,7 +15,7 @@ export const siteConfig = {
 	defaults: {
 		locale: 'en_US',
 		twitterCard: 'summary_large_image',
-		ogImage: '/og-card.svg',
+		ogImage: '/FreeTheAi.png',
 		keywords: [
 			'free ai api',
 			'free openai api',

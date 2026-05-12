@@ -31,4 +31,4 @@ The old direct `glm/*` provider is no longer offered. If a user asks for `glm/gl
 ## Optional
 
 - [Sitemap](https://freetheai.xyz/sitemap-index.xml): Search-engine sitemap for page discovery.
-- [Open Graph Card](https://freetheai.xyz/og-card.svg): Social preview asset.
+- [Open Graph Card](https://freetheai.xyz/FreeTheAi.png): Social preview asset.
