@@ -20,7 +20,9 @@ export default function LiveStats() {
     try {
       const r = await fetch("https://api.freetheai.xyz/v1/health");
       if (r.ok) setHealth(await r.json());
-    } catch {}
+    } catch (error) {
+      console.error("Failed to load live stats", error);
+    }
   };
 
   onMount(() => {
@@ -52,19 +54,19 @@ export default function LiveStats() {
   return (
     <div class="home-live-stats">
       <div class="home-live-metrics">
-        <div style={{"text-align": "center"}}>
+        <div class="shell" style={{"text-align": "center", padding: "12px 20px"}}>
           <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
             {stats() ? stats()!.models.toLocaleString() : "..."}
           </div>
           <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>models</div>
         </div>
-        <div style={{"text-align": "center"}}>
+        <div class="shell" style={{"text-align": "center", padding: "12px 20px"}}>
           <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
             {stats() ? fmt(stats()!.tokens) : "..."}
           </div>
           <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>tokens served</div>
         </div>
-        <div style={{"text-align": "center"}}>
+        <div class="shell" style={{"text-align": "center", padding: "12px 20px"}}>
           <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
             {stats() ? stats()!.requests.toLocaleString() : "..."}
           </div>

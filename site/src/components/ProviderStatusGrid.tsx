@@ -23,7 +23,7 @@ type HealthPayload = {
   providers?: ProviderHealth[];
 };
 
-const providerOrder = ["rev", "bbg", "glm", "opc", "cat", "yng", "bbl", "cwy", "woo", "img"];
+const providerOrder = ["fth", "rev", "bbg", "glm", "opc", "cat", "yng", "bbl", "cwy", "woo", "img", "kai", "or", "vhr", "wsf"];
 
 export default function ProviderStatusGrid() {
   const [health, setHealth] = createSignal<HealthPayload | null>(null);
@@ -38,7 +38,8 @@ export default function ProviderStatusGrid() {
       setHealth(await response.json());
       setLoadedAt(new Date());
       setFailed(false);
-    } catch {
+    } catch (error) {
+      console.error("Failed to load provider health", error);
       setFailed(true);
     }
   };
@@ -93,7 +94,27 @@ export default function ProviderStatusGrid() {
 
       <Show
         when={providers().length > 0}
-        fallback={<div class="status-grid"><div class="status-card is-unknown">Loading status...</div></div>}
+        fallback={
+          <div class="status-grid">
+            <article class="status-card is-unknown" aria-live="polite">
+              <div class="status-card-top">
+                <span class="status-dot" />
+                <strong>providers/</strong>
+                <span>loading</span>
+              </div>
+              <div class="status-card-main">
+                <span>...</span>
+                <small>models</small>
+              </div>
+              <div class="status-card-meta">
+                <span>30m errors</span>
+                <strong>...</strong>
+                <span>requests</span>
+                <strong>...</strong>
+              </div>
+            </article>
+          </div>
+        }
       >
         <div class="status-grid">
           <For each={providers()}>

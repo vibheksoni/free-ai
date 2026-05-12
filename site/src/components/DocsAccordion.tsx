@@ -1,5 +1,11 @@
-import Accordion, { type AccordionItem } from "./ui/Accordion";
-import { For } from "solid-js";
+import { For, type JSXElement } from "solid-js";
+
+interface DocsSection {
+  value: string;
+  label: string;
+  eyebrow: string;
+  children: JSXElement;
+}
 
 interface DocsAccordionProps {
   baseSnippet: string;
@@ -48,7 +54,7 @@ function CodeBlock(props: { code: string; lang?: string }) {
 }
 
 export default function DocsAccordion(props: DocsAccordionProps) {
-  const items: AccordionItem[] = [
+  const items: DocsSection[] = [
     {
       value: "auth",
       label: "Get a key",
@@ -198,5 +204,19 @@ export default function DocsAccordion(props: DocsAccordionProps) {
     },
   ];
 
-  return <Accordion items={items} />;
+  return (
+    <div class="docs-sections">
+      <For each={items}>
+        {(item) => (
+          <article class="docs-section" id={item.value}>
+            <header class="docs-section-head">
+              <span class="docs-section-eyebrow">{item.eyebrow}</span>
+              <h2>{item.label}</h2>
+            </header>
+            {item.children}
+          </article>
+        )}
+      </For>
+    </div>
+  );
 }

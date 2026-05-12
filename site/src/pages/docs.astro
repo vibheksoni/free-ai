@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import FeedbackPanel from '../components/FeedbackPanel';
 import DocsAccordion from '../components/DocsAccordion';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
@@ -138,9 +137,12 @@ const imageModels = [
 	jsonLd={jsonLd}
 	currentPath="/docs"
 >
-	<main class="docs-main">
+	<main class="docs-main" data-docs-nav>
+		<button class="docs-section-toggle" type="button" aria-controls="docs-section-nav" aria-expanded="false">
+			Docs sections
+		</button>
 		<section class="docs-layout">
-			<aside class="docs-sidebar">
+			<aside class="docs-sidebar" id="docs-section-nav" aria-label="Docs sections">
 				<span class="docs-sidebar-label">On this page</span>
 				<a href="#auth">Auth</a>
 				<a href="#endpoints">Endpoints</a>
@@ -149,7 +151,6 @@ const imageModels = [
 				<a href="#models">Models</a>
 				<a href="#images">Images</a>
 				<a href="#errors">Errors</a>
-				<a href="#feedback">Feedback</a>
 			</aside>
 
 			<div class="docs-content">
@@ -170,8 +171,57 @@ const imageModels = [
 					endpoints={endpoints}
 					imageModels={imageModels}
 				/>
-				<FeedbackPanel client:load />
 			</div>
 		</section>
 	</main>
+
+	<script>
+		const docsRoot = document.querySelector('[data-docs-nav]');
+		const docsToggle = docsRoot?.querySelector('.docs-section-toggle');
+		const docsSidebar = docsRoot?.querySelector('#docs-section-nav');
+
+		if (docsRoot instanceof HTMLElement && docsToggle instanceof HTMLButtonElement && docsSidebar instanceof HTMLElement) {
+			const mobileDocsQuery = window.matchMedia('(max-width: 820px)');
+
+			const setDocsSectionsOpen = (open) => {
+				docsRoot.toggleAttribute('data-sections-open', open);
+				docsToggle.setAttribute('aria-expanded', String(open));
+
+				const hidden = mobileDocsQuery.matches && !open;
+				docsSidebar.toggleAttribute('aria-hidden', hidden);
+				if ('inert' in docsSidebar) docsSidebar.inert = hidden;
+			};
+
+			const syncDocsSections = () => {
+				if (!mobileDocsQuery.matches) {
+					setDocsSectionsOpen(false);
+					docsSidebar.removeAttribute('aria-hidden');
+					if ('inert' in docsSidebar) docsSidebar.inert = false;
+					return;
+				}
+
+				setDocsSectionsOpen(docsRoot.hasAttribute('data-sections-open'));
+			};
+
+			docsToggle.addEventListener('click', () => {
+				setDocsSectionsOpen(!docsRoot.hasAttribute('data-sections-open'));
+			});
+
+			docsSidebar.addEventListener('click', (event) => {
+				if (event.target instanceof Element && event.target.closest('a')) setDocsSectionsOpen(false);
+			});
+
+			document.addEventListener('pointerdown', (event) => {
+				if (!mobileDocsQuery.matches || !docsRoot.hasAttribute('data-sections-open') || !(event.target instanceof Node)) return;
+				if (!docsSidebar.contains(event.target) && !docsToggle.contains(event.target)) setDocsSectionsOpen(false);
+			});
+
+			document.addEventListener('keydown', (event) => {
+				if (event.key === 'Escape') setDocsSectionsOpen(false);
+			});
+
+			mobileDocsQuery.addEventListener('change', syncDocsSections);
+			syncDocsSections();
+		}
+	</script>
 </Layout>

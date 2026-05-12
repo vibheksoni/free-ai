@@ -93,7 +93,7 @@ export default function CatalogBrowser() {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         const payload = await res.json();
         items = Array.isArray(payload?.data) ? payload.data : [];
-      } catch {
+      } catch (error) {
         src = "snapshot";
         const res = await fetch("/models.json", {
           headers: { Accept: "application/json" },
@@ -101,7 +101,7 @@ export default function CatalogBrowser() {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         const payload = await res.json();
         items = Array.isArray(payload?.data) ? payload.data : [];
-        console.warn("Falling back to bundled model catalog snapshot.");
+        console.warn("Falling back to bundled model catalog snapshot.", error);
       }
       const models: Model[] = items
         .filter((i) => typeof i?.id === "string" && i.id.trim())
@@ -194,7 +194,9 @@ export default function CatalogBrowser() {
                   aria-label={"Copy " + model.id}
                   onClick={(e) => {
                     e.preventDefault();
-                    navigator.clipboard.writeText(model.id).catch(() => {});
+                    navigator.clipboard.writeText(model.id).catch((error) => {
+                      console.error("Failed to copy model alias", error);
+                    });
                     const btn = e.currentTarget as HTMLElement;
                     const icon = btn.querySelector(".material-symbols-outlined");
                     if (icon) {

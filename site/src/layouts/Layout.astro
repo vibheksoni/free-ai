@@ -109,7 +109,8 @@ const navLinks: [string, string][] = [
 			if (!code) return;
 			try {
 				await navigator.clipboard.writeText(code.textContent ?? "");
-			} catch {
+			} catch (error) {
+				console.error("Failed to copy code sample", error);
 				return;
 			}
 			const icon = btn.querySelector(".material-symbols-outlined");

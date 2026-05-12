@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import CanvasScroller from '../components/CanvasScroller';
 import LiveStats from '../components/DiscordStats';
+import Logo from '../components/Logo.astro';
 import { siteConfig } from '../config/site';
 
 const jsonLd = [
@@ -26,8 +27,8 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   <main>
     <CanvasScroller client:load />
     <section style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center" data-parallax="0.3">
-      <h1 style="font-size:clamp(2.6rem,6vw,4rem);line-height:1.05;letter-spacing:-0.04em" data-parallax="0.2">
-        Free AI API.
+      <h1 style="line-height:0" data-parallax="0.2">
+        <Logo width={520} label="FreeTheAI" style="display:block;width:min(92vw,520px);height:auto;margin:0 auto" />
       </h1>
       <p style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px">
         OpenAI-compatible. 16,000+ models.<br>No card. No catch.
