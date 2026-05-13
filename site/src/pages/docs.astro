@@ -13,7 +13,6 @@ https://api.freetheai.xyz/v1
 
 Header
 Authorization: Bearer YOUR_API_KEY`;
-const baseSnippetHtml = await highlight(baseSnippet, "plaintext");
 
 const chatCurlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
@@ -167,7 +166,6 @@ const imageModels = [
 				</div>
 				<DocsAccordion
 					baseSnippet={baseSnippet}
-					baseSnippetHtml={baseSnippetHtml}
 					chatCurlSnippet={chatCurlSnippet}
 					chatCurlSnippetHtml={chatCurlSnippetHtml}
 					openAISDKSnippet={openAISDKSnippet}
