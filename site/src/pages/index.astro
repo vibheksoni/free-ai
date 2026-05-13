@@ -1,10 +1,58 @@
+---
+import { siteConfig } from '../config/site';
+
+const title = siteConfig.title;
+const description = siteConfig.description;
+const ogImage = new URL(siteConfig.defaults.ogImage, Astro.site).toString();
+const canonical = Astro.site.toString();
+---
+
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="refresh" content="0;url=/home">
-  <link rel="canonical" href="/home">
-  <title>FreeTheAi</title>
+  <link rel="canonical" href="https://freetheai.xyz/home/">
+  <title>FreeTheAi — Free AI API</title>
+  <meta name="title" content="FreeTheAi — Free AI API">
+  <meta name="description" content={description}>
+  <meta name="keywords" content={siteConfig.defaults.keywords.join(', ')}>
+  <meta name="author" content={siteConfig.author.name}>
+  <meta name="theme-color" content="#0f0f0f">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="sitemap" href="/sitemap-index.xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content={canonical}>
+  <meta property="og:title" content="FreeTheAi — Free AI API">
+  <meta property="og:description" content={description}>
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="FreeTheAi — Free OpenAI-compatible API with 16,000+ models">
+  <meta property="og:locale" content={siteConfig.defaults.locale}>
+  <meta property="og:site_name" content={siteConfig.title}>
+
+  <meta name="twitter:card" content={siteConfig.defaults.twitterCard}>
+  <meta name="twitter:title" content="FreeTheAi — Free AI API">
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImage}>
+  <meta name="twitter:image:alt" content="FreeTheAi — Free OpenAI-compatible API with 16,000+ models">
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "FreeTheAi",
+      "url": "https://freetheai.xyz",
+      "description": "Free OpenAI-compatible AI API with 16,000+ models, Discord key signup, chat completions, streaming, tool calling, image generation, image editing, and Anthropic messages."
+    }
+  </script>
 </head>
 <body></body>
 </html>
