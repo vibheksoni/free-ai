@@ -149,7 +149,8 @@ const navLinks: [string, string][] = [
 		document.addEventListener("click", async (e) => {
 			const btn = closestFromEvent(e, ".copy-btn");
 			if (!btn) return;
-			const code = btn.parentElement?.querySelector("code");
+			const group = btn.closest?.('.docs-code-group') ?? btn.parentElement;
+			const code = group?.querySelector("code");
 			if (!code) return;
 			try {
 				await navigator.clipboard.writeText(code.textContent ?? "");
