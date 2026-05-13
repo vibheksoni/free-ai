@@ -26,6 +26,9 @@ importers:
       lenis:
         specifier: ^1.3.23
         version: 1.3.23
+      shiki:
+        specifier: ^3.21.0
+        version: 3.23.0
       solid-js:
         specifier: ^1.9.12
         version: 1.9.12
