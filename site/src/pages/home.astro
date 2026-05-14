@@ -133,176 +133,100 @@ const pageDescription =
             </div>
         </section>
 
-        <!-- SEO Content Section — targets "free the ai", "free ai api", and long-tail informational queries -->
-        <section
-            class="home-content"
-            style="max-width:720px;margin:80px auto 0;padding:0 24px 80px;position:relative;z-index:1"
-        >
-            <div style="color:var(--text);line-height:1.8;font-size:1.05rem">
-                <h2
-                    style="font-size:1.6rem;font-weight:600;margin:0 0 16px;color:var(--text)"
-                >
-                    What Is FreeTheAi?
-                </h2>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    FreeTheAi is a <strong style="color:var(--text)"
-                        >free AI API gateway</strong
-                    > that gives developers instant access to over 16,000 AI models
-                    through a single OpenAI-compatible endpoint. Whether you need
-                    a <strong style="color:var(--text)"
-                        >free OpenAI API alternative</strong
-                    >, a <strong style="color:var(--text)">free LLM API</strong> for
-                    your agent framework, or a <strong style="color:var(--text)"
-                        >free image generation API</strong
-                    > for creative projects, FreeTheAi delivers production-grade inference
-                    without a credit card, without billing, and without daily usage
-                    caps.
-                </p>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    The project was built to <strong style="color:var(--text)"
-                        >free the AI</strong
-                    > — to remove the friction that keeps developers, students, and
-                    builders from accessing state-of-the-art models. No paid tiers,
-                    no API credit exhaustion, and no prompt storage. Just a free key
-                    from Discord and a base URL that works with any OpenAI SDK.
-                </p>
+        <!--
+        ── Content Section ──
+        Visual crescendo: Whisper → Speak → Shout
 
-                <h2
-                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
-                >
-                    Why Use a Free AI API?
-                </h2>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    Most AI APIs require credit card verification, prepaid
-                    credits, or monthly billing commitments before you can send
-                    a single request. FreeTheAi flips that model: <strong
-                        style="color:var(--text)"
-                        >get a free API key via Discord</strong
-                    > in seconds and start building immediately. The API is fully
-                    OpenAI-compatible, so any SDK, plugin, or tool that works with
-                    OpenAI will work here with zero code changes — just swap the base
-                    URL and API key.
-                </p>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    With <strong style="color:var(--text)"
-                        >16,000+ models</strong
-                    > spanning GPT, Claude, Gemini, DeepSeek, Grok, open-weight models,
-                    and specialized image generation models like gpt-image-2, you
-                    get the widest model selection available behind a single free
-                    API key. Use the live <a
-                        href="/models"
-                        style="color:var(--accent-text);text-underline-offset:3px"
-                        >model catalog</a
-                    > to search and filter by provider prefix.
-                </p>
+        Section 1 — Whisper: thin muted accent line, barely there
+        Section 2 — Speak:   diptych inset panels, carved into the page
+        Section 3 — Shout:   raised accent card, bold orange border
 
-                <h2
-                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
-                >
-                    What Can You Build?
-                </h2>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    FreeTheAi supports the full OpenAI API surface: <strong
-                        style="color:var(--text)"
-                        >streaming chat completions</strong
-                    > for real-time conversational AI, <strong
-                        style="color:var(--text)"
-                        >tool calling and structured outputs</strong
-                    > for agent frameworks, <strong style="color:var(--text)"
-                        >Anthropic-style messages</strong
-                    > for Claude-compatible clients, <strong
-                        style="color:var(--text)">image generation</strong
-                    > for visual content, and <strong style="color:var(--text)"
-                        >image editing</strong
-                    > with base64 input images. Build chatbots, coding agents, content
-                    pipelines, image tools, and multi-model orchestrations — all against
-                    a single free endpoint.
-                </p>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    Students use FreeTheAi to experiment with LLMs without
-                    hitting paywalls. Developers prototype agent workflows
-                    before committing to paid providers. Researchers run batch
-                    evaluations across dozens of models at zero cost. The rate
-                    limits scale with community participation — invite friends
-                    to Discord to unlock higher throughput tiers.
-                </p>
+        Three treatments, one system. Every token from SKILL.md.
+        Script Architecture (Content System): Define → Show → Act
+        -->
+        <section class="home-content">
+            <div class="rhythm">
+                <!-- ═══ Whisper — subtle anchor, establishes the pattern ═══ -->
+                <div class="beat whisper">
+                    <h2 class="beat-heading">What Is FreeTheAi?</h2>
+                    <p class="beat-prose">
+                        FreeTheAi is a <strong>free AI API gateway</strong>
+                        with 16,000+ models behind a single OpenAI-compatible endpoint.
+                        No credit card, no billing, no daily caps — just a free Discord
+                        key and a base URL that works with any OpenAI SDK. No prompt
+                        storage, no paid tiers, no API credit exhaustion. Built to
+                        <strong>free the AI</strong>
+                        for developers, students, and builders.
+                    </p>
+                </div>
 
-                <h2
-                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
-                >
-                    Privacy and Community
-                </h2>
-                <p style="margin:0 0 16px;color:var(--muted)">
-                    FreeTheAi does not store your prompts, completions, or
-                    conversation history. Only model alias, token count,
-                    timestamp, and status code are tracked for operational
-                    metrics. The project is community-run, open-source, and free
-                    forever. Join the <a
-                        href={siteConfig.socials.discord}
-                        target="_blank"
-                        rel="noreferrer"
-                        style="color:var(--accent-text);text-underline-offset:3px"
-                        >Discord server</a
-                    > to get your key, browse models with <code
-                        style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
-                        >/models</code
-                    >, and connect with other builders using <strong
-                        style="color:var(--text)">free AI APIs</strong
-                    > in production.
-                </p>
+                <!-- ═══ Speak — diptych, combinatorial contrast ═══ -->
+                <div class="beat">
+                    <h2 class="beat-heading">What Can You Build?</h2>
 
-                <h2
-                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
-                >
-                    Getting Started
-                </h2>
-                <ol
-                    style="margin:0 0 24px;padding-left:24px;color:var(--muted);line-height:2"
-                >
-                    <li>
-                        Join the <a
+                    <div class="diptych">
+                        <div class="diptych-panel">
+                            <h3 class="diptych-label">API features</h3>
+                            <p>
+                                Streaming chat, tool calling and structured
+                                outputs, Anthropic messages, image generation,
+                                and image editing — all OpenAI-compatible.
+                            </p>
+                        </div>
+                        <div class="diptych-panel">
+                            <h3 class="diptych-label">Use cases</h3>
+                            <p>
+                                Chatbots, coding agents, content pipelines,
+                                image tools, and multi-model orchestrations.
+                                Students prototype, developers ship, researchers
+                                evaluate — all against one free endpoint.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ Shout — accent card, the bent rule ═══ -->
+                <div class="beat shout">
+                    <h2 class="beat-heading">Getting Started</h2>
+
+                    <ol class="steps">
+                        <li>
+                            Join the
+                            <a
+                                href={siteConfig.socials.discord}
+                                target="_blank"
+                                rel="noreferrer">FreeTheAi Discord</a
+                            >
+                        </li>
+                        <li>
+                            Run <code>/signup</code> in any channel to get your free
+                            API key
+                        </li>
+                        <li>
+                            Set <code>FREETHEAI_API_KEY</code> in your environment
+                        </li>
+                        <li>
+                            Point any OpenAI SDK at
+                            <code>https://api.freetheai.xyz/v1</code>
+                        </li>
+                        <li>
+                            Browse the
+                            <a href="/docs">API docs</a> for endpoint-specific examples
+                        </li>
+                    </ol>
+
+                    <div class="cta-wrap">
+                        <a
+                            class="primary-button"
                             href={siteConfig.socials.discord}
                             target="_blank"
                             rel="noreferrer"
-                            style="color:var(--accent-text);text-underline-offset:3px"
-                            >FreeTheAi Discord</a>
-                    </li>
-                    <li>
-                        Run <code
-                            style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
-                            >/signup</code
-                        > in any channel to get your free API key
-                    </li>
-                    <li>
-                        Set <code
-                            style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
-                            >FREETHEAI_API_KEY</code
-                        > in your environment
-                    </li>
-                    <li>
-                        Point any OpenAI SDK at <code
-                            style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
-                            >https://api.freetheai.xyz/v1</code>
-                    </li>
-                    <li>
-                        Browse the <a
-                            href="/docs"
-                            style="color:var(--accent-text);text-underline-offset:3px"
-                            >API docs</a
-                        > for endpoint-specific examples
-                    </li>
-                </ol>
-                <p style="margin:0;color:var(--muted)">
-                    Ready to <strong style="color:var(--text)"
-                        >free the AI</strong
-                    > in your next project? <a
-                        href={siteConfig.socials.discord}
-                        target="_blank"
-                        rel="noreferrer"
-                        style="color:var(--accent-text);text-underline-offset:3px"
-                        >Get your free API key now</a
-                    > and start building with 16,000+ models today.
-                </p>
+                        >
+                            Get your free API key
+                            <span class="cta-arrow">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
@@ -348,5 +272,198 @@ const pageDescription =
         clip: rect(0, 0, 0, 0);
         white-space: nowrap;
         border: 0;
+    }
+</style>
+
+<style>
+    /*
+     * ═══════════════════════════════════════
+     * Content Section — Visual Crescendo
+     * ═══════════════════════════════════════
+     *
+     * Whisper → Speak → Shout
+     * Three beats, one rhythm, one system.
+     *
+     * Section 1 (Whisper): subtle muted left line
+     *   — Isolation (RabinnFX #1), First-Frame
+     *     Strategy (Content System #7). Establishes
+     *     the pattern without demanding attention.
+     *
+     * Section 2 (Speak): diptych inset panels
+     *   — Combinatorial Creativity (Creativity
+     *     System #3), A Diptych (RabinnFX #7).
+     *     Carved-in feel via sk-inset tokens.
+     *
+     * Section 3 (Shout): raised accent card
+     *   — Chaos/Order edge (Creativity System #5),
+     *     The Accent (RabinnFX #2), Von Restorff
+     *     Effect (UX Laws). The bent rule.
+     *
+     * All tokens from SKILL.md. Nothing is ad-hoc.
+     */
+
+    .home-content {
+        max-width: 720px;
+        margin: 80px auto 0;
+        padding: 0 24px 80px;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* ── Rhythm grid: three beats, 48px gaps ── */
+    .rhythm {
+        display: grid;
+        gap: 48px;
+    }
+
+    .beat {
+        /* shared anchor for all three beats */
+    }
+
+    /* ── Shared heading ── */
+    .beat-heading {
+        margin: 0 0 16px;
+        color: var(--text);
+        font-family: var(--font-serif);
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    /*
+     * ═══ Beat 1: Whisper ═══
+     * A 1px muted left border — barely there.
+     * Passes the Mute Test (Visual Identity System #1):
+     * even blurred, the vertical line anchors the section
+     * and connects it to the stronger accents below.
+     */
+    .whisper {
+        padding: 0 0 0 18px;
+        border-left: 1px solid var(--border);
+    }
+
+    .beat-prose {
+        margin: 0;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    .beat-prose strong {
+        color: var(--text);
+    }
+
+    /*
+     * ═══ Beat 2: Speak ═══
+     * Diptych — two panels side by side.
+     * The 16px gap between them is where the
+     * meaning lives (RabinnFX #7: A Diptych).
+     * Inset surface tokens = carved into the page.
+     */
+    .diptych {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .diptych-panel {
+        padding: 20px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .diptych-label {
+        margin: 0 0 10px;
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .diptych-panel p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.65;
+    }
+
+    /*
+     * ═══ Beat 3: Shout ═══
+     * Raised shell with 2px orange left border.
+     * The ONE bent rule in the system (Chaos/Order).
+     * Von Restorff: visually isolates from the
+     * descriptive sections above.
+     * Peak-End Rule: the CTA button closes the page
+     * inside the strongest visual container.
+     */
+    .shout {
+        padding: 24px 24px 24px 28px;
+        border: 1px solid var(--sk-border);
+        border-left: 2px solid var(--accent);
+        border-radius: 0 var(--radius) var(--radius) 0;
+        background: var(--sk-shell-bg);
+        box-shadow: var(--sk-raised-shadow);
+    }
+
+    .shout .beat-heading {
+        margin-bottom: 16px;
+    }
+
+    /* ── Steps list ── */
+    .steps {
+        margin: 0 0 24px;
+        padding-left: 24px;
+        color: var(--muted);
+        line-height: 2;
+    }
+
+    .steps a {
+        color: var(--accent-text);
+        text-underline-offset: 3px;
+    }
+
+    .steps code {
+        color: var(--accent-text);
+        background: var(--accent-muted);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+
+    /* ── CTA ── */
+    .cta-wrap {
+        margin-top: 28px;
+    }
+
+    .cta-arrow {
+        opacity: 0.6;
+        font-size: 0.85rem;
+        margin-left: 4px;
+    }
+
+    /*
+     * ── Responsive ──
+     * Stack diptych, tighten rhythm and accent card.
+     */
+    @media (max-width: 640px) {
+        .diptych {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .shout {
+            padding: 20px 16px 20px 20px;
+        }
+
+        .whisper {
+            padding-left: 14px;
+        }
+
+        .rhythm {
+            gap: 40px;
+        }
     }
 </style>
