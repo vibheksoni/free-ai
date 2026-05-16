@@ -843,7 +843,6 @@ export default function ProviderStatusGrid() {
         setSelectedPrefix(null);
         setDragOffset(0);
         setIsDragging(false);
-        dragCaptureEl = undefined;
         setIsScrollThumbDragging(false);
         popoverBodyEl = undefined;
         scrollRailEl = undefined;
