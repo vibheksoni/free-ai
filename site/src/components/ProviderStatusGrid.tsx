@@ -31,17 +31,6 @@ type HealthPayload = {
     providers?: ProviderHealth[];
 };
 
-type ModelEntry = {
-    id: string;
-    object: string;
-    created: number;
-    owned_by: string;
-};
-
-type ModelCatalog = {
-    data: ModelEntry[];
-};
-
 type ScrollRailMetrics = {
     scrollable: boolean;
     thumbHeight: number;
@@ -65,8 +54,6 @@ const providerOrder = [
     "vhr",
     "wsf",
 ];
-
-const MAX_VISIBLE_MODELS = 15;
 
 const CSS = `
 /* ── Grid ── */
@@ -486,57 +473,6 @@ const CSS = `
 }
 .detail-section dd.zero { color: var(--muted); }
 
-/* Models */
-.models-section {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--sk-border);
-  min-width: 0;
-}
-.models-title {
-  color: var(--dim);
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin: 0 0 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.models-chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-bottom: 16px;
-  min-width: 0;
-}
-.model-chip {
-  display: inline-block;
-  max-width: 100%;
-  padding: 3px 8px;
-  border: 1px solid var(--sk-border);
-  border-radius: var(--radius-sm);
-  background: var(--sk-inset-bg);
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  line-height: 1.5;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.model-chip-more {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 8px;
-  color: var(--dim);
-  font-size: 0.68rem;
-  font-weight: 500;
-  flex-shrink: 0;
-}
-
 /* Catalog link */
 .catalog-link {
   display: inline-flex;
@@ -655,10 +591,6 @@ export default function ProviderStatusGrid() {
     const [selectedPrefix, setSelectedPrefix] = createSignal<string | null>(
         null,
     );
-    const [modelsByPrefix, setModelsByPrefix] = createSignal<
-        Map<string, string[]>
-    >(new Map());
-    const [modelsFailed, setModelsFailed] = createSignal(false);
     const [scrollRailMetrics, setScrollRailMetrics] =
         createSignal<ScrollRailMetrics>({
             scrollable: false,
@@ -696,36 +628,8 @@ export default function ProviderStatusGrid() {
         }
     };
 
-    const fetchModels = async () => {
-        try {
-            const response = await fetch("/models.json", {
-                cache: "force-cache",
-            });
-            if (!response.ok) throw new Error(`models ${response.status}`);
-            const catalog: ModelCatalog = await response.json();
-            const map = new Map<string, string[]>();
-            for (const entry of catalog.data) {
-                const slash = entry.id.indexOf("/");
-                if (slash === -1) continue;
-                const prefix = entry.id.slice(0, slash);
-                const existing = map.get(prefix);
-                if (existing) {
-                    existing.push(entry.id);
-                } else {
-                    map.set(prefix, [entry.id]);
-                }
-            }
-            setModelsByPrefix(map);
-            setModelsFailed(false);
-        } catch (error) {
-            console.error("Failed to load model catalog", error);
-            setModelsFailed(true);
-        }
-    };
-
     onMount(() => {
         fetchHealth();
-        fetchModels();
         interval = window.setInterval(fetchHealth, 30000);
     });
 
@@ -883,9 +787,7 @@ export default function ProviderStatusGrid() {
     };
 
     createEffect(() => {
-        const prefix = selectedPrefix();
-        if (prefix) modelsByPrefix().get(prefix);
-        queueScrollRailUpdate();
+        if (selectedPrefix()) queueScrollRailUpdate();
     });
 
     onCleanup(() => {
@@ -1025,9 +927,6 @@ export default function ProviderStatusGrid() {
         if (!prefix) return null;
         return providers().find((p) => p.prefix === prefix) ?? null;
     });
-
-    const getProviderModels = (prefix: string): string[] =>
-        modelsByPrefix().get(prefix) ?? [];
 
     const formatTimestamp = (iso: string | null | undefined): string => {
         if (!iso) return "never";
@@ -1199,18 +1098,6 @@ export default function ProviderStatusGrid() {
             {/* ═══ Popover ═══ */}
             <Show when={selectedProvider()}>
                 {(provider) => {
-                    const providerModels = createMemo(() =>
-                        getProviderModels(provider().prefix),
-                    );
-                    const visibleModels = createMemo(() =>
-                        providerModels().slice(0, MAX_VISIBLE_MODELS),
-                    );
-                    const hiddenCount = createMemo(() =>
-                        Math.max(
-                            0,
-                            providerModels().length - MAX_VISIBLE_MODELS,
-                        ),
-                    );
                     const isAffected =
                         provider().status === "degraded" ||
                         provider().status === "down";
@@ -1391,43 +1278,6 @@ export default function ProviderStatusGrid() {
                                                 )}
                                             </dd>
                                         </dl>
-
-                                        {/* Model chips */}
-                                        <Show when={providerModels().length > 0}>
-                                            <div class="models-section">
-                                                <h4 class="models-title">
-                                                    Models under {provider().prefix}
-                                                    /
-                                                    {isAffected
-                                                        ? provider().status ===
-                                                          "down"
-                                                            ? " — likely affected"
-                                                            : " — may be affected"
-                                                        : ""}
-                                                </h4>
-                                                <div class="models-chips">
-                                                    <For each={visibleModels()}>
-                                                        {(modelId) => (
-                                                            <span
-                                                                class="model-chip"
-                                                                title={modelId}
-                                                            >
-                                                                {modelId}
-                                                            </span>
-                                                        )}
-                                                    </For>
-                                                    <Show
-                                                        when={hiddenCount() > 0}
-                                                    >
-                                                        <span class="model-chip-more">
-                                                            +
-                                                            {hiddenCount().toLocaleString()}{" "}
-                                                            more
-                                                        </span>
-                                                    </Show>
-                                                </div>
-                                            </div>
-                                        </Show>
 
                                         {/* Catalog link */}
                                         <Show when={provider().model_count > 0}>
