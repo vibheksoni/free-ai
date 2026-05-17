@@ -1,0 +1,484 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+import {
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebsiteJsonLd,
+    buildWebApiJsonLd,
+} from "../utils/jsonLd";
+
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+];
+
+const planStats = [
+    ["$8", "per month"],
+    ["1,000", "request units / day"],
+    ["100", "request units / hour"],
+    ["30,000", "request units / month"],
+    ["3", "concurrent requests"],
+];
+
+const skyModels = [
+    ["sky/gpt-4o", "1 unit"],
+    ["sky/gpt-5.2", "1 unit"],
+    ["sky/gpt-5-mini", "1 unit"],
+    ["sky/gpt-4o-mini", "1 unit"],
+    ["sky/tinfoil/gpt-oss-120b", "1 unit"],
+    ["sky/claude-haiku-4-5", "1 unit"],
+    ["sky/claude-sonnet-4-5", "2 units"],
+    ["sky/claude-opus-4-5", "2.5 units"],
+    ["sky/claude-opus-4-6", "2.5 units"],
+    ["sky/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8", "1 unit"],
+    ["sky/meta-llama/Llama-4-Scout-17B-16E-Instruct", "1 unit"],
+    ["sky/mistral-small-2603", "0.5 units"],
+];
+
+const pblModels = [
+    ["pbl/deepseek-v3", "0.5 units"],
+    ["pbl/deepseek-r1", "1 unit"],
+    ["pbl/gpt-5.1", "2 units"],
+    ["pbl/o3", "3 units"],
+    ["pbl/gpt-5.4", "3 units"],
+    ["pbl/claude-4.6-sonnet", "3 units"],
+    ["pbl/claude-4.7-opus", "4 units"],
+    ["pbl/gemini-2.5-pro", "3 units"],
+    ["pbl/gemini-3.0-pro", "3 units"],
+    ["pbl/gemini-3.1-pro", "3 units"],
+    ["pbl/grok-4", "3 units"],
+];
+---
+
+<Layout
+    title="FreeTheAi Paid API Pricing"
+    description="FreeTheAi paid API pricing: $8/month for higher-power model access, 1,000 request units per day, hourly limits, and a separate paid model catalog."
+    jsonLd={jsonLd}
+    currentPath="/pricing"
+>
+    <main class="pricing-main">
+        <section class="pricing-hero shell">
+            <div class="pricing-hero-copy">
+                <span class="eyebrow">Paid API</span>
+                <h1>More powerful models when the free API is not enough.</h1>
+                <p class="hero-text">
+                    The free API stays free. The paid plan is a separate, limited-seat
+                    option for builders who need stronger models, steadier access, and
+                    higher-powered routes without crowding the free pools.
+                </p>
+                <div class="hero-actions">
+                    <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                        Claim a paid slot
+                        <span>&rarr;</span>
+                    </a>
+                    <a class="ghost-button" href="/models">Browse free models</a>
+                </div>
+                <p class="pricing-note">
+                    Launch slots are limited while we measure real usage and keep the
+                    paid account pools healthy.
+                </p>
+                <p class="pricing-endpoint">
+                    Paid base URL: <code>https://paid.freetheai.xyz/v1</code>
+                </p>
+            </div>
+
+            <article class="pricing-card pricing-plan-card">
+                <div class="card-head">
+                    <div class="dot-row">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="card-label">Launch plan</div>
+                </div>
+                <div class="pricing-price">
+                    <strong>$8</strong>
+                    <span>/ month</span>
+                </div>
+                <p>
+                    One simple plan for power users. Usage is counted in request units,
+                    so lighter models cost less and heavier models cost more.
+                </p>
+                <div class="pricing-plan-grid">
+                    {planStats.map(([value, label]) => (
+                        <div>
+                            <strong>{value}</strong>
+                            <span>{label}</span>
+                        </div>
+                    ))}
+                </div>
+            </article>
+        </section>
+
+        <section class="section shell pricing-section">
+            <div class="section-head">
+                <span class="eyebrow">How limits work</span>
+                <h2>Affordable, but protected from pool drain.</h2>
+                <p>
+                    The paid plan is designed to hook real builders without letting one
+                    user burn through the launch inventory. Each request deducts the
+                    listed model cost from your hourly, daily, and monthly budget.
+                </p>
+            </div>
+
+            <div class="pricing-feature-grid">
+                <article class="capability-card">
+                    <span class="capability-icon material-symbols-outlined">bolt</span>
+                    <h3>Different catalog from free</h3>
+                    <p>
+                        Paid models live on separate <code>sky/*</code> and
+                        <code>pbl/*</code> aliases. They are meant for harder coding,
+                        reasoning, and long-form work.
+                    </p>
+                </article>
+                <article class="capability-card">
+                    <span class="capability-icon material-symbols-outlined">speed</span>
+                    <h3>Request-unit pricing</h3>
+                    <p>
+                        Cheap hook models can cost <code>0.5</code> units, normal
+                        models cost <code>1</code>, and heavy models cost up to
+                        <code>4</code> units per request.
+                    </p>
+                </article>
+                <article class="capability-card">
+                    <span class="capability-icon material-symbols-outlined">lock</span>
+                    <h3>Launch safety limits</h3>
+                    <p>
+                        Accounts have hourly, daily, monthly, and concurrency limits.
+                        The <code>pbl/*</code> pool also has a separate
+                        <code>250</code> unit daily cap to keep premium routes
+                        available.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section shell pricing-section">
+            <div class="section-head">
+                <span class="eyebrow">Paid model costs</span>
+                <h2>Current launch catalog.</h2>
+                <p>
+                    These are the currently priced paid aliases. Models not listed here
+                    are hidden until they are intentionally priced and tested.
+                </p>
+            </div>
+
+            <div class="pricing-model-grid">
+                <article class="pricing-card">
+                    <div class="pricing-model-head">
+                        <h3>SKY models</h3>
+                        <span>general paid pool</span>
+                    </div>
+                    <div class="pricing-model-list">
+                        {skyModels.map(([model, cost]) => (
+                            <div class="pricing-model-row">
+                                <code>{model}</code>
+                                <strong>{cost}</strong>
+                            </div>
+                        ))}
+                    </div>
+                </article>
+
+                <article class="pricing-card">
+                    <div class="pricing-model-head">
+                        <h3>PBL models</h3>
+                        <span>premium paid pool</span>
+                    </div>
+                    <div class="pricing-model-list">
+                        {pblModels.map(([model, cost]) => (
+                            <div class="pricing-model-row">
+                                <code>{model}</code>
+                                <strong>{cost}</strong>
+                            </div>
+                        ))}
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section shell pricing-section">
+            <article class="cta-banner pricing-cta">
+                <div>
+                    <span class="eyebrow">Limited launch</span>
+                    <h2>Want a slot?</h2>
+                    <p>
+                        Join Discord and ask for the paid plan. The owner will issue a
+                        monthly paid API key while launch slots are available.
+                    </p>
+                </div>
+                <div class="cta-actions">
+                    <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                        Join Discord
+                        <span>&rarr;</span>
+                    </a>
+                    <a class="ghost-button" href="/docs">Read API docs</a>
+                </div>
+            </article>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .pricing-main {
+        gap: 54px;
+        padding-bottom: 80px;
+    }
+
+    .pricing-hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(340px, 0.62fr);
+        gap: 32px;
+        align-items: center;
+        min-height: 66vh;
+        padding-top: 72px;
+    }
+
+    .pricing-hero-copy {
+        display: grid;
+        gap: 14px;
+        min-width: 0;
+    }
+
+    .pricing-hero h1 {
+        max-width: 12ch;
+        font-size: clamp(2.7rem, 7vw, 5.7rem);
+        line-height: 0.94;
+        letter-spacing: -0.06em;
+    }
+
+    .pricing-note {
+        max-width: 58ch;
+        margin: 0;
+        color: var(--dim);
+        font-size: 0.9rem;
+        line-height: 1.55;
+    }
+
+    .pricing-endpoint {
+        width: fit-content;
+        max-width: 100%;
+        margin: 2px 0 0;
+        padding: 10px 12px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+        color: var(--muted);
+        font-size: 0.85rem;
+    }
+
+    .pricing-endpoint code {
+        color: var(--text);
+        font-family: var(--font-mono);
+    }
+
+    .pricing-card {
+        min-width: 0;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-shell-bg);
+        box-shadow: var(--sk-raised-shadow);
+        padding: 24px;
+    }
+
+    .pricing-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+    }
+
+    .pricing-plan-card {
+        position: relative;
+        overflow: hidden;
+        display: grid;
+        gap: 22px;
+    }
+
+    .pricing-plan-card::before {
+        content: "";
+        position: absolute;
+        inset: -40% -20% auto auto;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(238, 93, 32, 0.22), transparent 64%);
+        pointer-events: none;
+    }
+
+    .pricing-price {
+        display: flex;
+        align-items: end;
+        gap: 10px;
+    }
+
+    .pricing-price strong {
+        color: var(--accent-text-strong);
+        font-family: var(--font-serif);
+        font-size: clamp(4rem, 10vw, 7rem);
+        font-weight: 500;
+        line-height: 0.84;
+        letter-spacing: -0.08em;
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .pricing-price span {
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .pricing-plan-grid,
+    .pricing-feature-grid,
+    .pricing-model-grid {
+        display: grid;
+        gap: 16px;
+    }
+
+    .pricing-plan-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .pricing-plan-grid div {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+        padding: 14px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .pricing-plan-grid strong {
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 1.05rem;
+    }
+
+    .pricing-plan-grid span {
+        color: var(--muted);
+        font-size: 0.78rem;
+        line-height: 1.35;
+    }
+
+    .pricing-feature-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pricing-section {
+        gap: 22px;
+    }
+
+    .pricing-model-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+
+    .pricing-model-head {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .pricing-model-head span {
+        color: var(--dim);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .pricing-model-list {
+        display: grid;
+        gap: 8px;
+    }
+
+    .pricing-model-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .pricing-model-row code {
+        min-width: 0;
+        overflow: hidden;
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .pricing-model-row strong {
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 700;
+        text-shadow: var(--accent-text-glow);
+        white-space: nowrap;
+    }
+
+    .pricing-cta {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+    }
+
+    @media (max-width: 1120px) {
+        .pricing-hero,
+        .pricing-model-grid,
+        .pricing-cta {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-hero h1 {
+            max-width: 14ch;
+        }
+
+        .pricing-feature-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 560px) {
+        .pricing-main {
+            gap: 38px;
+        }
+
+        .pricing-hero {
+            gap: 22px;
+            min-height: auto;
+            padding-top: 12px;
+        }
+
+        .pricing-hero h1 {
+            font-size: clamp(2.6rem, 15vw, 3.85rem);
+        }
+
+        .pricing-card {
+            padding: 16px;
+        }
+
+        .pricing-plan-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .pricing-model-head {
+            flex-direction: column;
+            gap: 6px;
+        }
+    }
+</style>

@@ -407,6 +407,6 @@ Prompt and completion text are **not stored**.
 
 <br>
 
-<sub>No paid tiers. No billing page. Community-run.</sub>
+<sub>Free tier stays free. Optional paid slots are available for higher-power models.</sub>
 
 </div>

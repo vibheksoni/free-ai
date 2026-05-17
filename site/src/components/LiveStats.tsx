@@ -63,7 +63,7 @@ export default function LiveStats() {
           <span>tokens served</span>
           <p>Successful input and output tokens processed.</p>
         </article>
-        <article class="proof-card"><strong>$0</strong><span>cost</span><p>No billing, no cards, no paid tiers.</p></article>
+        <article class="proof-card"><strong>$0</strong><span>free tier</span><p>No card required. Paid slots are optional.</p></article>
         <article class="proof-card"><strong>16k+</strong><span>models</span><p>Chat, images, tools — one key.</p></article>
       </section>
       <section class="section live-usage-section" aria-label="Live FreeTheAi usage">

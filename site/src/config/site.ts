@@ -1,7 +1,7 @@
 export const siteConfig = {
     title: "FreeTheAi",
     description:
-        "Free the AI with FreeTheAi — a free OpenAI-compatible API gateway with 16,000+ models, Discord key signup, chat completions, streaming, tool calling, image generation, image editing, and Anthropic messages. No credit card, no billing, no daily limits.",
+        "Free the AI with FreeTheAi - a free OpenAI-compatible API gateway with 16,000+ models, Discord key signup, chat completions, streaming, tool calling, image generation, image editing, Anthropic messages, and optional paid slots for higher-power models.",
     site: "https://freetheai.xyz",
     author: {
         name: "FreeTheAi",
@@ -56,6 +56,9 @@ export const siteConfig = {
             "free llm access",
             "open model api",
             "free ai inference",
+            "paid ai api",
+            "paid llm api",
+            "premium ai models",
         ],
     },
 };

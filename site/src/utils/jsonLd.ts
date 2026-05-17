@@ -35,7 +35,7 @@ export function buildOrganizationJsonLd() {
 		name: 'FreeTheAi',
 		url: 'https://freetheai.xyz',
 		description:
-			'Community-run free AI API project with 16,000+ models, Discord signup, no paid plans, and a public searchable model catalog.',
+			'Community-run free AI API project with 16,000+ models, Discord signup, optional paid slots for higher-power models, and a public searchable model catalog.',
 		sameAs: [
 			'https://discord.gg/secrets',
 			'https://github.com/vibheksoni/free-ai',
@@ -123,7 +123,7 @@ export function buildFaqJsonLd() {
 				name: 'Is FreeTheAi really free?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'Yes. FreeTheAi is completely free with no billing, no credit card, and no paid tiers. Get a key by running /signup in our Discord server.',
+					text: 'Yes. The FreeTheAi free API remains free with no billing or credit card required. Optional paid slots are available for users who need separate higher-power models.',
 				},
 			},
 			{

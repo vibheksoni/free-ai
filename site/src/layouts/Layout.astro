@@ -27,6 +27,7 @@ const navLinks: [string, string][] = [
 	['/home', 'Home'],
 	['/docs', 'Docs'],
 	['/models', 'Models'],
+	['/pricing', 'Pricing'],
 	['/status', 'Status'],
 ];
 ---
@@ -90,12 +91,13 @@ const navLinks: [string, string][] = [
 			<footer class="site-footer">
 				<div class="footer-links">
 					<a href="/models">Models</a>
+					<a href="/pricing">Pricing</a>
 					<a href="/status">Status</a>
 					<a href="/docs">Docs</a>
 					<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
 					<a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">Discord</a>
 				</div>
-				<div class="footer-bottom">no card, no catch. &mdash; Free forever.</div>
+				<div class="footer-bottom">free tier stays free. paid slots are optional.</div>
 			</footer>
 
 		<ToastRegion client:load />
