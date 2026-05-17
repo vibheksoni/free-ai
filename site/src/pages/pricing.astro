@@ -221,30 +221,30 @@ const pblModels = [
 
 <style>
     .pricing-main {
-        gap: 54px;
-        padding-bottom: 80px;
+        gap: 32px;
+        padding: 22px 0 72px;
     }
 
     .pricing-hero {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(340px, 0.62fr);
-        gap: 32px;
+        grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.62fr);
+        gap: clamp(24px, 4vw, 44px);
         align-items: center;
-        min-height: 66vh;
-        padding-top: 72px;
+        min-height: auto;
+        padding: clamp(26px, 4.4vw, 48px);
     }
 
     .pricing-hero-copy {
         display: grid;
-        gap: 14px;
+        gap: 16px;
         min-width: 0;
     }
 
     .pricing-hero h1 {
-        max-width: 12ch;
-        font-size: clamp(2.7rem, 7vw, 5.7rem);
-        line-height: 0.94;
-        letter-spacing: -0.06em;
+        max-width: 13.5ch;
+        font-size: clamp(2.45rem, 5.8vw, 4.85rem);
+        line-height: 0.98;
+        letter-spacing: -0.055em;
     }
 
     .pricing-note {
@@ -279,7 +279,7 @@ const pblModels = [
         border-radius: var(--radius);
         background: var(--sk-shell-bg);
         box-shadow: var(--sk-raised-shadow);
-        padding: 24px;
+        padding: clamp(20px, 2.7vw, 28px);
     }
 
     .pricing-card p {
@@ -292,7 +292,7 @@ const pblModels = [
         position: relative;
         overflow: hidden;
         display: grid;
-        gap: 22px;
+        gap: 20px;
     }
 
     .pricing-plan-card::before {
@@ -315,9 +315,9 @@ const pblModels = [
     .pricing-price strong {
         color: var(--accent-text-strong);
         font-family: var(--font-serif);
-        font-size: clamp(4rem, 10vw, 7rem);
+        font-size: clamp(3.6rem, 8vw, 5.4rem);
         font-weight: 500;
-        line-height: 0.84;
+        line-height: 0.88;
         letter-spacing: -0.08em;
         text-shadow: var(--accent-text-glow);
     }
@@ -339,7 +339,7 @@ const pblModels = [
     }
 
     .pricing-plan-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
     .pricing-plan-grid div {
@@ -370,7 +370,8 @@ const pblModels = [
     }
 
     .pricing-section {
-        gap: 22px;
+        gap: clamp(22px, 3vw, 30px);
+        padding: clamp(24px, 4vw, 38px);
     }
 
     .pricing-model-grid {
@@ -445,7 +446,7 @@ const pblModels = [
         }
 
         .pricing-hero h1 {
-            max-width: 14ch;
+            max-width: 15ch;
         }
 
         .pricing-feature-grid {
@@ -455,21 +456,26 @@ const pblModels = [
 
     @media (max-width: 560px) {
         .pricing-main {
-            gap: 38px;
+            gap: 24px;
+            padding-top: 10px;
         }
 
         .pricing-hero {
             gap: 22px;
-            min-height: auto;
-            padding-top: 12px;
+            padding: 18px;
         }
 
         .pricing-hero h1 {
-            font-size: clamp(2.6rem, 15vw, 3.85rem);
+            font-size: clamp(2.25rem, 13vw, 3.2rem);
+            line-height: 1.02;
         }
 
         .pricing-card {
             padding: 16px;
+        }
+
+        .pricing-section {
+            padding: 18px;
         }
 
         .pricing-plan-grid {
